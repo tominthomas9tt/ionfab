@@ -1,0 +1,7 @@
+{
+  "name": "faby",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
