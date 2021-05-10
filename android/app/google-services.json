@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "113867069909",
+    "project_id": "fabyserveweb",
+    "storage_bucket": "fabyserveweb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113867069909:android:6d8ead63fc80ea4eb4855c",
+        "android_client_info": {
+          "package_name": "com.fabyserve.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113867069909-71mkkm7n2f7p5fuleusuu1f799ifji6a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fabyserve.customer",
+            "certificate_hash": "7210f53c16c2c1040d61d8f12ed2048559cb4b30"
+          }
+        },
+        {
+          "client_id": "113867069909-glkmqablith7kc5smppolrkjftso9ltk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtOpcTZvHHWNaVV_0u2EAPMEryCpJ04q0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113867069909-glkmqablith7kc5smppolrkjftso9ltk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
