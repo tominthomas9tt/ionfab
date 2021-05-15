@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">faby</string>
     <string name="title_activity_main">faby</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="package_name">com.fabyserve.customer</string>
+    <string name="custom_url_scheme">com.fabyserve.customer</string>
     <string name="server_client_id">113867069909-glkmqablith7kc5smppolrkjftso9ltk.apps.googleusercontent.com</string>
 </resources>

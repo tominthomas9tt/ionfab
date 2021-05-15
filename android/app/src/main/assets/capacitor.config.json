@@ -1,13 +1,21 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "faby",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {}
+    "appId": "com.fabyserve.customer",
+    "appName": "faby",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "www",
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 0
+        },
+        "GoogleAuth": {
+            "scopes": [
+                "profile",
+                "email"
+            ],
+            "serverClientId": "113867069909-glkmqablith7kc5smppolrkjftso9ltk.apps.googleusercontent.com",
+            "forceCodeForRefreshToken": true
+        }
+    },
+    "cordova": {}
 }

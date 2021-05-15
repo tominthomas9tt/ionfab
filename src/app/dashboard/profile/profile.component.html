@@ -1,0 +1,190 @@
+<app-header></app-header>
+<ion-content color="light">
+    <div>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-item-divider>
+                        <ion-text>
+                            <h3>Profile</h3>
+                        </ion-text>
+                    </ion-item-divider>
+                    <ion-card>
+                        <ion-card-header>
+                            <ion-card-subtitle>
+                                <ion-button (click)="toggleIsEditing()">{{editButton}}</ion-button>
+                            </ion-card-subtitle>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <div [hidden]=!isEditing>
+                                <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
+                                    <ion-item>
+                                        <ion-label position="floating">Name</ion-label>
+                                        <ion-input type="text" formControlName="userName" required></ion-input>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Date of birth</ion-label>
+                                        <ion-datetime placeholder="Select date" displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" formControlName="userDob">
+                                        </ion-datetime>
+
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-radio-group formControlName="userGender">
+                                            <ion-list-header>
+                                                <ion-label>Gender</ion-label>
+                                            </ion-list-header>
+                                            <ion-item>
+                                                <ion-label>Male</ion-label>
+                                                <ion-radio value="Male"></ion-radio>
+                                            </ion-item>
+
+                                            <ion-item>
+                                                <ion-label>Female</ion-label>
+                                                <ion-radio value="Female"></ion-radio>
+                                            </ion-item>
+                                        </ion-radio-group>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Primary email</ion-label>
+                                        <ion-input type="text" formControlName="userPrimaryEmail" required></ion-input>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Alternate email</ion-label>
+                                        <ion-input type="text" formControlName="userAlternateEmail"></ion-input>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Primary phone</ion-label>
+                                        <ion-input type="text" formControlName="userPrimaryPhone" required></ion-input>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Alternate phone</ion-label>
+                                        <ion-input type="text" formControlName="userAlternatePhone"></ion-input>
+                                    </ion-item>
+
+                                    <ion-button type="submit" [disabled]="!profileForm.valid">Submit</ion-button>
+                                </form>
+                                <hr>
+                                <p>
+                                    Form Value: {{ profileForm.value | json }}
+                                </p>
+                                <p>
+                                    Form Status: {{ profileForm.status }}
+                                </p>
+
+                                <p>
+                                    <button (click)="updateProfile()">Update Profile</button>
+                                </p>
+                            </div>
+                            <div [hidden]=isEditing>
+                                <ion-row>
+                                    <ion-col>
+                                        <ion-list>
+                                            <ion-item>
+                                                <ion-col>User Code </ion-col>
+                                                <ion-col>: {{userProfile?.userCode}}</ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Name </ion-col>
+                                                <ion-col>: {{userProfile?.userName}}</ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Date of birth </ion-col>
+                                                <ion-col>: {{userProfile?.userDob}}</ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Gender </ion-col>
+                                                <ion-col>: {{userProfile?.userGender}}</ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Primary email </ion-col>
+                                                <ion-col>: {{userProfile?.userPrimaryEmail}} {{userProfile?.userIsPrimaryEmailVerified}}
+                                                </ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Alternate email </ion-col>
+                                                <ion-col>: {{userProfile?.userAlternateEmail}}</ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Primary Phone</ion-col>
+                                                <ion-col>: {{userProfile?.userPrimaryPhone}} {{userProfile?.userIsPrimaryPhoneVerified}}
+                                                </ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Alternate Phone </ion-col>
+                                                <ion-col>: {{userProfile?.userAlternatePhone}}</ion-col>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-col>Username </ion-col>
+                                                <ion-col>: {{userProfile?.userUserName}}</ion-col>
+                                            </ion-item>
+                                        </ion-list>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-item-divider>
+                        <ion-text>
+                            <h3>Address</h3>
+                        </ion-text>
+                    </ion-item-divider>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-card>
+                                <ion-card-header>
+                                    <ion-card-subtitle>
+                                        New Address
+                                    </ion-card-subtitle>
+                                </ion-card-header>
+
+                                <ion-card-content>
+                                    <div [hidden]=isAddressEditing>
+                                        <form [formGroup]="addressForm" (ngSubmit)="onAddressSubmit()">
+                                            <ion-item>
+                                                <ion-label position="floating">Addressline 1</ion-label>
+                                                <ion-input type="text" formControlName="addressline1" required>
+                                                </ion-input>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-label position="floating">Addressline 2</ion-label>
+                                                <ion-input type="text" formControlName="addressline2">
+                                                </ion-input>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-label position="floating">Street</ion-label>
+                                                <ion-input type="text" formControlName="street" required></ion-input>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-label position="floating">City</ion-label>
+                                                <ion-input type="text" formControlName="city" required></ion-input>
+                                            </ion-item>
+                                            <ion-item>
+                                                <ion-label position="floating">State</ion-label>
+                                                <ion-input type="text" formControlName="state" required></ion-input>
+                                            </ion-item>
+
+                                            <ion-item>
+                                                <ion-label position="floating">Pincode</ion-label>
+                                                <ion-input type="text" formControlName="zip" required></ion-input>
+                                            </ion-item>
+                                            <ion-button type="submit" [disabled]="!addressForm.valid">Submit
+                                            </ion-button>
+                                        </form>
+                                        <hr>
+                                        <p>
+                                            Form Value: {{ addressForm.value | json }}
+                                        </p>
+                                    </div>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

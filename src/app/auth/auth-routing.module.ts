@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { Error404Component } from '../common/components/error404/error404.component';
+
 import { AuthPage } from './auth.page';
 
+import { Error404Component } from '../common/components/error404/error404.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   {
     path: '',
     component: AuthPage,
-    children: [
+    children: [ 
       {
         path: 'login',
         component: LoginComponent
@@ -18,6 +20,10 @@ const routes: Routes = [
       {
         path: 'forgot-password',
         component: ForgotPasswordComponent
+      },
+      {
+        path: 'sign-up',
+        component: SignupComponent
       },
       {
         path:"**",
