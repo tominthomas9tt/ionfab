@@ -1,6 +1,7 @@
-export class BusinessDetails{
+export class BusinessDetails {
+	public userId?: string;
 	public businessId?: string;
-	public businessCode: string;
+	public businessCode?: string;
 	public businessName?: string;
 	public businessDescription?: string;
 	public businessLogo?: string;

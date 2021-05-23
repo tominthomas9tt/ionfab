@@ -15,7 +15,7 @@ import { isEmpty } from 'src/app/common/utils/utils';
 })
 export class SignupComponent implements OnInit {
 
-  loginForm: FormGroup;
+  signupForm: FormGroup;
   isLoggedin: boolean;
 
   user: SignupUser = {
@@ -31,14 +31,15 @@ export class SignupComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+    this.signupForm = this.formBuilder.group({
+      userName: ['', Validators.required],
+      userUsername: ['', Validators.compose([Validators.required, Validators.email])],
+      userPassword: ['', Validators.required]
     });
   }
 
   onSubmit() {
+    this.user = this.signupForm.value;
     if (!isEmpty(this.user.userName) && !isEmpty(this.user.userUsername) && !isEmpty(this.user.userPassword)) {
       this.user.userRoleId = "6";
       this.serverauth.createUser(this.user).subscribe((responseData: Httpresponse) => {

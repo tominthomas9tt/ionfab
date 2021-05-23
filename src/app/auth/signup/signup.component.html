@@ -9,29 +9,29 @@
                             <ion-card-subtitle> welcome to vendor dashboard</ion-card-subtitle>
                         </ion-card-header>
                         <ion-card-content>
-                            <form (ngSubmit)="onSubmit()">
+                            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
                                 <ion-item lines="full">
                                     <ion-label position="floating">Name</ion-label>
-                                    <ion-input type="text" [(ngModel)]="user.userName" name="name" required>
+                                    <ion-input type="text" formControlName="userName">
                                     </ion-input>
                                 </ion-item>
 
                                 <ion-item lines="full">
                                     <ion-label position="floating">Email</ion-label>
-                                    <ion-input type="text" [(ngModel)]="user.userUsername" name="email" required>
+                                    <ion-input type="text" formControlName="userUsername">
                                     </ion-input>
                                 </ion-item>
 
                                 <ion-item lines="full">
                                     <ion-label position="floating">Password</ion-label>
-                                    <ion-input type="password" [(ngModel)]="user.userPassword" name="password" required>
+                                    <ion-input type="password" formControlName="userPassword">
                                     </ion-input>
                                 </ion-item>
                                 <br>
                                 <ion-row>
                                     <ion-col>
-                                        <ion-button type="submit" color="danger" expand="block">Create Account
+                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!signupForm.valid">Create Account
                                         </ion-button>
                                     </ion-col>
                                 </ion-row>

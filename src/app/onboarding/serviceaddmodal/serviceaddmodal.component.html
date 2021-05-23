@@ -1,0 +1,43 @@
+<ion-row>
+    <ion-col size="12">
+        <form [formGroup]="businessServiceForm" (ngSubmit)="addService()">
+            <ion-card-header>
+                <ion-card-title>Add Service</ion-card-title>
+            </ion-card-header>
+            <ion-item>
+                <ion-label position="floating">Service Category</ion-label>
+                <ionic-selectable formControlName="serviceCategory" [items]="serviceCategories" itemValueField="id" itemTextField="name" [canSearch]="true" (onChange)="onCategoryChanged()">
+                </ionic-selectable>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating ">Service</ion-label>
+                <ionic-selectable formControlName="service" [items]="services" itemValueField="id" itemTextField="name" [canSearch]="true" (onChange)="onServiceSelected()">
+                </ionic-selectable>
+            </ion-item>
+            <div *ngIf="showSubServiceForm">
+                <ion-item>
+                    <ion-label position="floating">Specify</ion-label>
+                    <ionic-selectable formControlName="subService" [items]="subServices" itemValueField="id" itemTextField="name" [canSearch]="true" (onChange)="onSubServiceSelected()">
+                    </ionic-selectable>
+                </ion-item>
+            </div>
+            <ion-item>
+                <ion-label position="floating ">Description</ion-label>
+                <ion-input type="text" formControlName="description"></ion-input>
+            </ion-item>
+            <hr>
+            <ion-row class="ion-justify-content-center">
+                <ion-button type="submit" [disabled]="!businessServiceForm.valid" shape="round">Add
+                </ion-button>
+            </ion-row>
+        </form>
+    </ion-col>
+</ion-row>
+<ion-row>
+    <ion-col size="12">
+
+        <ion-button (click)="dismiss()" expand="block" fill="clear" shape="round">
+            cancel
+        </ion-button>
+    </ion-col>
+</ion-row>

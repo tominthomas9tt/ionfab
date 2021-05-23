@@ -12,6 +12,8 @@ import { StorageService } from './common/services/storage.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './common/http-interceptors';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +25,9 @@ import { httpInterceptorProviders } from './common/http-interceptors';
     FormsModule,
     ReactiveFormsModule,
     IonicStorageModule.forRoot(),
-    HttpClientModule],
+    HttpClientModule,
+    IonicSelectableModule,
+    BrowserAnimationsModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: HashLocationStrategy },

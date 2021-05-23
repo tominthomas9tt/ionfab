@@ -14,7 +14,7 @@ import { isEmpty } from 'src/app/common/utils/utils';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  loginForm: FormGroup;
+  forogotPasswordForm: FormGroup;
   isLoggedin: boolean;
 
   user: ForgotUser = {
@@ -27,12 +27,13 @@ export class ForgotPasswordComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
+    this.forogotPasswordForm = this.formBuilder.group({
+      userUsername: ['', Validators.compose([Validators.required, Validators.email])],
     });
   }
 
   onSubmit() {
+    this.user = this.forogotPasswordForm.value;
     if (!isEmpty(this.user.userUsername)) {
       this.serverauth.forgotPassword(this.user).subscribe((responseData: Httpresponse) => {
         if (responseData.status) {

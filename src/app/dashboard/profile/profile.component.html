@@ -4,18 +4,14 @@
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-item-divider>
-                        <ion-text>
-                            <h3>Profile</h3>
-                        </ion-text>
-                    </ion-item-divider>
+                    <ion-text color="dark">
+                        <h2>Profile</h2>
+                    </ion-text>
                     <ion-card>
-                        <ion-card-header>
-                            <ion-card-subtitle>
-                                <ion-button (click)="toggleIsEditing()">{{editButton}}</ion-button>
-                            </ion-card-subtitle>
-                        </ion-card-header>
                         <ion-card-content>
+                            <ion-row class="ion-justify-content-end">
+                                <ion-button (click)="toggleIsEditing()" float-right>{{editButton}}</ion-button>
+                            </ion-row>
                             <div [hidden]=!isEditing>
                                 <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
                                     <ion-item>
@@ -29,20 +25,11 @@
 
                                     </ion-item>
                                     <ion-item>
-                                        <ion-radio-group formControlName="userGender">
-                                            <ion-list-header>
-                                                <ion-label>Gender</ion-label>
-                                            </ion-list-header>
-                                            <ion-item>
-                                                <ion-label>Male</ion-label>
-                                                <ion-radio value="Male"></ion-radio>
-                                            </ion-item>
-
-                                            <ion-item>
-                                                <ion-label>Female</ion-label>
-                                                <ion-radio value="Female"></ion-radio>
-                                            </ion-item>
-                                        </ion-radio-group>
+                                        <ion-label position="floating">Gender</ion-label>
+                                        <ion-select placeholder="Select One" formControlName="userGender">
+                                            <ion-select-option value="Female">Female</ion-select-option>
+                                            <ion-select-option value="Male">Male</ion-select-option>
+                                        </ion-select>
                                     </ion-item>
                                     <ion-item>
                                         <ion-label position="floating">Primary email</ion-label>
@@ -63,17 +50,6 @@
 
                                     <ion-button type="submit" [disabled]="!profileForm.valid">Submit</ion-button>
                                 </form>
-                                <hr>
-                                <p>
-                                    Form Value: {{ profileForm.value | json }}
-                                </p>
-                                <p>
-                                    Form Status: {{ profileForm.status }}
-                                </p>
-
-                                <p>
-                                    <button (click)="updateProfile()">Update Profile</button>
-                                </p>
                             </div>
                             <div [hidden]=isEditing>
                                 <ion-row>
@@ -115,7 +91,7 @@
                                             </ion-item>
                                             <ion-item>
                                                 <ion-col>Username </ion-col>
-                                                <ion-col>: {{userProfile?.userUserName}}</ion-col>
+                                                <ion-col>: {{userProfile?.userUsername}}</ion-col>
                                             </ion-item>
                                         </ion-list>
                                     </ion-col>
@@ -127,59 +103,76 @@
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-item-divider>
-                        <ion-text>
-                            <h3>Address</h3>
-                        </ion-text>
-                    </ion-item-divider>
+                    <ion-text color="dark">
+                        <h2>Address</h2>
+                    </ion-text>
                     <ion-row>
-                        <ion-col size="4">
+                        <ion-col size-md="4">
                             <ion-card>
                                 <ion-card-header>
                                     <ion-card-subtitle>
                                         New Address
                                     </ion-card-subtitle>
                                 </ion-card-header>
-
                                 <ion-card-content>
-                                    <div [hidden]=isAddressEditing>
-                                        <form [formGroup]="addressForm" (ngSubmit)="onAddressSubmit()">
-                                            <ion-item>
-                                                <ion-label position="floating">Addressline 1</ion-label>
-                                                <ion-input type="text" formControlName="addressline1" required>
-                                                </ion-input>
-                                            </ion-item>
-                                            <ion-item>
-                                                <ion-label position="floating">Addressline 2</ion-label>
-                                                <ion-input type="text" formControlName="addressline2">
-                                                </ion-input>
-                                            </ion-item>
-                                            <ion-item>
-                                                <ion-label position="floating">Street</ion-label>
-                                                <ion-input type="text" formControlName="street" required></ion-input>
-                                            </ion-item>
-                                            <ion-item>
-                                                <ion-label position="floating">City</ion-label>
-                                                <ion-input type="text" formControlName="city" required></ion-input>
-                                            </ion-item>
-                                            <ion-item>
-                                                <ion-label position="floating">State</ion-label>
-                                                <ion-input type="text" formControlName="state" required></ion-input>
-                                            </ion-item>
+                                    <form [formGroup]="addressForm" (ngSubmit)="onAddressSubmit()">
+                                        <ion-item>
+                                            <ion-label position="floating">Addressline 1</ion-label>
+                                            <ion-input type="text" formControlName="addressline1" required>
+                                            </ion-input>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label position="floating">Addressline 2</ion-label>
+                                            <ion-input type="text" formControlName="addressline2">
+                                            </ion-input>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label position="floating">Landmark</ion-label>
+                                            <ion-input type="text" formControlName="landmark"></ion-input>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label position="floating">Street</ion-label>
+                                            <ion-input type="text" formControlName="street" required></ion-input>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label position="floating">City</ion-label>
+                                            <ion-input type="text" formControlName="city" required></ion-input>
+                                        </ion-item>
+                                        <ion-item>
+                                            <ion-label position="floating">State</ion-label>
+                                            <ion-input type="text" formControlName="state" required></ion-input>
+                                        </ion-item>
 
-                                            <ion-item>
-                                                <ion-label position="floating">Pincode</ion-label>
-                                                <ion-input type="text" formControlName="zip" required></ion-input>
-                                            </ion-item>
-                                            <ion-button type="submit" [disabled]="!addressForm.valid">Submit
-                                            </ion-button>
-                                        </form>
+                                        <ion-item>
+                                            <ion-label position="floating">Pincode</ion-label>
+                                            <ion-input type="text" formControlName="pin" required></ion-input>
+                                        </ion-item>
                                         <hr>
-                                        <p>
-                                            Form Value: {{ addressForm.value | json }}
-                                        </p>
-                                    </div>
+                                        <ion-button type="submit" [disabled]="!addressForm.valid">
+                                            {{editAddressButton}}
+                                        </ion-button>
+                                        <ion-button type="reset" color="warning">Reset
+                                        </ion-button>
+                                    </form>
                                 </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col size-md="4" *ngFor="let address of addresses; let i = index">
+                            <ion-card>
+                                <ion-card-content>
+                                    {{address?.addressline1}}<br>{{address?.addressline2}}<br>{{address?.landmark}}<br> {{address?.street}}
+                                    <br> {{address?.city}}<br> {{address?.state}}<br>{{address?.pin}}
+                                    <ion-row>
+                                        <ion-col>
+                                            <ion-button (click)="updateEditAddress(address)">Edit</ion-button>
+                                            <ion-button (click)="deleteAddress(address)" *ngIf="address.isPrimary!='2'" color="danger">
+                                                Delete</ion-button>
+                                            <ion-button (click)="markAddressAsPrimary(address)" *ngIf="address.isPrimary!='2'" color="success">
+                                                Set As Primary</ion-button>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-card-content>
+
                             </ion-card>
                         </ion-col>
                     </ion-row>

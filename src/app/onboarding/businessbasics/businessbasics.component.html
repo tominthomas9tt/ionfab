@@ -1,0 +1,73 @@
+<ion-card-header class="ion-text-center">
+    <ion-card-title>1. Business Profile</ion-card-title>
+    <ion-card-subtitle>Describe your business</ion-card-subtitle>
+</ion-card-header>
+<ion-card-content>
+    <form [formGroup]="businessForm" (ngSubmit)="onBusinessSubmit()">
+        <ion-item>
+            <ion-label position="floating">Name of business *</ion-label>
+            <ion-input type="text" formControlName="businessName" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Office Type *</ion-label>
+            <ionic-selectable formControlName="businessOfficeType" [items]="officeTypeOptions" (onChange)="officeTypeChanged()">
+            </ionic-selectable>
+        </ion-item>
+        <div *ngIf="showBusinessExtra">
+            <ion-item>
+                <ion-label position="floating">Date of Incorporation</ion-label>
+                <ion-datetime placeholder="Select date" displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" formControlName="businessIncorporationDate">
+                </ion-datetime>
+            </ion-item>
+            <ion-row>
+                <ion-col size-md="6">
+                    <ion-item>
+                        <ion-label position="floating">Gst No</ion-label>
+                        <ion-input type="text" formControlName="gstNo"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col size-md="6">
+                    <ion-item>
+                        <ion-label position="floating">Pan No</ion-label>
+                        <ion-input type="text" formControlName="panNo"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size-md="6">
+                    <ion-item>
+                        <ion-label position="floating">Office Space (in Sq.Ft.)</ion-label>
+                        <ion-input type="text" formControlName="businessOfficeSpace"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </div>
+        <ion-item>
+            <ion-label position="floating">Website</ion-label>
+            <ion-input type="text" formControlName="businessWebsite"></ion-input>
+        </ion-item>
+        <ion-row>
+            <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Employee Strength</ion-label>
+                    <ion-input type="text" formControlName="businessEmployeeStrength">
+                    </ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Turnover</ion-label>
+                    <ion-input type="text" formControlName="businessTurnover"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input type="text" formControlName="businessDescription"></ion-input>
+        </ion-item>
+        <hr>
+        <ion-row class="ion-justify-content-center">
+            <ion-button type="submit" [disabled]="!businessForm.valid" shape="round">Proceed</ion-button>
+        </ion-row>
+    </form>
+</ion-card-content>

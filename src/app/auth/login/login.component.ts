@@ -16,6 +16,7 @@ import { isEmpty } from 'src/app/common/utils/utils';
 import { LoginUserCredential } from 'src/app/common/models/loginusercredential';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
+import { BusinessService } from 'src/app/common/services/http/business.service';
 
 const TOKEN_KEY = "user-tokens";
 const USER_KEY = "user-data";
@@ -39,13 +40,14 @@ export class LoginComponent implements OnInit {
     private storage: StorageService,
     private serverAuth: ServerAuthService,
     private authService: AuthService,
+    private businessService: BusinessService,
     private router: Router,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+      userUsername: ['', Validators.compose([Validators.required, Validators.email])],
+      userPassword: ['', Validators.required]
     });
   }
 
@@ -55,15 +57,39 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit() {
+    this.user = this.loginForm.value;
     if (!isEmpty(this.user.userUsername) && !isEmpty(this.user.userPassword)) {
-
       this.serverAuth.getUsers(this.user).subscribe((data: Httpresponse) => {
         if (data.status) {
           let user = data.data[0].user;
           let tokens = { authToken: data.data[0].token, refreshToken: data.data[0].refreshToken };
-          this.storage.setData(TOKEN_KEY, tokens);
           this.storage.setData(USER_KEY, user);
-          this.router.navigateByUrl("/dashboard/home");
+          this.storage.setData(TOKEN_KEY, tokens).then((status) => {
+            if (status) {
+              this.businessService.getBusinessStatus().subscribe((data: Httpresponse) => {
+                if (data.status) {
+                  console.log(data.data);
+                  let businessData = data.data[0];
+                  if (businessData.verifiedBy != 0) {
+                    this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
+                  } else {
+                    this.storage.setData("busData", businessData).then((stStatus) => {
+                      if (stStatus) {
+                        if (businessData.businessSubscriptionDate != null) {
+                          this.router.navigateByUrl("/onboarding/verification-status", { replaceUrl: true });
+                        } else {
+                          this.router.navigateByUrl("/onboarding/start", { replaceUrl: true });
+                        }
+                      }
+                    })
+
+                  }
+                } else {
+
+                }
+              });
+            }
+          })
         } else {
           const errors = data.error;
           let errorMessage = "Something went wrong.";

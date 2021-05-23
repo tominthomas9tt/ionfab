@@ -1,0 +1,50 @@
+<ion-card-header class="ion-text-center">
+    <ion-card-title>2. Contact Details</ion-card-title>
+    <ion-card-subtitle>How to reach you</ion-card-subtitle>
+</ion-card-header>
+<ion-card-content>
+    <form [formGroup]="addressForm" (ngSubmit)="onContactSubmit()">
+        <ion-row>
+            <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Mobile *</ion-label>
+                    <ion-input type="text" formControlName="userPrimaryPhone"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Alternate Mobile</ion-label>
+                    <ion-input type="text" formControlName="userAlternatePhone"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <!-- <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Email *</ion-label>
+                    <ion-input type="text" formControlName="userPrimaryEmail"></ion-input>
+                </ion-item>
+            </ion-col> -->
+            <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Email</ion-label>
+                    <ion-input type="text" formControlName="userAlternateEmail"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size-md="6">
+                <ion-item>
+                    <ion-label position="floating">Office Phone (if available)</ion-label>
+                    <ion-input type="text" formControlName="businessOfficePhone"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <hr>
+        <ion-row class="ion-justify-content-center">
+            <ion-button type="submit" [disabled]="!addressForm.valid" shape="round">Proceed</ion-button>
+        </ion-row>
+    </form>
+
+
+</ion-card-content>

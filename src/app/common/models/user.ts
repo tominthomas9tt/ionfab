@@ -1,12 +1,12 @@
 export class User {
-    public userId: number;
-    public userCode: string;
-    public userName: string;
-    public userUsername: string;
-    public userRole: string;
+    public userId?: number;
+    public userCode?: string;
+    public userName?: string;
+    public userUsername?: string;
+    public userRole?: string;
 }
 
-export class UserDetails{
+export class UserDetails extends User{
 	public userDob?: string;
 	public userGender?: string;
 	public userRoleId?: string;

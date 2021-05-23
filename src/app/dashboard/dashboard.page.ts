@@ -11,19 +11,25 @@ export class DashboardPage implements OnInit {
 
   pages = [{
     title: "Home",
-    url: "/dashboard/home"
+    url: "/dashboard/home",
+    icon:"home"
   },
   {
     title: "Profile",
-    url: "/dashboard/profile"
+    url: "/dashboard/profile",
+    icon:"person"
+
   },
   {
     title: "Business",
-    url: "/dashboard/business"
+    url: "/dashboard/business",
+    icon:"business"
+
   },
   {
     title: "Services",
-    url: "/dashboard/services"
+    url: "/dashboard/services",
+    icon:"build"
   }
   ];
 
@@ -39,6 +45,9 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
   }
 
+  signOut() {
+    this.authService.signOut();
+  }
 
 
 }

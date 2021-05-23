@@ -13,12 +13,20 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getUserDetails(userId:number) {
+  getUserDetails(userId: number) {
     return this.http.get(this.usersUrl + "/" + userId);
   }
 
   updateUser(userId: number, userData: UserDetails) {
     return this.http.put(this.usersUrl + "/" + userId, userData);
+  }
+
+  sentEmailVerificationOtp(verificationData) {
+    return this.http.post(this.usersUrl + "/email/initiateverification", verificationData);
+  }
+
+  verifyEmailOtp(verificationCodeData) {
+    return this.http.post(this.usersUrl + "/email/completeverification", verificationCodeData);
   }
 
 }

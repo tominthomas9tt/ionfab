@@ -116,6 +116,7 @@ export class AuthService {
   async signOut() {
     await this.storage.setData(USER_KEY, null);
     await this.storage.setData(TOKEN_KEY, null);
+    await this.storage.setData("busData",null);
     this.authState.next(null);
     this.router.navigateByUrl("/login");
   }

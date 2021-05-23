@@ -2,15 +2,90 @@
 <ion-content color="light">
     <div>
         <ion-grid>
-            <ion-row class="ion-justify-content-center">
-                <ion-col align-self-center>
-                    <ion-card>
-                        <ion-card-header>
-                            <ion-card-title>Services</ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>
-                        </ion-card-content>
-                    </ion-card>
+            <ion-row>
+                <ion-col>
+                    <ion-text color="dark">
+                        <h2>My Services</h2>
+                    </ion-text>
+                    <div *ngIf="viewMode!=2">
+                        <ion-button (click)="addService()">Add</ion-button>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+
+                    <div *ngIf="viewMode==1">
+                        <ion-card>
+                            <ion-card-header>
+                                <ion-card-subtitle>Registered Services</ion-card-subtitle>
+                            </ion-card-header>
+                            <ion-card-content>
+                                <ion-list>
+                                    <ion-item *ngFor="let businessService of businessServices;let i=index">
+                                        <ion-label>{{i+1}}. {{businessService.name}}</ion-label>
+                                    </ion-item>
+                                </ion-list>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+                    <div *ngIf="viewMode==2">
+                        <ion-card>
+                            <ion-card-header>
+                                <ion-card-subtitle>Create service</ion-card-subtitle>
+                            </ion-card-header>
+                            <ion-card-content>
+                                <form [formGroup]="businessServiceForm" (ngSubmit)="onBusinessServiceCreateSubmit()">
+                                    <ion-item>
+                                        <ion-label position="floating">Label</ion-label>
+                                        <ion-input type="text" formControlName="name"></ion-input>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Service Category</ion-label>
+                                        <ion-select placeholder="Select One" formControlName="serviceCategoryId" (ionChange)="onCategoryChanged()" style="width: 100%;">
+                                            <ion-select-option *ngFor="let serviceCategory of serviceCategories;let i=index" value="{{serviceCategory.id}}">{{serviceCategory.name}}
+                                            </ion-select-option>
+                                        </ion-select>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating ">Service</ion-label>
+                                        <ion-select placeholder="Select One " formControlName="serviceId" (ionChange)="onServiceSelected() ">
+                                            <ion-select-option *ngFor="let service of services;let i=index" value="{{i}}">{{service.name}}</ion-select-option>
+                                        </ion-select>
+                                    </ion-item>
+                                    <div *ngIf="showSubServiceForm">
+                                        <ion-item>
+                                            <ion-label position="floating ">Specify</ion-label>
+                                            <ion-select placeholder="Select One" formControlName="subServiceId">
+                                                <ion-select-option *ngFor="let service of subServices;let i=index" value="{{i}}">{{service.name}}</ion-select-option>
+                                            </ion-select>
+                                        </ion-item>
+                                    </div>
+
+                                    <ion-item>
+                                        <ion-label position="floating ">Description</ion-label>
+                                        <ion-input type="text " formControlName="description"></ion-input>
+                                    </ion-item>
+                                    <ion-button type="submit " [disabled]="!businessServiceForm.valid ">Proceed
+                                    </ion-button>
+                                </form>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+                    <div *ngIf="viewMode==3 ">
+                        <ion-card>
+                            <ion-card-header>
+                                <ion-card-subtitle>Services details</ion-card-subtitle>
+                            </ion-card-header>
+                            <ion-card-content>
+                                <ion-list>
+                                    <ion-item *ngFor="let businessService of businessServices;let i=index ">
+                                        <ion-label>{{i+1}}. {{businessService.name}}</ion-label>
+                                    </ion-item>
+                                </ion-list>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
                 </ion-col>
             </ion-row>
         </ion-grid>

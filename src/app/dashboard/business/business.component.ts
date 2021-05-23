@@ -7,6 +7,7 @@ import { User } from 'src/app/common/models/user';
 import { BusinessService } from 'src/app/common/services/http/business.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { StoredUserService } from 'src/app/common/services/storeduser.service';
+import { ValidatorPatterns } from 'src/app/common/validators/patterns';
 
 
 @Component({
@@ -20,9 +21,19 @@ export class BusinessComponent implements OnInit {
   businessProfile: BusinessDetails;
   isEditing: boolean = false;
   editButton: string = "Edit";
+  hasBusiness: boolean = false;
+  isCreatingBusiness: boolean = false;
+  showBusinessExtra:boolean=false;
+
+  officeTypeOptions = [
+    'Freelancer',
+    'Own',
+    'Rented'
+  ];
 
 
   constructor(private formBuilder: FormBuilder,
+    private validatorPatterns: ValidatorPatterns,
     private notificationService: NotificationService,
     private businessService: BusinessService,
     private storedUserService: StoredUserService) {
@@ -39,20 +50,30 @@ export class BusinessComponent implements OnInit {
   getBusinessDetails(businessId) {
     this.businessService.getBusinessDetails(businessId).subscribe((data: Httpresponse) => {
       if (data.status) {
-        this.businessProfile = data.data[0];
+        if (data.data[0].businessCode != null) {
+          this.hasBusiness = true;
+          this.businessProfile = data.data[0];
+        }
+      } else {
+        this.hasBusiness = false;
       }
     })
   }
 
-
+officeTypeChanged() {
+    this.showBusinessExtra = false;
+    if (this.businessForm.get('businessOfficeType').value && ['Own', 'Rented'].includes(this.businessForm.get('businessOfficeType').value)) {
+      this.showBusinessExtra = true;
+    }
+  }
 
   businessForm = this.formBuilder.group({
     businessName: ['', Validators.required],
     businessDescription: ['',],
     businessIncorporationDate: ['',],
     businessOfficePhone: ['',],
-    gstNo: ['',],
-    panNo: ['',],
+    gstNo: ['', Validators.pattern(this.validatorPatterns.GstNo)],
+    panNo: ['', Validators.pattern(this.validatorPatterns.PanNo)],
     businessWebsite: ['',],
     businessEmployeeStrength: ['',],
     businessTurnover: ['',],
@@ -92,6 +113,30 @@ export class BusinessComponent implements OnInit {
       if (response.status) {
         this.getBusinessDetails(this.user.userId);
         this.notificationService.showNotification("Business details updated.");
+        this.toggleIsEditing();
+      } else {
+        console.log(response.error);
+      }
+    })
+    console.warn(updatedProfile);
+  }
+
+  businessCreateForm = this.formBuilder.group({
+    businessName: ['', Validators.required],
+  });
+
+  toggleIsCreating() {
+    this.isCreatingBusiness = !this.isCreatingBusiness;
+  }
+
+  onBusinessCreateSubmit() {
+    let updatedProfile = this.businessCreateForm.value;
+    updatedProfile.userId = this.user.userId;
+    this.businessService.createBusiness(updatedProfile).subscribe((response: Httpresponse) => {
+      if (response.status) {
+        this.toggleIsCreating();
+        this.getBusinessDetails(this.user.userId);
+        this.notificationService.showNotification("Business created updated.");
         this.toggleIsEditing();
       } else {
         console.log(response.error);

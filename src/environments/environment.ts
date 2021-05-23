@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000/',
+  apiBaseUrl: 'http://65.1.29.70:9898/',
+  // apiBaseUrl: 'http://localhost:9898/',
   storagePrefix:'FB_'
 };
 

@@ -8,10 +8,16 @@
         <ion-content color="white">
             <ion-list>
                 <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
-                    <ion-item [routerLink]="p.url" routerDirection="root" [class.active-item]="selectedPath === p.url" lines="full">
-                        {{p.title}}
+                    <ion-item [routerLink]="p.url" routerDirection="root" [class.active-item]="selectedPath === p.url">
+                        <ion-icon name="{{p.icon}}" [color]="selectedPath === p.url?'primary':''"></ion-icon>&nbsp;
+                        <span>{{p.title}}</span>
                     </ion-item>
+
                 </ion-menu-toggle>
+                <ion-item (click)="signOut()">
+                    <ion-icon name="log-out"></ion-icon>&nbsp;
+                    <span>Logout</span>
+                </ion-item>
             </ion-list>
         </ion-content>
     </ion-menu>
