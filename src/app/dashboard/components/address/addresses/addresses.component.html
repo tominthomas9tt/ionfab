@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Your addresses</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()" title="Close">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-col size-md="4" size-sm="6" *ngFor="let address of addresses; let i = index">
+            <ion-card>
+                <ion-card-content>
+                    {{address?.addressline1}}<br>{{address?.addressline2}}<br>{{address?.landmark}}<br> {{address?.street}}
+                    <br> {{address?.city}}<br> {{address?.state}}<br>{{address?.pin}}
+                    <ion-row>
+                        <ion-col>
+                            <ion-button (click)="modifyAddress(address)" title="Edit">
+                                <ion-icon name="create"></ion-icon>
+                            </ion-button>
+                            <ion-button (click)="deleteAddress(address)" *ngIf="address.isPrimary!='2'" color="danger" title="Delete">
+                                <ion-icon name="trash"></ion-icon>
+                            </ion-button>
+                            <ion-button (click)="markAddressAsPrimary(address)" *ngIf="address.isPrimary!='2'" color="success">
+                                Set Default</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+
+            </ion-card>
+        </ion-col>
+    </ion-grid>
+</ion-content>
+<ion-row>
+    <ion-col>
+        <ion-button color="success" (click)="modifyAddress()" expand="block">
+            Add address
+        </ion-button>
+    </ion-col>
+    <ion-col>
+        <ion-button color="danger" (click)="dismiss()" expand="block">
+            Close
+        </ion-button>
+    </ion-col>
+</ion-row>

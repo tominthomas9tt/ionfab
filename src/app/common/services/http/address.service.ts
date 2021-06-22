@@ -6,7 +6,7 @@ import { Address } from '../../models/address';
 @Injectable({
   providedIn: 'root'
 })
-export class AddressService {
+export class AddressHttpService {
 
   baseUrl = environment.apiBaseUrl + 'address';
 

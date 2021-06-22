@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Constants } from '../configs/constants.config';
 import { StorageService } from './storage.service';
 
-const TOKEN_KEY = "user-tokens";
+const TOKEN_KEY = Constants.TOKEN_KEY;
 
 @Injectable({
   providedIn: 'root'

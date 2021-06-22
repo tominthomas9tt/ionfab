@@ -1,0 +1,29 @@
+<ion-card>
+    <!-- <ion-item>
+    <ion-avatar slot="start">
+      <img src="../../assets/user.jpg">
+    </ion-avatar>
+    <ion-label>
+      <h3>John Doe</h3>
+      <p>Dec 10, 2019</p>
+    </ion-label>
+  </ion-item> -->
+
+    <img src="{{image}}" alt="ion">
+    <ion-card-header>
+        <ion-card-title>{{item.name}}</ion-card-title>
+        <small>Rating: <b>{{item.rating}}/5.0</b></small>
+    </ion-card-header>
+    <ion-card-content>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    </ion-card-content>
+    <ion-footer>
+        <ion-row>
+            <ion-col center text-center>
+                <ion-button (click)="onClick(item)" expand="block" shape="round">
+                    Get Quote
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-footer>
+</ion-card>

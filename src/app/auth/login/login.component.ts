@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/common/models/user';
 import { AuthService } from 'src/app/common/services/auth.service';
 
 
@@ -16,7 +15,7 @@ import { isEmpty } from 'src/app/common/utils/utils';
 import { LoginUserCredential } from 'src/app/common/models/loginusercredential';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
-import { BusinessService } from 'src/app/common/services/http/business.service';
+import { ErrorNotifier } from 'src/app/common/services/errornotifier';
 
 const TOKEN_KEY = "user-tokens";
 const USER_KEY = "user-data";
@@ -31,6 +30,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoggedin: boolean;
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   user: LoginUserCredential = {
     userUsername: "",
     userPassword: ""
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
     private storage: StorageService,
     private serverAuth: ServerAuthService,
     private authService: AuthService,
-    private businessService: BusinessService,
+    private errorNotifier: ErrorNotifier,
     private router: Router,
     private notificationService: NotificationService) { }
 
@@ -49,11 +51,22 @@ export class LoginComponent implements OnInit {
       userUsername: ['', Validators.compose([Validators.required, Validators.email])],
       userPassword: ['', Validators.required]
     });
+    this.storage.getData("user_just_verified").then((data) => {
+      if (data) {
+        this.loginForm.patchValue({ userUsername: data });
+        this.storage.setData("user_just_verified", null);
+      }
+    })
   }
 
   async googleSignUp() {
     const googleUser = await Plugins.GoogleAuth.signIn();
     console.log(googleUser);
+  }
+
+  hideShowPassword() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
   async onSubmit() {
@@ -66,48 +79,13 @@ export class LoginComponent implements OnInit {
           this.storage.setData(USER_KEY, user);
           this.storage.setData(TOKEN_KEY, tokens).then((status) => {
             if (status) {
-              this.businessService.getBusinessStatus().subscribe((data: Httpresponse) => {
-                if (data.status) {
-                  console.log(data.data);
-                  let businessData = data.data[0];
-                  if (businessData.verifiedBy != 0) {
-                    this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
-                  } else {
-                    this.storage.setData("busData", businessData).then((stStatus) => {
-                      if (stStatus) {
-                        if (businessData.businessSubscriptionDate != null) {
-                          this.router.navigateByUrl("/onboarding/verification-status", { replaceUrl: true });
-                        } else {
-                          this.router.navigateByUrl("/onboarding/start", { replaceUrl: true });
-                        }
-                      }
-                    })
-
-                  }
-                } else {
-
-                }
-              });
+              this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
             }
           })
         } else {
-          const errors = data.error;
-          let errorMessage = "Something went wrong.";
-          if (errors && errors.length > 0) {
-            errorMessage = "";
-            errors.forEach(error => {
-              errorMessage += error.errorMessage;
-            });
-          }
-          this.notificationService.showNotification(errorMessage);
+          this.errorNotifier.showHttpErrors(data.error);
         }
       });
-
-      // const dats = this.authService.signIn(this.user)
-      // .subscribe(user => {
-      //   console.log(user);
-      //   this.router.navigateByUrl("/dashboard/home");
-      // })
     } else {
       this.notificationService.showNotification("Please enter valid credentials.");
     }

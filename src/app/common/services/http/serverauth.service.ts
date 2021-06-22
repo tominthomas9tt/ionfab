@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LoginUserCredential } from '../../models/loginusercredential';
-import { ForgotUser } from '../../models/resetpassword';
+import { ForgotUser, ResetUser } from '../../models/resetpassword';
 import { SignupUser } from '../../models/signupuser';
 
 @Injectable({
@@ -27,5 +27,16 @@ export class ServerAuthService {
     return this.http.post(this.usersUrl + "/forgotpassword", forgotPasswordUser);
   }
 
+  resetPassword(resetUserData: ResetUser) {
+    return this.http.post(this.usersUrl + "/resetpassword", resetUserData);
+  }
+
+  sentUsernameVerificationOtp(verificationData) {
+    return this.http.post(this.usersUrl + "/verify-username-init", verificationData);
+  }
+
+  verifyUsernameOtp(verificationCodeData) {
+    return this.http.post(this.usersUrl + "/verify-username-complete", verificationCodeData);
+  }
 
 }

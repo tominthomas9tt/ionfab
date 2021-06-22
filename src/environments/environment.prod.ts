@@ -1,6 +1,9 @@
+import { sanitizeIdentifier } from "@angular/compiler";
+
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://65.1.29.70:9898/',
-  // apiBaseUrl: 'http://localhost:9898/',
+  apiBaseUrl: 'https://api-sand.fabyserve.com/',
   storagePrefix:'FB_'
 };
+
+

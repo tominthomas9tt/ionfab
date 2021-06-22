@@ -12,6 +12,10 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() { }
 
+  onSearchChange(event) {
+    console.log(event.detail.value);
+  }
+  
   signOut() {
     this.authService.signOut();
   }

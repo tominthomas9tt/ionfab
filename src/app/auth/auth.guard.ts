@@ -26,7 +26,6 @@ export class AuthGuard implements CanActivate {
     return this.storageService.getData(USER_KEY).then(
       (user) => {
         if (!isEmpty(user)) {
-          console.log(user);
           return true;
         }
         else {

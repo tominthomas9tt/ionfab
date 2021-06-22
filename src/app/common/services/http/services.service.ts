@@ -22,4 +22,8 @@ export class ServicesService {
     }
     return this.http.get(this.baseUrl + urlQueryParams);
   }
+
+  getServiceById(id: number) {
+    return this.http.get(this.baseUrl + "/" + id);
+  }
 }

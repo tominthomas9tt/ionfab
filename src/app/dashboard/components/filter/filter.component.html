@@ -1,0 +1,18 @@
+<ion-item lines="none" button (click)="toggleView()" detail="false">
+    <ion-label>Related categories</ion-label>
+    <ion-icon name="{{view}}"></ion-icon>
+</ion-item>
+<ion-list *ngIf="view=='remove'">
+    <ion-radio-group [value]="selectedSubService">
+        <ion-item text-wrap *ngFor="let subcategory of subcategories" lines="full">
+            <ion-radio [value]="subcategory" slot="start" (click)="onfilterChange(subcategory)"></ion-radio>
+            <ion-label>{{subcategory.name}}</ion-label>
+        </ion-item>
+    </ion-radio-group>
+    <!-- <ion-item text-wrap *ngFor="let subcategory of subcategories" lines="full">
+            <ion-checkbox color="royal" checked="false" slot="start" (click)="onfilterChange(subcategory)"></ion-checkbox>
+            <ion-label>
+                {{subcategory.name}}
+            </ion-label>
+        </ion-item> -->
+</ion-list>

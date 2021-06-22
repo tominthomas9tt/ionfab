@@ -1,0 +1,24 @@
+<ion-row class="slides shadow">
+    <ion-col size="12">
+        <div>
+            <div class="btnPrev" (click)="prev()">
+                <ion-icon name="arrow-back-circle" color="primary"></ion-icon>
+            </div>
+            <div class="btnNext" (click)="next()">
+                <ion-icon name="arrow-forward-circle" color="primary"></ion-icon>
+            </div>
+        </div>
+        <ion-slides [options]="sliderOptions" mode="md" #slides>
+            <ion-slide *ngFor="let serviceCategory of serviceCategories">
+                <div class="slide">
+                    <ion-col (click)="changeCategory(serviceCategory)">
+                        <ion-avatar class="center-img">
+                            <ion-img style="pointer-events:none" src="assets/img/services/{{serviceCategory.icon}}"></ion-img>
+                        </ion-avatar>
+                        <small><ion-label>{{ serviceCategory.name }}</ion-label></small>
+                    </ion-col>
+                </div>
+            </ion-slide>
+        </ion-slides>
+    </ion-col>
+</ion-row>

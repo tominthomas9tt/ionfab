@@ -8,7 +8,7 @@ import { formatDate } from "@angular/common";
 import { isEmpty } from 'src/app/common/utils/utils';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { Address } from 'src/app/common/models/address';
-import { AddressService } from 'src/app/common/services/http/address.service';
+import { AddressHttpService } from 'src/app/common/services/http/address.service';
 
 const USER_KEY = "user-data";
 
@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
     private notificationService: NotificationService,
     private storageService: StorageService,
     private userService: UserService,
-    private addressService: AddressService
+    private addressService: AddressHttpService
 
   ) {
   }

@@ -13,6 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private notificationService: NotificationService,private authService:AuthService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
+        console.log("in auth interceptor");
 
         const authReq = req.clone();
 

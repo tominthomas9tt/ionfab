@@ -9,13 +9,12 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthPageModule)
+    path: 'general',
+    loadChildren: () => import('./general/general.module').then(m => m.GeneralPageModule)
   },
   {
-    path: 'onboarding',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./onboarding/onboarding.module').then(m => m.OnboardingPageModule)
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthPageModule)
   },
   {
     path: 'dashboard',

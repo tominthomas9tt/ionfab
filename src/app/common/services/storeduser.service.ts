@@ -17,4 +17,10 @@ export class StoredUserService {
     })
   }
 
+  async setUser(userData) {
+    return await this.storage.setData(USER_KEY,userData).then(data => {
+      return data;
+    })
+  }
+
 }
