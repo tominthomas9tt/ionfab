@@ -3,6 +3,7 @@ export class ForgotUser {
 }
 
 export class ResetUser {
-    public userToken: string;
+    public userUsername: string;
+    public verificationCode: string;
     public userPassword: string;
 }

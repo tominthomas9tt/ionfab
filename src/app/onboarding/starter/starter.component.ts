@@ -1,11 +1,10 @@
-import { formatDate } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Address } from 'src/app/common/models/address';
 import { BusinessDetails } from 'src/app/common/models/business';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
-import { User, UserDetails } from 'src/app/common/models/user';
+import { User } from 'src/app/common/models/user';
 import { AddressService } from 'src/app/common/services/http/address.service';
 import { BusinessService } from 'src/app/common/services/http/business.service';
 import { BusinessservicesService } from 'src/app/common/services/http/businessservice.service';
@@ -13,7 +12,8 @@ import { UserService } from 'src/app/common/services/http/user.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { StorageService } from 'src/app/common/services/storage.service';
 import { StoredUserService } from 'src/app/common/services/storeduser.service';
-import { isEmpty } from 'src/app/common/utils/utils';
+import { isEmpty, misDateFormatted } from 'src/app/common/utils/utils';
+import { StepsComponent } from '../steps/steps.component';
 
 @Component({
   selector: 'app-starter',
@@ -26,43 +26,47 @@ export class StarterComponent implements OnInit {
   user: User;
 
   isComplete: boolean = false;
+  termsAgreed = false;
+
 
   registrationSteps = [
     {
-      id: "1",
+      id: 1,
       name: "Business Profile"
     },
     {
-      id: "2",
-      name: "Contact Details"
+      id: 2,
+      name: "Contact"
     },
     {
-      id: "3",
-      name: "Address Details"
+      id: 3,
+      name: "Address"
     },
     {
-      id: "4",
-      name: "Service Configurations"
+      id: 4,
+      name: "Services"
     },
     {
-      id: "5",
+      id: 5,
       name: "Payment"
     },
 
   ]
-  currentStage: string;
+  currentStage: number;
+  maxStage: number;
 
   isLinear = true;
   storedBusData;
-  businessData: BusinessDetails;
+  businessData;
   contactData;
-  addressData: Address;
+  addressData;
   serviceData;
   paymentData;
 
 
   constructor(
     private router: Router,
+    public modalController: ModalController,
     private notificationService: NotificationService,
     private businessService: BusinessService,
     private storageService: StorageService,
@@ -73,106 +77,205 @@ export class StarterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentStage = "0";
-    this.storedUserService.getUser().then((user) => {
-      this.user = user;
-      this.userService.getUserDetails(this.user.userId).subscribe((userDataResponse: Httpresponse) => {
-        if (userDataResponse.status) {
-          let userData: UserDetails = userDataResponse.data[0];
-          this.storageService.getData("busData").then((busData) => {
-            this.storedBusData = busData;
-            if (this.storedBusData.verificationDate == null) {
-              this.currentStage = "6";
-            }
-            if (this.storedBusData.businessSubscriptionDate == null) {
-              this.currentStage = "5";
-            }
-            if (this.storedBusData.serviceConfigured == 0) {
-              this.currentStage = "4";
-            }
-            if (this.storedBusData.addressRegistered == 0) {
-              this.currentStage = "3";
-            }
-            if (isEmpty(this.storedBusData.primaryMobile) && isEmpty(this.storedBusData.primaryEmail)) {
-              this.currentStage = "2";
-            }
-            if (isEmpty(this.storedBusData.businessCode)) {
-              this.currentStage = "1";
-            }
-            if (userData.userIsPrimaryEmailVerified != '2') {
-              this.currentStage = "0";
-            }
-          })
-        } else {
-          this.notificationService.showNotification("Invalid user.");
-        }
-      })
-    })
+    this.getStoredUser();
+  }
 
+  getStoredUser() {
+    this.storedUserService.getUser().then((data) => {
+      this.user = data;
+      this.getBusinessDetails();
+      this.stepDecider();
+    })
+  }
+
+  getBusinessDetails() {
+    this.businessService.getBusinessDetails(this.user.userId).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        let data = dataResponse.data;
+        this.businessData = data;
+      }
+    });
+  }
+
+  stepDecider() {
+    this.businessService.getBusinessStatus().subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.storedBusData = dataResponse.data[0];
+        if (this.storedBusData.verificationDate == null) {
+          this.setCurrentStage(6, true);
+        }
+        if (this.storedBusData.businessSubscriptionDate == null) {
+          this.setCurrentStage(5, true);
+        }
+        if (this.storedBusData.serviceConfigured == 0) {
+          this.setCurrentStage(4, true);
+        } else {
+        }
+        if (this.storedBusData.addressRegistered == 0) {
+          this.setCurrentStage(3, true);
+        } else {
+          this.getAddress();
+        }
+        if (isEmpty(this.storedBusData.primaryMobile) && isEmpty(this.storedBusData.primaryEmail)) {
+          this.setCurrentStage(2, true);
+        }
+        if (isEmpty(this.storedBusData.businessCode)) {
+          this.setCurrentStage(1, true);
+        }
+      }
+    });
   }
 
   onEmailVerified(data) {
-    this.goForward();
+    this.proceedForward();
+  }
+
+  getAddress() {
+    this.addressService.getAllAddresses(this.user.userId).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.addressData = dataResponse.data[0];
+      }
+    })
+  }
+
+  getServices() {
+    this.businessservicesservice.getAllBusinessservices(this.user.userId).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.serviceData = dataResponse.data;
+        console.log(this.serviceData);
+      }
+    });
   }
 
   onBusinessSubmit(createBusinessProfile) {
-    createBusinessProfile.userId = this.user.userId;
-    createBusinessProfile.businessIncorporationDate = createBusinessProfile.businessIncorporationDate ? formatDate(new Date(createBusinessProfile.businessIncorporationDate), "d-MM-YYYY", "en-US") : "";
-    this.businessData = createBusinessProfile;
-    this.goForward();
+    if (createBusinessProfile) {
+      createBusinessProfile.userId = this.user.userId;
+      createBusinessProfile.businessIncorporationDate = createBusinessProfile.businessIncorporationDate ? misDateFormatted(createBusinessProfile.businessIncorporationDate, "YYYY-MM-DD") : "";
+      if (createBusinessProfile.isUpdation) {
+        this.businessService.updateBusiness(this.user.userId, createBusinessProfile).subscribe((response: Httpresponse) => {
+          if (response.status) {
+            this.businessData = response.data;
+            this.notificationService.showNotification("Business updated.");
+            this.proceedForward();
+          } else {
+            console.log(response.error);
+            this.notificationService.showNotification("Something went wrong.")
+          }
+        })
+      } else {
+        this.businessService.createBusiness(createBusinessProfile).subscribe((response: Httpresponse) => {
+          if (response.status) {
+            this.businessData = response.data;
+            this.notificationService.showNotification("Business created.");
+            this.proceedForward();
+          } else {
+            console.log(response.error);
+            this.notificationService.showNotification("Something went wrong.")
+          }
+        })
+      }
+    } else {
+      this.notificationService.showNotification("Insufficient Data.")
+    }
   }
 
   onContactSubmit(data) {
     this.contactData = data;
-    this.goForward();
-  }
-
-  onAddressSubmit(data) {
-    this.addressData = data;
-    this.goForward();
-  }
-
-  onServicesSubmit(data) {
-    this.serviceData = data;
-    this.onComplete();
-  }
-
-  onComplete() {
-    if (this.businessData && this.contactData && this.addressData && this.serviceData) {
-      this.businessData.businessOfficePhone = this.contactData.businessOfficePhone;
-      this.businessService.createBusiness(this.businessData).subscribe((response: Httpresponse) => {
-        if (response.status) {
-          this.notificationService.showNotification("Business created.");
-        } else {
-          console.log(response.error);
-        }
-      })
-
+    if (this.contactData) {
       this.userService.updateUser(this.user.userId, this.contactData).subscribe((response: Httpresponse) => {
         if (response.status) {
+          this.getBusinessDetails();
           this.notificationService.showNotification("Profile updated.");
+          this.proceedForward();
         } else {
           console.log(response.error);
+          this.notificationService.showNotification("Something went wrong.");
         }
       })
+      if (this.contactData.businessOfficePhone) {
+        let busOfficeData = { businessOfficePhone: this.contactData.businessOfficePhone };
+        this.businessService.updateBusiness(this.user.userId, busOfficeData).subscribe((response: Httpresponse) => {
+          if (response.status) {
+            this.businessData = response.data;
+          } else {
+            console.log(response.error);
+            this.notificationService.showNotification("Something went wrong.");
+          }
+        })
+      }
+    } else {
+      this.notificationService.showNotification("Insufficient Data.")
+    }
+  }
 
-      this.addressData.userId = this.user.userId;
-      this.addressService.createAddress(this.addressData).subscribe((response: Httpresponse) => {
-        if (response.status) {
-          this.notificationService.showNotification("Address created.");
-        } else {
-          console.log(response.error);
-        }
-      })
+  onAddressSubmit(addressData) {
+    if (addressData) {
+      if (addressData.isUpdate) {
+        this.addressService.updateAddress(addressData.isUpdate, addressData).subscribe((response: Httpresponse) => {
+          if (response.status) {
+            this.addressData = response.data[0];
+            this.notificationService.showNotification("Address updated.");
+            this.proceedForward();
+          } else {
+            console.log(response.error);
+            this.notificationService.showNotification("Something went wrong.");
+          }
+        })
+      } else {
+        addressData.userId = this.user.userId;
+        this.addressService.createAddress(addressData).subscribe((response: Httpresponse) => {
+          if (response.status) {
+            this.notificationService.showNotification("Address created.");
+            this.addressData = response.data[0];
+            this.proceedForward();
+          } else {
+            console.log(response.error);
+            this.notificationService.showNotification("Something went wrong.");
+          }
+        })
+      }
+    } else {
+      this.notificationService.showNotification("Insufficient Data.")
+    }
+  }
 
-      this.businessservicesservice.createMultipleBusinessservice(this.serviceData).subscribe((data: Httpresponse) => {
+  async openSteps() {
+    const modal = await this.modalController.create({
+      component: StepsComponent,
+      backdropDismiss: false,
+      cssClass: '',
+      componentProps: {
+        registrationSteps: this.registrationSteps,
+        currentStage: this.currentStage
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      if (data && data == true) {
+        this.termsAgreed = true;
+        console.log(this.termsAgreed);
+      }
+    }
+  }
+
+  ontermsAgreed(data){
+    if(data){
+      this.termsAgreed=true;
+    }
+  }
+
+  onServicesSubmit(serviceData) {
+    if (serviceData) {
+      this.businessservicesservice.createMultipleBusinessservice(serviceData).subscribe((data: Httpresponse) => {
         if (data.status) {
           this.notificationService.showNotification("Service created.");
+          this.proceedForward();
         } else {
           console.log(data.error);
+          this.notificationService.showNotification("Something went wrong.");
         }
       })
-      this.goForward();
     } else {
       this.notificationService.showNotification("Insufficient Data.")
     }
@@ -186,14 +289,26 @@ export class StarterComponent implements OnInit {
   }
 
   goBack() {
-    if (this.currentStage != '1') {
-      this.currentStage = "" + (parseInt(this.currentStage) - 1);
+    if (this.currentStage > 1) {
+      this.setCurrentStage(this.currentStage - 1);
     }
   }
 
   goForward() {
-    if (parseInt(this.currentStage) < this.registrationSteps.length)
-      this.currentStage = "" + (parseInt(this.currentStage) + 1);
+    if (this.currentStage < this.registrationSteps.length && (this.currentStage < this.maxStage))
+      this.setCurrentStage(this.currentStage + 1);
+  }
+
+  proceedForward() {
+    if (this.currentStage < this.registrationSteps.length)
+      this.setCurrentStage(this.currentStage + 1, true);
+  }
+
+  setCurrentStage(stage, setMaxStage = false) {
+    this.currentStage = stage;
+    if (setMaxStage) {
+      this.maxStage = stage;
+    }
   }
 }
 

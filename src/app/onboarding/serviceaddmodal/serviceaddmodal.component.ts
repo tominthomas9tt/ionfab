@@ -54,7 +54,7 @@ export class ServiceaddmodalComponent implements OnInit {
     this.businessServiceForm.patchValue({ service: null, subService: null });
     this.selectedCategory = this.businessServiceForm.get('serviceCategory').value;
     if (this.selectedCategory && this.selectedCategory.id) {
-      this.getServices({ serviceCategoryId: this.selectedCategory.id });
+      this.getServices({ serviceCategoryId: this.selectedCategory.id,parentServiceId:0 });
       this.businessServiceForm.patchValue({ service: null });
     }
   }
@@ -69,13 +69,23 @@ export class ServiceaddmodalComponent implements OnInit {
 
   onServiceSelected() {
     this.businessServiceForm.patchValue({ subService: null });
-    this.selectedService = this.businessServiceForm.get('service').value;
-    if (this.selectedService && this.selectedService.hasChildren) {
-      this.getSubServices({ serviceCategoryId: this.selectedCategory.id, parentServiceId: this.selectedService.id });
-      this.showSubServiceForm = true;
-    } else {
-      this.showSubServiceForm = false;
-    }
+    let selectedNow = this.businessServiceForm.get('service').value;
+    this.selectedService =selectedNow;
+    // selectedNow.forEach(service => {
+    //   console.log(service)
+    //   // if(){
+
+    //   // }else{
+
+    //   // }
+    // });
+    // console.log(this.selectedService);
+    // if (this.selectedService && this.selectedService.hasChildren) {
+    //   this.getSubServices({ serviceCategoryId: this.selectedCategory.id, parentServiceId: this.selectedService.id });
+    //   this.showSubServiceForm = true;
+    // } else {
+    //   this.showSubServiceForm = false;
+    // }
   }
 
   getSubServices(params?: ServiceFilterParams) {

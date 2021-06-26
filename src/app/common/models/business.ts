@@ -8,6 +8,10 @@ export class BusinessDetails {
 	public businessWebsite?: string;
 	public businessIncorporationDate?: string;
 	public businessOfficePhone?: string;
+	public primaryEmail?: string;
+	public userAlternateEmail?: string;
+	public primaryMobile?: string;
+	public userAlternatePhone?: string;
 	public businessTurnover?: string;
 	public businessEmployeeStrength?: string;
 	public businessOfficeType?: string;
@@ -26,4 +30,7 @@ export class BusinessDetails {
 	public blacklistedReason?: string;
 	public panNo?: string;
 	public gstNo?: string;
+
+
+	
 }

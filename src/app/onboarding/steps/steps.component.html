@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Getting started</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()" title="Close">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-row>
+        <p class="ion-padding">Get listed in five simple steps</p>
+    </ion-row>
+    <ion-grid fixed>
+        <ion-list>
+            <ion-item lines="none" *ngFor="let step of registrationSteps;let i = index" [color]="currentStage == step.id?'primary':''">
+                <ion-label>{{step.id}}. {{step.name}}</ion-label>
+            </ion-item>
+        </ion-list>
+    </ion-grid>
+</ion-content>
+<ion-row>
+    <ion-col>
+        <ion-button (click)="dismiss()" expand="block" fill="clear" shape="round">
+            close
+        </ion-button>
+    </ion-col>
+</ion-row>

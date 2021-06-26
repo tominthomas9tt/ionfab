@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoggedin: boolean;
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   user: LoginUserCredential = {
     userUsername: "",
     userPassword: ""
@@ -49,11 +52,22 @@ export class LoginComponent implements OnInit {
       userUsername: ['', Validators.compose([Validators.required, Validators.email])],
       userPassword: ['', Validators.required]
     });
+    this.storage.getData("user_just_verified").then((data) => {
+      if (data) {
+        this.loginForm.patchValue({ userUsername: data });
+        this.storage.setData("user_just_verified", null);
+      }
+    })
   }
 
   async googleSignUp() {
     const googleUser = await Plugins.GoogleAuth.signIn();
     console.log(googleUser);
+  }
+
+  hideShowPassword() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
   async onSubmit() {
@@ -66,28 +80,31 @@ export class LoginComponent implements OnInit {
           this.storage.setData(USER_KEY, user);
           this.storage.setData(TOKEN_KEY, tokens).then((status) => {
             if (status) {
-              this.businessService.getBusinessStatus().subscribe((data: Httpresponse) => {
-                if (data.status) {
-                  console.log(data.data);
-                  let businessData = data.data[0];
-                  if (businessData.verifiedBy != 0) {
-                    this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
-                  } else {
-                    this.storage.setData("busData", businessData).then((stStatus) => {
-                      if (stStatus) {
-                        if (businessData.businessSubscriptionDate != null) {
-                          this.router.navigateByUrl("/onboarding/verification-status", { replaceUrl: true });
-                        } else {
-                          this.router.navigateByUrl("/onboarding/start", { replaceUrl: true });
+              if (user.userIsUsernameVerified == "false") {
+                this.router.navigateByUrl("/auth/verify-user", { replaceUrl: true });
+              } else {
+                this.businessService.getBusinessStatus().subscribe((data: Httpresponse) => {
+                  if (data.status) {
+                    let businessData = data.data[0];
+                    if (businessData.verifiedBy != 0) {
+                      this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
+                    } else {
+                      this.storage.setData("busData", businessData).then((stStatus) => {
+                        if (stStatus) {
+                          if (businessData.businessSubscriptionDate != null) {
+                            this.router.navigateByUrl("/onboarding/verification-status", { replaceUrl: true });
+                          } else {
+                            this.router.navigateByUrl("/onboarding/start", { replaceUrl: true });
+                          }
                         }
-                      }
-                    })
+                      })
+
+                    }
+                  } else {
 
                   }
-                } else {
-
-                }
-              });
+                });
+              }
             }
           })
         } else {

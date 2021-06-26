@@ -18,6 +18,8 @@ import { InprogressComponent } from './inprogress/inprogress.component';
 import { IonicSelectableModule } from 'ionic-selectable';
 import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 import { ServiceaddmodalComponent } from './serviceaddmodal/serviceaddmodal.component';
+import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
+import { StepsComponent } from './steps/steps.component';
 
 const COMPONENTS = [
   OnboardingPage,
@@ -29,7 +31,9 @@ const COMPONENTS = [
   PaymentComponent,
   InprogressComponent,
   VerifyemailComponent,
-  ServiceaddmodalComponent
+  ServiceaddmodalComponent,
+  StepsComponent,
+  TermsandconditionsComponent
 ]
 
 @NgModule({

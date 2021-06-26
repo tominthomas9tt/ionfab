@@ -1,22 +1,34 @@
-<ion-card-header class="ion-text-center">
-    <ion-card-title>4. Service Configurations</ion-card-title>
-    <ion-card-subtitle>Specify the services you provide</ion-card-subtitle>
-</ion-card-header>
-<ion-card-content>
+<ion-card-content class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+        <p>Add the services you offer</p>
+    </ion-row>
     <ion-list>
-        <ion-item *ngFor="let service of selectedServices;let i=index;">
-            <ion-label>{{i+1}}. {{service?.service?.name}} <span *ngIf="service.subService!=null"> - {{service?.subService?.name}}</span>
+        <ion-item *ngFor="let service of servicesInData;let i=index;" class="ion-no-padding">
+            <ion-label>{{i+1}}. {{service?.label}} <span *ngIf="service.name!=null"> -
+                    {{service?.name}}</span>
+            </ion-label>
+            <ion-button (click)="removeServiceHttp(i)" expand="block" fill="clear" shape="round">
+                <ion-icon name="close-outline" title="Remove"></ion-icon>
+            </ion-button>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <ion-item *ngFor="let service of selectedServices;let i=index;" class="ion-no-padding">
+            <ion-label>{{i+1+(servicesInData?.length)}}. {{service?.service?.name}} <span *ngIf="service.subService!=null"> -
+                    {{service?.subService?.name}}</span>
             </ion-label>
             <ion-button (click)="removeService(i)" expand="block" fill="clear" shape="round">
-                remove
+                <ion-icon name="close-outline" title="Remove"></ion-icon>
             </ion-button>
         </ion-item>
     </ion-list>
     <ion-button (click)="openAddNewService()" expand="block" fill="clear" shape="round">
-        add service
+        Add Service
     </ion-button>
 
-    <ion-button (click)="onBusinessServiceCreateSubmit()" expand="block" [disabled]="selectedServices.length==0">
-        Submit
+    <ion-button (click)="onBusinessServiceCreateSubmit()" expand="block" [disabled]="selectedServices.length==0 || isSubmitDisabled" shape="round">
+        <span *ngIf="isSubmitDisabled">
+            <ion-spinner name="crescent"></ion-spinner>
+        </span> Proceed
     </ion-button>
 </ion-card-content>

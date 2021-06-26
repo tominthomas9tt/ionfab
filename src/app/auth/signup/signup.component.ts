@@ -6,6 +6,8 @@ import { SignupUser } from 'src/app/common/models/signupuser';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
+import { StorageService } from 'src/app/common/services/storage.service';
+import { StoredUserService } from 'src/app/common/services/storeduser.service';
 import { isEmpty } from 'src/app/common/utils/utils';
 
 @Component({
@@ -28,6 +30,7 @@ export class SignupComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private serverauth: ServerAuthService,
     private router: Router,
+    private storedUser: StoredUserService,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
@@ -44,8 +47,11 @@ export class SignupComponent implements OnInit {
       this.user.userRoleId = "6";
       this.serverauth.createUser(this.user).subscribe((responseData: Httpresponse) => {
         if (responseData.status) {
-          this.notificationService.showNotification("User created. Please login to continue.");
-          this.router.navigateByUrl("/auth/login");
+          let user = responseData.data[0];
+          this.storedUser.setUser(user).then((data) => {
+            this.notificationService.showNotification("User created.");
+            this.router.navigateByUrl("/auth/verify-user");
+          })
         } else {
           console.log(responseData.error);
         }

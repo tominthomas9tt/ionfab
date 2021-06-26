@@ -1,12 +1,7 @@
-import { formatDate } from '@angular/common';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Httpresponse } from 'src/app/common/models/httpresponse.model';
+import { BusinessDetails } from 'src/app/common/models/business';
 import { User } from 'src/app/common/models/user';
-import { BusinessService } from 'src/app/common/services/http/business.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
-import { StoredUserService } from 'src/app/common/services/storeduser.service';
 import { ValidatorPatterns } from 'src/app/common/validators/patterns';
 
 @Component({
@@ -14,28 +9,42 @@ import { ValidatorPatterns } from 'src/app/common/validators/patterns';
   templateUrl: './businessbasics.component.html',
   styleUrls: ['./businessbasics.component.scss'],
 })
-export class BusinessbasicsComponent implements OnInit {
+export class BusinessbasicsComponent implements OnInit, OnChanges {
+
+  @Input() businessInData: BusinessDetails[];
 
   user: User;
   businessForm: FormGroup;
-  showBusinessExtra: boolean = false;
+  showBusinessExtra: boolean = true;
 
   officeTypeOptions = [
-    'Freelancer',
-    'Own',
-    'Rented'
+    'Proprietorship',
+    'Partnership',
+    'Private Limited',
+    'Limited',
+    'Freelancing'
   ];
 
   @Output() businessBasicSubmitEvent = new EventEmitter();
+  isSubmitted: boolean = false;
+  isSubmitDisabled: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService,
-    private businessService: BusinessService,
-    private storedUserService: StoredUserService,
     private validatorPatterns: ValidatorPatterns) { }
 
+
+  ngOnChanges() {
+    this.initForm();
+    if (this.businessInData && this.businessInData[0] && this.businessInData[0].businessCode != null) {
+      this.patchForm(this.businessInData[0])
+    }
+  }
+
   ngOnInit() {
+  }
+
+  initForm() {
     this.businessForm = this.formBuilder.group({
       businessName: ['', Validators.required],
       businessDescription: ['',],
@@ -51,16 +60,55 @@ export class BusinessbasicsComponent implements OnInit {
     });
   }
 
+  patchForm(value: BusinessDetails) {
+    this.businessForm.patchValue({
+      businessName: value.businessName,
+      businessDescription: value.businessDescription,
+      businessIncorporationDate: value.businessIncorporationDate ? new Date(value.businessIncorporationDate) : "",
+      businessOfficePhone: value.businessOfficePhone,
+      gstNo: value.gstNo,
+      panNo: value.panNo,
+      businessWebsite: value.businessWebsite,
+      businessEmployeeStrength: value.businessEmployeeStrength,
+      businessTurnover: value.businessTurnover,
+      businessOfficeSpace: value.businessOfficeSpace,
+      businessOfficeType: value.businessOfficeType,
+    });
+  }
+
   officeTypeChanged() {
-    this.showBusinessExtra = false;
+    // this.showBusinessExtra = false;
     if (this.businessForm.get('businessOfficeType').value && ['Own', 'Rented'].includes(this.businessForm.get('businessOfficeType').value)) {
       this.showBusinessExtra = true;
+    } else {
+      this.businessForm.patchValue({
+        businessIncorporationDate: '',
+        gstNo: '',
+        panNo: '',
+        businessOfficeSpace: ''
+      })
     }
   }
 
   onBusinessSubmit() {
-    let updatedProfile = this.businessForm.value;
-    this.businessBasicSubmitEvent.emit(updatedProfile);
+    this.isSubmitted = true;
+    if (this.businessForm.valid) {
+      this.isSubmitDisabled = true;
+      let updatedProfile = this.businessForm.value;
+      if (this.businessInData && this.businessInData[0] && this.businessInData[0].businessCode != null) {
+        updatedProfile.isUpdation = true;
+      }
+      this.businessBasicSubmitEvent.emit(updatedProfile);
+      setTimeout(() => {
+        this.isSubmitDisabled = false;
+      }, 5000);
+    } else {
+      return false;
+    }
+  }
+
+  get errorControl() {
+    return this.businessForm.controls;
   }
 
 }

@@ -12,7 +12,7 @@ export class NotificationService {
   constructor(private toastController: ToastController) { }
 
 
-  public async showNotification(message: string) {
+  public async showNotification(message: string="Something went wrong.") {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000

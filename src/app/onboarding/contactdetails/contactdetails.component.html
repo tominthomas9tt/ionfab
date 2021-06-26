@@ -1,50 +1,67 @@
-<ion-card-header class="ion-text-center">
-    <ion-card-title>2. Contact Details</ion-card-title>
-    <ion-card-subtitle>How to reach you</ion-card-subtitle>
-</ion-card-header>
-<ion-card-content>
-    <form [formGroup]="addressForm" (ngSubmit)="onContactSubmit()">
+<ion-card-content class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+        <p>How to connect with you</p>
+    </ion-row>
+    <form [formGroup]="addressForm" (ngSubmit)="onContactSubmit()" novalidate>
         <ion-row>
-            <ion-col size-md="6">
-                <ion-item>
+            <ion-col size="12" size-md="6">
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">Mobile *</ion-label>
                     <ion-input type="text" formControlName="userPrimaryPhone"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.userPrimaryPhone.errors?.required" color="danger" class="ion-padding">
+                    Mobile number is required.</ion-label>
+                <ion-label *ngIf="isSubmitted && errorControl.userPrimaryPhone.errors?.pattern" color="danger" class="ion-padding">
+                    Mobile number is invalid.</ion-label>
             </ion-col>
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">Alternate Mobile</ion-label>
+            <ion-col size="12" size-md="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">Alternate Mobile *</ion-label>
                     <ion-input type="text" formControlName="userAlternatePhone"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.userAlternatePhone.errors?.required" color="danger" class="ion-padding">
+                    Alternate mobile number is required.</ion-label>
+                <ion-label *ngIf="isSubmitted && errorControl.userAlternatePhone.errors?.pattern" color="danger" class="ion-padding">
+                    Alternate mobile number is invalid.</ion-label>
             </ion-col>
         </ion-row>
         <ion-row>
-            <!-- <ion-col size-md="6">
-                <ion-item>
+            <ion-col size="12" size-lg="6">
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">Email *</ion-label>
                     <ion-input type="text" formControlName="userPrimaryEmail"></ion-input>
                 </ion-item>
-            </ion-col> -->
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">Email</ion-label>
+                <ion-label *ngIf="isSubmitted && errorControl.userPrimaryEmail.errors?.required" color="danger" class="ion-padding">
+                    Email is required.</ion-label>
+                <ion-label *ngIf="isSubmitted && errorControl.userPrimaryEmail.errors?.email" color="danger" class="ion-padding">
+                    Email is invalid.</ion-label>
+            </ion-col>
+            <ion-col size="12" size-lg="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">Alternate Email *</ion-label>
                     <ion-input type="text" formControlName="userAlternateEmail"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.userAlternateEmail.errors?.required" color="danger" class="ion-padding">
+                    Alternate email is required.</ion-label>
+                <ion-label *ngIf="isSubmitted && errorControl.userAlternateEmail.errors?.email" color="danger" class="ion-padding">
+                    Alternate email id invalid.</ion-label>
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">Office Phone (if available)</ion-label>
+            <ion-col size="12" size-lg="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">Office Phone (Optional)</ion-label>
                     <ion-input type="text" formControlName="businessOfficePhone"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.businessOfficePhone.errors?.pattern" color="danger" class="ion-padding">
+                    Office phone is invalid.</ion-label>
             </ion-col>
         </ion-row>
         <hr>
         <ion-row class="ion-justify-content-center">
-            <ion-button type="submit" [disabled]="!addressForm.valid" shape="round">Proceed</ion-button>
+            <ion-button type="submit" shape="round" [disabled]="isSubmitDisabled"><span *ngIf="isSubmitDisabled">
+                    <ion-spinner name="crescent"></ion-spinner>
+                </span> Proceed</ion-button>
         </ion-row>
     </form>
-
-
 </ion-card-content>

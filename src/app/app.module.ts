@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './common/http-interceptors';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     IonicSelectableModule,
     BrowserAnimationsModule],
   providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     StorageService,

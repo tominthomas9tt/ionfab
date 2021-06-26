@@ -1,59 +1,71 @@
-<ion-card-header class="ion-text-center">
-    <ion-card-title>3. Address Details</ion-card-title>
-    <ion-card-subtitle>Provide your address</ion-card-subtitle>
-</ion-card-header>
-<ion-card-content>
-    <form [formGroup]="addressForm" (ngSubmit)="onAddressSubmit()">
-        <ion-item>
+<ion-card-content class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+        <p>Provide your address</p>
+    </ion-row>
+    <form [formGroup]="addressForm" (ngSubmit)="onAddressSubmit()" novalidate>
+        <ion-item class="ion-no-padding">
             <ion-label position="floating">Addressline 1 *</ion-label>
             <ion-input type="text" formControlName="addressline1">
             </ion-input>
         </ion-item>
-        <ion-item>
-            <ion-label position="floating">Addressline 2</ion-label>
+        <ion-label *ngIf="isSubmitted && errorControl.addressline1.errors?.required" color="danger" class="ion-padding">
+            Addressline 1 is required.</ion-label>
+        <ion-item class="ion-no-padding">
+            <ion-label position="floating">Addressline 2 (Optional)</ion-label>
             <ion-input type="text" formControlName="addressline2">
             </ion-input>
         </ion-item>
         <ion-row>
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">Landmark *</ion-label>
-                    <ion-input type="text" formControlName="landmark"></ion-input>
+            <ion-col size-md="12" size-lg="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">Pincode *</ion-label>
+                    <ion-input type="text" formControlName="pin"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.required" color="danger" class="ion-padding">
+                    Pincode is required.</ion-label>
+                <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.pattern" color="danger" class="ion-padding">
+                    Pincode is not valid.</ion-label>
             </ion-col>
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">Street *</ion-label>
+            <ion-col size="12" size-lg="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">Municipality *</ion-label>
                     <ion-input type="text" formControlName="street"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.street.errors?.required" color="danger" class="ion-padding">
+                    Municipality is required.</ion-label>
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">City *</ion-label>
+            <ion-col size-md="12" size-lg="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">District *</ion-label>
                     <ion-input type="text" formControlName="city"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.city.errors?.required" color="danger" class="ion-padding">
+                    District is required.</ion-label>
             </ion-col>
-            <ion-col size-md="6">
-
-                <ion-item>
+            <ion-col size-md="12" size-lg="6">
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">State *</ion-label>
                     <ion-input type="text" formControlName="state"></ion-input>
                 </ion-item>
+                <ion-label *ngIf="isSubmitted && errorControl.state.errors?.required" color="danger" class="ion-padding">
+                    State is required.</ion-label>
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size-md="6">
-                <ion-item>
-                    <ion-label position="floating">Pincode *</ion-label>
-                    <ion-input type="text" formControlName="pin"></ion-input>
+            <ion-col size="12" size-lg="6">
+                <ion-item class="ion-no-padding">
+                    <ion-label position="floating">Landmark (Optional)</ion-label>
+                    <ion-input type="text" formControlName="landmark"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
         <hr>
         <ion-row class="ion-justify-content-center">
-            <ion-button type="submit" [disabled]="!addressForm.valid" shape="round">Proceed</ion-button>
+            <ion-button type="submit" shape="round" [disabled]="isSubmitDisabled"><span *ngIf="isSubmitDisabled">
+                    <ion-spinner name="crescent"></ion-spinner>
+                </span> Proceed</ion-button>
         </ion-row>
 
     </form>

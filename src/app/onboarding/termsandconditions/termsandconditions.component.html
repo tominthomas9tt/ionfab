@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Agree Terms and Condition</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()" title="Close">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-item *ngFor="let item of termsAndConditions">
+            <p>{{item}}</p>
+        </ion-item>
+    </ion-grid>
+</ion-content>
+<ion-row>
+    <ion-col>
+        <ion-button (click)="dismiss(true)" expand="block" fill="clear" shape="round">
+            Agree
+        </ion-button>
+    </ion-col>
+</ion-row>

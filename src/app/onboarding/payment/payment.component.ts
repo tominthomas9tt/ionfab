@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Checkout } from 'capacitor-razorpay';
+import { BusinessDetails } from 'src/app/common/models/business';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { CreateOrder, PaymentFail, PaymentResponse, PaymentSuccess } from 'src/app/common/models/payment.model';
 import { User } from 'src/app/common/models/user';
@@ -18,8 +19,15 @@ const RZP_KEY = "rzp_test_RKxwHbHve5eXEY";
 })
 export class PaymentComponent implements OnInit {
 
-  user: User;
+  @Input() businessInData: BusinessDetails[];
 
+  user: User;
+  isPayBtnDisabled = false;
+
+  amountPayable = 450;
+
+  @Input() item;
+  
   @Output() paymentSubmitEvent = new EventEmitter();
 
   constructor(
@@ -61,6 +69,7 @@ export class PaymentComponent implements OnInit {
   }
 
   onPaymentComplete() {
+    this.isPayBtnDisabled = true;
     const orderData: CreateOrder = {
       "type": 1,
       "referenceNo": this.user.userId.toString(),
@@ -79,11 +88,11 @@ export class PaymentComponent implements OnInit {
           // image: 'https://i.imgur.com/3g7nmJC.png',
           currency: 'INR',
           name: 'Faby Serve',
-          // prefill: {
-          //   // email: 'gaurav.kumar@example.com',
-          //   // contact: '9999999999',
-          //   name: this.user.userName
-          // },
+          prefill: {
+            email: this.user.userUsername,
+            contact: this.businessInData[0]?.primaryMobile,
+            name: this.user.userName
+          },
           theme: {
             color: '#f96203'
           }
@@ -92,7 +101,9 @@ export class PaymentComponent implements OnInit {
       } else {
         this.notificationService.showNotification("Payment Failed.Please try later.")
       }
-
+      setTimeout(() => {
+        this.isPayBtnDisabled = false;
+      }, 5000);
     });
 
   }

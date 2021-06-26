@@ -2,67 +2,86 @@
     <div>
         <ion-grid>
             <ion-row class="ion-justify-content-center">
-                <ion-col align-self-center size-md="6" size-lg="8" size-xs="12">
+                <ion-col align-self-center size-md="6" size-lg="8" size-xs="12" class="ion-no-padding">
                     <ion-card>
                         <ion-row>
-                            <ion-col size-md="4" class="bg" color="primary">
-                                <ion-card-header class="ion-text-center">
-                                    <ion-card-title style="color: white;">BUSINESS REGISTRATION</ion-card-title>
-                                    <br>
-                                    <p style="color: white;">Please follow the steps to complete the registration.</p>
-                                </ion-card-header>
-                                <div class="verticalLine"></div>
-                                <ion-card-content>
-                                    <ion-list>
-                                        <ion-item lines="none" *ngFor="let step of registrationSteps;let i = index" [color]="currentStage === step.id?'primary':''">
-                                            <ion-label>{{step.id}}. {{step.name}}</ion-label>
-                                        </ion-item>
-                                    </ion-list>
-                                </ion-card-content>
+                            <ion-col size="12" size-lg="4" class="bg" color="primary">
+                                <div class="ion-hide-sm-down">
+                                    <ion-card-header class="ion-text-center">
+                                        <h2 style="color: white;">Getting started</h2>
+                                        <span style="color: white;">Get listed in five simple steps</span>
+                                    </ion-card-header>
+                                    <ion-card-content class="ion-hide-sm-down">
+                                        <div class="verticalLine"></div>
+                                        <ion-list>
+                                            <ion-item lines="none" *ngFor="let step of registrationSteps;let i = index" [color]="currentStage == step.id?'primary':''">
+                                                <ion-label>{{step.id}}. {{step.name}}</ion-label>
+                                            </ion-item>
+                                        </ion-list>
+                                    </ion-card-content>
+                                </div>
+                                <div class="ion-hide-sm-up">
+                                    <ion-card-header class="ion-text-center" style="color: white;">
+                                        <h2><b>
+                                                {{currentStage}}. {{registrationSteps[+currentStage-1]?.name}}
+                                            </b></h2>
+                                        <span>Get listed in five simple steps (Step
+                                            {{currentStage}}/{{registrationSteps.length}})<span (click)="openSteps()">
+                                                <ion-icon name="information-circle"></ion-icon>
+                                            </span>
+                                        </span>
+                                    </ion-card-header>
+                                </div>
                             </ion-col>
-                            <ion-col size-md="8" size-sm="12">
-                                <div *ngIf="currentStage=='0'">
+                            <ion-col size="12" size-lg="8">
+                                <!-- <ion-row class="ion-hide-sm-up">
+                                    <ion-col><b>
+                                            {{currentStage}}. {{registrationSteps[+currentStage-1]?.name}}
+                                        </b></ion-col>
+                                    <ion-col>
+                                        <ion-card-subtitle class="ion-text-right">Step {{currentStage}}/{{registrationSteps.length}}
+                                        </ion-card-subtitle>
+                                    </ion-col>
+                                </ion-row> -->
+                                <ion-card-header class="ion-text-center ion-hide-sm-down">
+                                    <h2>{{currentStage}}. {{registrationSteps[+currentStage-1]?.name}}
+                                    </h2>
+                                </ion-card-header>
+                                <div *ngIf="currentStage==0">
                                     <app-verifyemail (emailVerifiedEvent)="onEmailVerified($event)">
                                     </app-verifyemail>
                                 </div>
-                                <div *ngIf="currentStage=='1'">
-                                    <app-businessbasics (businessBasicSubmitEvent)="onBusinessSubmit($event)">
+                                <div *ngIf="currentStage==1">
+                                    <app-businessbasics [businessInData]="businessData" (businessBasicSubmitEvent)="onBusinessSubmit($event)">
                                     </app-businessbasics>
                                 </div>
-                                <div *ngIf="currentStage=='2'">
-                                    <app-contactdetails (contactDetailSubmitEvent)="onContactSubmit($event)">
+                                <div *ngIf="currentStage==2">
+                                    <app-contactdetails [businessInData]="businessData" (contactDetailSubmitEvent)="onContactSubmit($event)">
                                     </app-contactdetails>
                                 </div>
-                                <div *ngIf="currentStage=='3'">
-                                    <app-addressdetails (addressDataSubmitEvent)="onAddressSubmit($event)">
+                                <div *ngIf="currentStage==3">
+                                    <app-addressdetails [addressInData]="addressData" (addressDataSubmitEvent)="onAddressSubmit($event)">
                                     </app-addressdetails>
                                 </div>
-                                <div *ngIf="currentStage=='4'">
-                                    <app-servicedetails (serviceDetailSubmitEvent)="onServicesSubmit($event)">
+                                <div *ngIf="currentStage==4">
+                                    <app-servicedetails [termsAgreed]="termsAgreed" (serviceDetailSubmitEvent)="onServicesSubmit($event)" (termsAgreedEvent)="ontermsAgreed($event)">
                                     </app-servicedetails>
                                 </div>
-                                <div *ngIf="currentStage=='5'">
-                                    <app-payment (paymentSubmitEvent)="onPayment($event)"></app-payment>
+                                <div *ngIf="currentStage==5">
+                                    <app-payment [businessInData]="businessData" (paymentSubmitEvent)="onPayment($event)" [item]="user"></app-payment>
                                 </div>
-
-
-                                <!-- <ion-row>
+                                <ion-row>
                                     <ion-col>
-                                        <ion-button (click)="goBack()" expand="block" fill="clear" shape="round">
+                                        <ion-button *ngIf="currentStage>1" (click)="goBack()" expand="block" fill="clear" shape="round">
                                             Previous
                                         </ion-button>
                                     </ion-col>
                                     <ion-col>
-                                        <ion-button (click)="onComplete()" expand="block" fill="clear" shape="round">
-                                            Complete
-                                        </ion-button>
-                                    </ion-col>
-                                    <ion-col>
-                                        <ion-button (click)="goForward()" expand="block" fill="clear" shape="round">
+                                        <ion-button *ngIf="currentStage<maxStage" (click)="goForward()" expand="block" fill="clear" shape="round">
                                             Next
                                         </ion-button>
                                     </ion-col>
-                                </ion-row> -->
+                                </ion-row>
                             </ion-col>
                         </ion-row>
                     </ion-card>

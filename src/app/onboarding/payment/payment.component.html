@@ -1,9 +1,30 @@
-<ion-card-header class="ion-text-center">
-    <ion-card-title>5. Payment</ion-card-title>
-    <ion-card-subtitle>Pay now to complete registration</ion-card-subtitle>
-</ion-card-header>
-<ion-card-content>
+<ion-card-content class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
-        <ion-button (click)="onPaymentComplete()" shape="round">Pay Now</ion-button>
+        <p>Pay now to complete registration</p>
+    </ion-row>
+    <ion-row>
+        <ion-col size="12">
+            <ion-item>
+                <ion-label>Amount payable</ion-label>
+                <ion-label slot="end" class="ion-text-end"> <span>&#8377;</span> {{amountPayable}}</ion-label>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="12">
+            <ion-item lines="none">
+                <ion-img style="width: 50px; height: 50px;" src="assets/img/paymentmethods/pay1.png"></ion-img>
+                <ion-img style="width: 50px; height: 50px;" src="assets/img/paymentmethods/pay2.png"></ion-img>
+                <ion-img style="width: 50px; height: 50px;" src="assets/img/paymentmethods/pay3.png"></ion-img>
+                <ion-img style="width: 50px; height: 50px;" src="assets/img/paymentmethods/pay4.png"></ion-img>
+                <ion-img style="width: 50px; height: 50px;" src="assets/img/paymentmethods/pay5.png"></ion-img>
+                <ion-img style="width: 50px; height: 50px;" src="assets/img/paymentmethods/pay6.png"></ion-img>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+        <ion-button (click)="onPaymentComplete()" shape="round" [disabled]="isPayBtnDisabled"><span *ngIf="isPayBtnDisabled">
+                <ion-spinner name="crescent"></ion-spinner>
+            </span> Pay Now</ion-button>
     </ion-row>
 </ion-card-content>

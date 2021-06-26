@@ -14,6 +14,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../common/http-interceptors/auth-interceptor';
 import { SignupComponent } from './signup/signup.component';
+import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 
 const COMPONENTS = [
   AuthPage,
@@ -21,6 +22,7 @@ const COMPONENTS = [
   SignupComponent,
   ForgotPasswordComponent,
   ResetPasswordComponent,
+  VerifyemailComponent,
   Error404Component,
 ]
 
