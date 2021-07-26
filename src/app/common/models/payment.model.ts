@@ -39,6 +39,23 @@ export class Payment {
 
 }
 
+export class PayInitializer {
+    public type: number;
+    public name: string;
+    public email: string;
+    public mobile?: string;
+    public amountPayable: number;
+    public referenceNo: string;
+    public remarks: string;
+    public theme?: string
+}
+
+export class PayResponse {
+    status: boolean;
+    transactionId: number;
+    remarks?: string;
+}
+
 export class PaymentResponse {
     public transactionId: number;
     public no: string;

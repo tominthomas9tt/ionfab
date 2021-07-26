@@ -1,0 +1,70 @@
+<ion-content color="light">
+    <div>
+        <ion-grid #fixed>
+            <ion-row class="ion-justify-content-center">
+                <ion-col align-self-center size-md="6" size-lg="5" size-xs="12" class="ion-no-padding">
+                    <ion-card class="ion-no-padding">
+                        <ion-card-header class="ion-text-center">
+                            <ion-card-title>Availability</ion-card-title>
+                            <p>Check if the service is available in your area</p>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+                                <ion-row>
+                                    <ion-col size="6">
+                                        <ion-item>
+                                            <ion-label position="stacked" color="primary">Pincode *</ion-label>
+                                            <ion-input type="number" formControlName="pin"></ion-input>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.required" color="danger" class="ion-padding">
+                                            Pincode is required.</ion-label>
+                                        <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.pattern" color="danger" class="ion-padding">
+                                            Pincode is not valid.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <!-- <ion-item lines="none"> -->
+                                        <ion-button type="submit" color="danger" [disabled]="!dataForm.valid">Find
+                                        </ion-button>
+                                        <!-- </ion-item> -->
+                                    </ion-col>
+                                </ion-row>
+                                <br>
+                                <ion-row>
+                                    <span>
+                    <ion-label *ngIf="pincode && vendorsFound && vendorsFound > 0" color="success" class="ion-padding ion-text-center">
+                      {{vendorsFound}} vendors found in {{pincode?.taluk}}.
+                    </ion-label>
+                    <ion-label *ngIf="pincode && vendorsFound && vendorsFound == 0" color="danger" class="ion-padding ion-text-center">
+                      No vendors found in {{pincode?.taluk}}.
+                    </ion-label>
+                  </span>
+                                </ion-row>
+                            </form>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-button (click)="signIn()" expand="block" fill="clear">
+                                        Sign In
+                                    </ion-button>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button (click)="signUp()" expand="block">
+                                        Sign Up
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                </ion-col>
+                                <ion-col class="ion-text-center">
+                                    <a href="https://trial.fabyserve.com">Home</a>
+                                </ion-col>
+                                <ion-col>
+                                </ion-col>
+                            </ion-row>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

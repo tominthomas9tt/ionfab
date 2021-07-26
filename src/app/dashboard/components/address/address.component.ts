@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { StoreService } from 'src/app/common/services/store.service';
 import { AddressService } from './address.service';
 import { AddressesComponent } from './addresses/addresses.component';
 import { ModifyComponent } from './modify/modify.component';
@@ -17,6 +18,7 @@ export class AddressComponent implements OnInit {
   isAddressPresentsubscription: Subscription;
 
   constructor(
+    private STORE: StoreService,
     private modalController: ModalController,
     private addressService: AddressService
   ) {
@@ -45,6 +47,13 @@ export class AddressComponent implements OnInit {
     this.addressService.getDefaultAddress();
     this.addressService.defaultAddressSource.subscribe((data) => {
       this.defaultAddress = data;
+      this.shareDefaultAddress();
+    });
+  }
+
+  shareDefaultAddress() {
+    this.STORE.setDefaultAddress(this.defaultAddress).then((data) => {
+
     });
   }
 

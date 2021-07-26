@@ -1,0 +1,60 @@
+<ion-content color="light">
+    <div>
+        <ion-grid fixed>
+            <ion-row>
+                <ion-col size="12">
+                    <app-back [title]="'Jobs'"></app-back>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+                <ion-col align-self-center>
+                    <div>
+                        <!-- <mat-form-field appearance="standard">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Name" [(ngModel)]="name" #input>
+                        <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter()">
+              <mat-icon>close</mat-icon>
+            </button>
+                    </mat-form-field> -->
+                        <!-- <div style="overflow-x: scroll;"> -->
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                            <ng-container matColumnDef="slno">
+                                <th mat-header-cell *matHeaderCellDef> Sl No </th>
+                                <td mat-cell *matCellDef="let row;let i = index;"> {{i+1}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="tenderNo">
+                                <th mat-header-cell *matHeaderCellDef>Job No</th>
+                                <td mat-cell *matCellDef="let row"> {{row?.tenderNo}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="service">
+                                <th mat-header-cell *matHeaderCellDef>Service</th>
+                                <td mat-cell *matCellDef="let row"> {{row?.serviceName}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef>Date Time</th>
+                                <td mat-cell *matCellDef="let row"> {{dateFormat(row?.date)}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef>Status</th>
+                                <td mat-cell *matCellDef="let row"> {{row?.statusName}} </td>
+                                <!-- <td mat-cell *matCellDef="let row">
+                                    <span *ngIf="row?.verifiedBy!=0" style="color: green;">Verified</span>
+                                    <span *ngIf="row?.verifiedBy==0" style="color: red;">Pending</span>
+                                </td> -->
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/dashboard','jobs',row.id]">
+                            </tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No records found.</td>
+                            </tr>
+                        </table>
+                        <!-- </div> -->
+                        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="resultsLength">
+                        </mat-paginator>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

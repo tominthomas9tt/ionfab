@@ -1,42 +1,127 @@
-<ion-content>
+<ion-content color="light">
     <div>
-        <ion-grid>
+        <ion-grid #fixed>
             <ion-row class="ion-justify-content-center">
-                <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-                    <ion-card>
+                <ion-col align-self-center size-md="6" size-lg="5" size-xs="12" class="ion-no-padding">
+                    <ion-card class="ion-no-padding">
                         <ion-card-header class="ion-text-center">
                             <ion-card-title>Sign up</ion-card-title>
                             <p>Let’s set up your account</p>
                         </ion-card-header>
                         <ion-card-content>
                             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-                                <ion-item lines="full">
-                                    <ion-label position="floating" color="primary">Name *</ion-label>
-                                    <ion-input type="text" formControlName="userName">
-                                    </ion-input>
-                                </ion-item>
-                                <ion-item lines="full">
-                                    <ion-label position="floating" color="primary">Email *</ion-label>
-                                    <ion-input type="text" formControlName="userUsername">
-                                    </ion-input>
-                                </ion-item>
-                                <ion-item lines="full">
-                                    <ion-label position="floating" color="primary">Mobile *</ion-label>
-                                    <ion-input type="text" formControlName="userPrimaryPhone">
-                                    </ion-input>
-                                </ion-item>
-                                <ion-item lines="full">
-                                    <ion-label position="floating" color="primary">Password *</ion-label>
-                                    <ion-input type="password" formControlName="userPassword">
-                                    </ion-input>
-                                </ion-item>
+                                <ion-row>
+                                    <ion-col size="12" size-md="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Name *</ion-label>
+                                            <ion-input type="text" placeholder="your name" formControlName="userName">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col size="12" size-md="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Mobile *</ion-label>
+                                            <ion-input type="number" formControlName="userPrimaryPhone">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size="12" size-md="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Addressline 1 *</ion-label>
+                                            <ion-input type="text" formControlName="addressline1">
+                                            </ion-input>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.addressline1.errors?.required" color="danger" class="ion-padding">
+                                            Addressline 1 is required.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Addressline 2
+                                            </ion-label>
+                                            <ion-input type="text" formControlName="addressline2">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Pincode *</ion-label>
+                                            <ion-input type="number" formControlName="pin" (ionChange)="pincodeChanged()"></ion-input>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.required" color="danger" class="ion-padding">
+                                            Pincode is required.</ion-label>
+                                        <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.pattern" color="danger" class="ion-padding">
+                                            Pincode is not valid.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Municipality *</ion-label>
+                                            <ion-input type="text" formControlName="street"></ion-input>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.street.errors?.required" color="danger" class="ion-padding">
+                                            Municipality is required.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">District *</ion-label>
+                                            <ion-input type="text" formControlName="city"></ion-input>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.city.errors?.required" color="danger" class="ion-padding">
+                                            District is required.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">State *</ion-label>
+                                            <ion-input type="text" formControlName="state"></ion-input>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.state.errors?.required" color="danger" class="ion-padding">
+                                            State is required.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Landmark
+                                            </ion-label>
+                                            <ion-input type="text" formControlName="landmark"></ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size="12" size-md="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Email *</ion-label>
+                                            <ion-input type="text" formControlName="userUsername">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col size="12" size-md="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="floating" color="primary">Password *</ion-label>
+                                            <ion-input [type]="passwordType" formControlName="userPassword">
+                                            </ion-input>
+                                            <ion-icon class="suffix-icon" [name]="passwordIcon" slot="end" tappable (click)='hideShowPassword()'></ion-icon>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
                                 <br>
-                                <p>
-                                    <b>Note:</b> OTP will be send to the email provided.
-                                </p>
+                                <ion-row>
+                                    <ion-col size="12">
+                                        <ion-checkbox color="primary" formControlName="agreeTerms" mode="md" [checked]="agreementAccepted" (ionChange)="onAgreementAccepted()">
+                                        </ion-checkbox>&nbsp;
+                                        <ion-label> Check here to indicate that you have read and agree to the terms and conditons of FABY SERVE <span tappable (click)="openTermsAndConditionsService()" class="highlight">customer
+                                                agreement</span>.</ion-label>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size="12">
+                                        <p>
+                                            <b>Note:</b> OTP will be send to the email provided.
+                                        </p>
+                                    </ion-col>
+                                </ion-row>
                                 <ion-row>
                                     <ion-col>
-                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!signupForm.valid">Proceed
+                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!signupForm.valid || !agreementAccepted">Proceed
                                         </ion-button>
                                     </ion-col>
                                 </ion-row>

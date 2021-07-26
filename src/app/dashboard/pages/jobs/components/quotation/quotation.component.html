@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Quotation details</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss(true)" title="Close">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12" size-md="6">
+                <ion-row>
+                    <ion-col class="head">Quotation No</ion-col>
+                    <ion-col>: {{selectedQuotation?.quotationNo}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col class="head">Date</ion-col>
+                    <ion-col>: {{selectedQuotation?.createdAt|date}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col class="head">Amount</ion-col>
+                    <ion-col>: {{selectedQuotation?.amount|indianCurrency}}</ion-col>
+                </ion-row>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+                <ion-row>
+                    <ion-col class="head">Vendor</ion-col>
+                    <ion-col>: {{selectedQuotation?.vendorName}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col class="head">Scope of Work</ion-col>
+                    <ion-col>: {{selectedQuotation?.scopeOfWork}}</ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

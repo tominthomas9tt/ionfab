@@ -1,0 +1,24 @@
+<div class="main-div shadow">
+    <ion-row>
+        <ion-col size="12" class="ion-text-center">
+            <h2>Job Created</h2>
+            <p>Job No: {{tenderData?.tenderNo}}</p>
+            <p><small>Datetime: {{dateFormatted(tenderData?.date)}}</small></p>
+            <p>Status: {{tenderData?.statusName}}</p>
+            <p><small><i>(Click below to view details)</i></small></p>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="12" class="center-content">
+            <ion-button [routerLink]="['/dashboard','jobs',tenderData.id]" (click)="onDismiss()" shape="round">
+                View
+            </ion-button>
+        </ion-col>
+        <ion-col size="12" class="center-content">
+            <ion-button (click)="onDismiss()" expand="block" fill="clear" shape="round">
+                Close
+            </ion-button>
+        </ion-col>
+    </ion-row>
+    <!-- {{tenderData|json}} -->
+</div>

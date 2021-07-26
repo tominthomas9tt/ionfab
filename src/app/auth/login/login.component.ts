@@ -16,9 +16,11 @@ import { LoginUserCredential } from 'src/app/common/models/loginusercredential';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { ErrorNotifier } from 'src/app/common/services/errornotifier';
+import { Constants } from 'src/app/common/configs/index.config';
 
 const TOKEN_KEY = "user-tokens";
 const USER_KEY = "user-data";
+const USER_ROLE_ID = Constants.USER_ROLE_ID;
 
 @Component({
   selector: 'app-login',
@@ -33,10 +35,7 @@ export class LoginComponent implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
 
-  user: LoginUserCredential = {
-    userUsername: "",
-    userPassword: ""
-  };
+  user: LoginUserCredential;
 
   constructor(private formBuilder: FormBuilder,
     private storage: StorageService,
@@ -72,6 +71,7 @@ export class LoginComponent implements OnInit {
   async onSubmit() {
     this.user = this.loginForm.value;
     if (!isEmpty(this.user.userUsername) && !isEmpty(this.user.userPassword)) {
+      this.user.userRoleId = USER_ROLE_ID;
       this.serverAuth.getUsers(this.user).subscribe((data: Httpresponse) => {
         if (data.status) {
           let user = data.data[0].user;

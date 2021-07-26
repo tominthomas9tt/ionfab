@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/common/services/auth.service';
+import { PopoverController } from '@ionic/angular';
+import { AccountMenuComponent } from '../components/account-menu/account-menu.component';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { AuthService } from 'src/app/common/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private popoverController: PopoverController) { }
 
   ngOnInit() { }
 
@@ -16,7 +17,17 @@ export class HeaderComponent implements OnInit {
     console.log(event.detail.value);
   }
   
-  signOut() {
-    this.authService.signOut();
+  async presentAccountMenu() {
+    const popover = await this.popoverController.create({
+      component: AccountMenuComponent,
+      cssClass: 'my-account-menu-class',
+      mode:'md',
+      backdropDismiss:true,
+      showBackdrop:false,
+      translucent: true
+    });
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
   }
 }

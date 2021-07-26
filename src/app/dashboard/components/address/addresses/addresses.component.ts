@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Address } from 'src/app/common/models/address';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
+import { StoreService } from 'src/app/common/services/store.service';
 import { AddressService } from '../address.service';
 import { ModifyComponent } from '../modify/modify.component';
 
@@ -15,6 +16,7 @@ export class AddressesComponent implements OnInit {
   addresses;
 
   constructor(
+    private STORE: StoreService,
     private modalController: ModalController,
     private addressService: AddressService
   ) { }
@@ -36,7 +38,7 @@ export class AddressesComponent implements OnInit {
       component: ModifyComponent,
       cssClass: '',
       componentProps: {
-        addressEditing:editAddress
+        addressEditing: editAddress
       }
     });
     await modal.present();
@@ -49,6 +51,7 @@ export class AddressesComponent implements OnInit {
     let addressData = { isPrimary: 2 };
     this.addressService.updateAddress(address.addressId, addressData).subscribe((response: Httpresponse) => {
       if (response.status) {
+        this.shareDefaultAddress(address);
         this.addressService.notify("Default address updated.");
         this.getAllAddresses();
       } else {
@@ -56,6 +59,11 @@ export class AddressesComponent implements OnInit {
         console.log(response.error);
       }
     })
+  }
+
+  shareDefaultAddress(address) {
+    this.STORE.setDefaultAddress(address).then((data) => {
+    });
   }
 
   deleteAddress(address: Address) {

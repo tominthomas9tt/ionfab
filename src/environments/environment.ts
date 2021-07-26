@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:9898/',
-  storagePrefix:'FB_'
+  storagePrefix:'FBC_'
 };
 
 /*

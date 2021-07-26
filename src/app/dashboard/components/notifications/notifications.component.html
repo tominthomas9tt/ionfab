@@ -1,0 +1,7 @@
+<!-- <button ion-button icon-only>
+  <ion-icon name="notifications"></ion-icon>
+</button> -->
+<ion-button (click)="showNotifications()" title="notifications">
+    <ion-badge *ngIf="notifications" color="accent">{{ notifications }}</ion-badge>
+    <ion-icon name="notifications"></ion-icon>
+</ion-button>

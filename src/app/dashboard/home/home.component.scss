@@ -1,0 +1,38 @@
+.btnPrev {
+    position: absolute;
+    top: 40%;
+    left: 16px;
+    font-size: 25px;
+    z-index: 2;
+}
+
+.btnNext {
+    position: absolute;
+    top: 40%;
+    right: 16px;
+    font-size: 25px;
+    z-index: 2;
+}
+
+.slide {
+    width: 100px;
+    // height: 150px;
+    // border: 2px solid #f8f8f8;
+}
+
+.slide-container {
+    padding-left: 5%;
+    padding-right: 5%;
+    // height: 150px;
+    // border: 2px solid #f8f8f8;
+}
+
+.slides {
+    background-color: white;
+}
+
+.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

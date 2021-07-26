@@ -13,7 +13,10 @@
             <app-address></app-address>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button (click)="signOut()" title="Sign out">
+            <app-notifications></app-notifications>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button (click)="presentAccountMenu()" title="Account">
                 <ion-icon name="person"></ion-icon>
             </ion-button>
         </ion-buttons>

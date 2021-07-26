@@ -1,0 +1,265 @@
+<ion-content color="light">
+    <div>
+        <ion-grid fixed>
+            <ion-row>
+                <ion-col size="12">
+                    <app-back [title]="'Job Details'"></app-back>
+                </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+                <ion-col align-self-center>
+                    <div class="borderWithBackground ion-padding shadow">
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-card-subtitle>Job basic Details</ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12" size-md="6">
+                                <ion-row>
+                                    <ion-col class="head">Job No</ion-col>
+                                    <ion-col>: {{detailData?.tenderNo}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Date</ion-col>
+                                    <ion-col>: {{detailData?.date|date}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Status</ion-col>
+                                    <ion-col>: {{detailData?.statusName}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Job Date</ion-col>
+                                    <ion-col>: {{detailData?.jobDate|date}}</ion-col>
+                                </ion-row>
+                            </ion-col>
+                            <ion-col size="12" size-md="6">
+                                <ion-row>
+                                    <ion-col class="head">Job Time</ion-col>
+                                    <ion-col>: {{detailData?.jobTime}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Service</ion-col>
+                                    <ion-col>: {{detailData?.serviceName}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Description</ion-col>
+                                    <ion-col>: {{detailData?.description}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Inspection required</ion-col>
+                                    <ion-col>: {{detailData?.isInspectionRequired==2?"Yes":"No"}}</ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <small><i>Last updated:</i> {{dateFormat(detailData?.updatedAt)}}</small>
+                            </ion-col>
+                        </ion-row>
+                        <!-- {{detailData|json}} -->
+                    </div>
+                    <hr>
+                    <div class="borderWithBackground ion-padding shadow" *ngIf="inspectionVendor || inspectionReport">
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-card-subtitle>Inspection Details</ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <div *ngIf="inspectionVendor">
+                            <ion-row>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Vendor</ion-col>
+                                        <ion-col>: {{inspectionVendor?.vendorName}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Time</ion-col>
+                                        <ion-col>: {{dateFormat(inspectionVendor?.connectedAt)}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                            </ion-row>
+                            <!-- {{inspectionVendor|json}} -->
+                        </div>
+                        <div *ngIf="inspectionReport">
+                            <ion-row>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Inspection No</ion-col>
+                                        <ion-col>: {{inspectionReport?.inspectionNo}}</ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col class="head">Inspected On</ion-col>
+                                        <ion-col>: {{inspectionReport?.date|date}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Report</ion-col>
+                                        <ion-col>: {{inspectionReport?.description}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                            </ion-row>
+                            <!-- {{inspectionReport|json}} -->
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="borderWithBackground ion-padding shadow" *ngIf="connectedVendors && connectedVendors.length>0 && !selectedQuotation && detailData.status>=12">
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-card-subtitle>Connected Vendors</ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-list>
+                                    <ion-item *ngFor="let vendor of connectedVendors;let i=index;" class="ion-no-padding" lines="none">
+                                        <ion-label>{{i+1}}. {{vendor.vendorName}}</ion-label>
+                                        <ion-button (click)="viewVendorDetails(vendor)" expand="block" fill="clear" shape="round">
+                                            View
+                                        </ion-button>
+                                    </ion-item>
+                                </ion-list>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-button *ngIf="detailData.status==12" (click)="startAcceptingQuotations()" expand="block" fill="clear" shape="round">
+                                    Accept Quotations
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                        <!-- {{connectedVendors|json}} -->
+                    </div>
+                    <hr>
+                    <div class="borderWithBackground ion-padding shadow" *ngIf="(quotations && quotations.length>0) || selectedQuotation">
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-card-subtitle>Quotation Details</ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <div *ngIf="quotations && !selectedQuotation">
+                            <ion-row>
+                                <ion-col size="12">
+                                    <ion-list>
+                                        <ion-item *ngFor="let quotation of quotations;let i=index;" class="ion-no-padding" lines="none">
+                                            <ion-label>{{i+1}}. {{quotation.vendorName}}</ion-label>
+                                            <ion-button (click)="viewQuotationDetails(quotation)" expand="block" fill="clear" shape="round">
+                                                View
+                                            </ion-button>
+                                            <ion-button (click)="acceptQuotation(quotation)" expand="block" fill="clear" shape="round">
+                                                Accept
+                                            </ion-button>
+                                        </ion-item>
+                                    </ion-list>
+                                </ion-col>
+                            </ion-row>
+                            <!-- {{quotations|json}} -->
+                        </div>
+                        <div *ngIf="selectedQuotation">
+                            <ion-row>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Quotation No</ion-col>
+                                        <ion-col>: {{selectedQuotation?.quotationNo}}</ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col class="head">Date</ion-col>
+                                        <ion-col>: {{selectedQuotation?.createdAt|date}}</ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col class="head">Amount</ion-col>
+                                        <ion-col>: {{selectedQuotation?.amount|indianCurrency}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Vendor</ion-col>
+                                        <ion-col>: {{selectedQuotation?.vendorName}}</ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col class="head">Scope of Work</ion-col>
+                                        <ion-col>: {{selectedQuotation?.scopeOfWork}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="12">
+                                    <ion-button *ngIf="detailData.status<15" (click)="generateWorkorder()" expand="block" fill="clear" shape="round">
+                                        Generate workOrder
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                            <!-- {{selectedQuotation|json}} -->
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="borderWithBackground ion-padding shadow" *ngIf="workorder">
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-card-subtitle>Work order Details</ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12" size-md="6">
+                                <ion-row>
+                                    <ion-col class="head">Work order No</ion-col>
+                                    <ion-col>: {{workorder?.workorderNo}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Date</ion-col>
+                                    <ion-col>: {{workorder?.date|date}}</ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col class="head">Amount</ion-col>
+                                    <ion-col>: {{workorder?.amount|indianCurrency}}</ion-col>
+                                </ion-row>
+                                <ion-row *ngIf="workorder?.acceptedAt">
+                                    <ion-col class="head">Accepted At</ion-col>
+                                    <ion-col>: {{dateFormat(workorder?.acceptedAt)}}</ion-col>
+                                </ion-row>
+                                <ion-row *ngIf="workorder?.additionalAmount">
+                                    <ion-col class="head">Additional Amount</ion-col>
+                                    <ion-col>: {{workorder?.additionalAmount|indianCurrency}}</ion-col>
+                                </ion-row>
+                            </ion-col>
+                            <ion-col size="12" size-md="6">
+                                <ion-row *ngIf="workorder?.additionalAmountRemarks">
+                                    <ion-col class="head">Reason for amount change</ion-col>
+                                    <ion-col>: {{workorder?.additionalAmountRemarks}}</ion-col>
+                                </ion-row>
+                                <ion-row *ngIf="workorder?.totalAmount">
+                                    <ion-col class="head">Total Amount</ion-col>
+                                    <ion-col>: {{workorder?.totalAmount|indianCurrency}}</ion-col>
+                                </ion-row>
+                                <ion-row *ngIf="workorder?.completedAt">
+                                    <ion-col class="head">Completed At</ion-col>
+                                    <ion-col>: {{dateFormat(workorder?.completedAt)}}</ion-col>
+                                </ion-row>
+                                <ion-row *ngIf="workorder?.completedAcceptedAt">
+                                    <ion-col class="head">Complete Acceptance At</ion-col>
+                                    <ion-col>: {{dateFormat(workorder?.completedAcceptedAt)}}</ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <small><i>Last updated:</i> {{dateFormat(workorder?.updatedAt)}}</small>
+                            </ion-col>
+                        </ion-row>
+                        <!-- {{workorder|json}} -->
+                        <ion-button *ngIf="workorder && workorder.isSuspected==2" (click)="acceptWorkOrderChanges()" expand="block" fill="clear" shape="round">
+                            Acccept Changes
+                        </ion-button>
+                        <ion-button *ngIf="workorder && workorder.isCompleted==2 && workorder.isCompletedAccepted==1" (click)="acceptWorkCompletion()" expand="block" fill="clear" shape="round">
+                            Acccept work completion
+                        </ion-button>
+                    </div>
+                    <hr>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

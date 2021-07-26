@@ -9,9 +9,11 @@ import { Httpresponse } from '../models/httpresponse.model';
 import { NotificationService } from './notification.service';
 import { AuthTokens } from '../models/tokens';
 import { StorageService } from './storage.service';
+import { Constants } from '../configs/index.config';
 
 const TOKEN_KEY = "user-tokens";
 const USER_KEY = "user-data";
+const DEFAULT_ADDRESS_STORE = Constants.STORAGES.ADDRESSES.DEFAULT;
 
 @Injectable({
   providedIn: 'root'
@@ -116,7 +118,7 @@ export class AuthService {
   async signOut() {
     await this.storage.setData(USER_KEY, null);
     await this.storage.setData(TOKEN_KEY, null);
-    await this.storage.setData("busData",null);
+    await this.storage.setData(DEFAULT_ADDRESS_STORE,null);
     this.authState.next(null);
     this.router.navigateByUrl("/login");
   }

@@ -6,7 +6,6 @@ import { DashboardPage } from './dashboard.page';
 import { Error404Component } from '../common/components/error404/error404.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { BusinessComponent } from './business/business.component';
 import { ServicesComponent } from './services/services.component';
 
 const routes: Routes = [
@@ -21,16 +20,16 @@ const routes: Routes = [
     component: DashboardPage,
     children: [
       {
-        path: 'business',
-        component: BusinessComponent
-      },
-      {
         path: 'home',
         component: HomeComponent
       },
       {
         path: 'profile',
         component: ProfileComponent
+      },
+      {
+        path: 'jobs',
+        loadChildren: () => import('./pages/jobs/jobs.module').then(m => m.JobsPageModule)
       },
       {
         path: 'services',
@@ -42,7 +41,6 @@ const routes: Routes = [
       }
     ]
   }
-
 ];
 
 @NgModule({

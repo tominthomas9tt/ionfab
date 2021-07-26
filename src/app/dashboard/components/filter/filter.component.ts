@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { ServicesService } from 'src/app/common/services/http/services.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-filter',
@@ -19,10 +20,18 @@ export class FilterComponent implements OnInit {
   selectedSubService;
 
   constructor(
+    private platform: Platform,
     private servicesService: ServicesService
   ) { }
 
   ngOnInit() {
+    this.handleSmallScreens();
+  }
+
+  handleSmallScreens() {
+    if (this.platform.width()<767) {
+      this.toggleView();
+    }
   }
 
   ngOnChanges() {
@@ -33,12 +42,12 @@ export class FilterComponent implements OnInit {
     this.servicesService.getAllServices({ serviceCategoryId: this.serviceCategory?.id, parentServiceId: 0 }).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.subcategories = dataResponse.data;
-        if(this.selectedSubService1){
+        if (this.selectedSubService1) {
           // this.selectedSubService = this.selectedSubService1;
           let serv = this.subcategories.find(item => item.id == this.selectedSubService1.id);
           this.selectedSubService = serv;
         }
-        else{
+        else {
           this.onfilterChange(this.subcategories[0]);
         }
       }

@@ -8,7 +8,7 @@
         </ion-buttons> -->
     </ion-toolbar>
 </ion-header>
-<ion-content color="light" hide-header>
+<ion-content color="light" class="scrollBar">
     <app-category-slider (categoryChangedEventEmitter)="onCategoryChanged($event)"></app-category-slider>
     <div>
         <ion-row>
@@ -21,8 +21,17 @@
             <ion-col class="main-div-container" size="12" size-lg="9.5" size-md="9">
                 <div class="main-div shadow">
                     <ion-row>
-                        <ion-col size="12">Invite quotations for {{selectedCategory?.name}}<span *ngIf="selectedSubcategory"> -
-                                {{selectedSubcategory?.name}}</span></ion-col>
+                        <ion-col size="12">{{selectedCategory?.name}}<span *ngIf="selectedSubcategory"> -
+                                {{selectedSubcategory?.name}}</span>
+                            <span>
+                                <ion-label *ngIf="vendorsFound && vendorsFound > 0" color="success" class="ion-padding">
+                                    {{vendorsFound}} vendors nearby.
+                                </ion-label>
+                                <ion-label *ngIf="vendorsFound && vendorsFound == 0" color="danger" class="ion-padding">
+                                    No vendors found in your area.
+                                </ion-label>
+                            </span>
+                        </ion-col>
                     </ion-row>
                     <div class="horizontalLine"></div>
                     <div class="ion-padding center-content" *ngIf="isLoading">
@@ -31,13 +40,24 @@
                         </ion-row>
                     </div>
                     <div *ngIf="!isLoading">
+                        <!-- <ion-row *ngIf="showSubservices">
+                            <ion-col size="12">
+                                <ion-slides [options]="sliderOptions" mode="md" #subServiceSlides>
+                                    <ion-slide *ngFor="let subService of subServices">
+                                        <ion-chip>
+                                            <ion-label>{{subService?.name}}</ion-label>
+                                        </ion-chip>
+                                    </ion-slide>
+                                </ion-slides>
+                            </ion-col>
+                        </ion-row> -->
                         <ion-row>
                             <ion-col>
                                 <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
                                     <ion-row *ngIf="showSubservices">
                                         <ion-col size="12">
                                             <ion-item class="ion-no-padding">
-                                                <ion-label color="primary" position="floating">Specify your requirement
+                                                <ion-label color="primary" position="stacked">Specify your requirement
                                                 </ion-label>
                                                 <ionic-selectable formControlName="serviceSub" [items]="subServices" itemValueField="id" itemTextField="name" [canSearch]="true">
                                                 </ionic-selectable>
@@ -48,18 +68,68 @@
                                     </ion-row>
                                     <ion-row>
                                         <ion-col size="12">
-                                            <ion-label *ngIf="vendorsFound && vendorsFound > 0" color="success" class="ion-padding">
-                                                {{vendorsFound}} vendors found in your area.
-                                            </ion-label>
-                                            <ion-label *ngIf="vendorsFound && vendorsFound == 0" color="danger" class="ion-padding">
-                                                No vendors found in your area.
-                                            </ion-label>
+                                            <ion-radio-group value="{{scheduledFor}}" (ionChange)="toggleScheduledFor()">
+                                                <ion-label color="primary" position="stacked">When would you like to receive the service?</ion-label>
+                                                <ion-row>
+                                                    <ion-col size="6">
+                                                        <ion-item lines="none">
+                                                            <ion-label>Today</ion-label>
+                                                            <ion-radio slot="start" value="1" mode="md"></ion-radio>
+                                                        </ion-item>
+                                                    </ion-col>
+                                                    <ion-col size="6">
+                                                        <ion-item lines="none">
+                                                            <ion-label>Schedule for later</ion-label>
+                                                            <ion-radio slot="start" value="2" mode="md"></ion-radio>
+                                                        </ion-item>
+                                                    </ion-col>
+                                                </ion-row>
+                                            </ion-radio-group>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col size="6" *ngIf="scheduledFor == 2">
+                                            <ion-item lines="none" class="ion-no-padding">
+                                                <ion-label color="primary" position="stacked">Date </ion-label>
+                                                <mat-form-field style="padding-bottom: 0px;">
+                                                    <input matInput [matDatepicker]="jobDateDatePicker" [min]="today" formControlName="jobDate" (click)="jobDateDatePicker.open()" readonly>
+                                                    <mat-datepicker-toggle matSuffix [for]="jobDateDatePicker">
+                                                    </mat-datepicker-toggle>
+                                                    <mat-datepicker #jobDateDatePicker>
+                                                        <!-- <mat-datepicker-actions>
+                                                            <button mat-button matDatepickerCancel>Cancel</button>
+                                                            <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                                                        </mat-datepicker-actions> -->
+                                                    </mat-datepicker>
+                                                </mat-form-field>
+                                            </ion-item>
+                                        </ion-col>
+                                        <ion-col size="6">
+                                            <ion-item class="ion-no-padding">
+                                                <ion-label color="primary" position="stacked">Time *</ion-label>
+                                                <ion-select formControlName="jobTime" interface="popover" placeholder="Select time">
+                                                    <ion-select-option *ngFor="let timeOption of timeOptions" value="{{timeOption}}">{{timeOption}}
+                                                    </ion-select-option>
+                                                </ion-select>
+                                            </ion-item>
+                                            <ion-label *ngIf="isSubmitted && errorControl.jobTime.errors?.required" color="danger" class="ion-padding">
+                                                Time is required.</ion-label>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col size="12">
+                                            <ion-item class="ion-no-padding" lines="none">
+                                                <ion-checkbox color="primary" formControlName="inspectionRequired" mode="md" (ionChange)="inspectionToggled()">
+                                                </ion-checkbox>&nbsp;
+                                                <ion-label> Inspection required <small style="color: red;">(An additional
+                                                        charge of {{inspectionAmount|indianCurrency}} is applicable)</small></ion-label>
+                                            </ion-item>
                                         </ion-col>
                                     </ion-row>
                                     <ion-row>
                                         <ion-col size="12">
                                             <ion-item class="ion-no-padding">
-                                                <ion-label color="primary" position="floating">Describe your requirement
+                                                <ion-label color="primary" position="stacked">Describe your requirement
                                                 </ion-label>
                                                 <ion-textarea rows="6" cols="20" placeholder="" formControlName="jobDecription"></ion-textarea>
                                             </ion-item>
@@ -67,9 +137,24 @@
                                                 Job Description is required.</ion-label> -->
                                         </ion-col>
                                     </ion-row>
-                                    <ion-button type="submit" [disabled]="isSubmitDisabled"><span *ngIf="isSubmitDisabled">
-                                            <ion-spinner name="crescent"></ion-spinner>
-                                        </span>Invite Quotations</ion-button>
+                                    <ion-row>
+                                        <ion-col size="12" class="ion-text-center">
+                                            <small>“The prices will be quoted only for labor charge on service requested
+                                                as per the provided description /inspection report. Materials will be
+                                                invoiced separately by the vendor or customer who needs to provide them
+                                                at the time of Job. Additional labor will be charged for work which is
+                                                out of scope of agreed quotation, which need be agreed by both parties
+                                                before the commencement of work through the web application”</small>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row class="ion-justify-content-center">
+                                        <ion-button type="submit" [disabled]="isSubmitDisabled"><span *ngIf="isSubmitDisabled">
+                                                <ion-spinner name="crescent"></ion-spinner>
+                                            </span>
+                                            <span *ngIf="inspectionRequired">Save & Make payment For Inspection</span>
+                                            <span *ngIf="!inspectionRequired">Get connected</span>
+                                        </ion-button>
+                                    </ion-row>
                                 </form>
                                 <!-- <ion-col size="12" size-md="4" size-lg="3" *ngFor="let item of items">
                                 <app-vendor-card [item]="item"></app-vendor-card>

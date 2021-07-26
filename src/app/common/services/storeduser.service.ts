@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Constants } from '../configs/index.config';
 import { StorageService } from './storage.service';
 
-const USER_KEY = "user-data";
+const USER_KEY = Constants.STORAGES.USER;
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class StoredUserService {
   }
 
   async setUser(userData) {
-    return await this.storage.setData(USER_KEY,userData).then(data => {
+    return await this.storage.setData(USER_KEY, userData).then(data => {
       return data;
     })
   }
