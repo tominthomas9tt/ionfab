@@ -14,12 +14,12 @@ import { SharedPipesModule } from 'src/app/common/shared-pipes/shared-pipes.modu
 import { QuotationComponent } from './components/quotation/quotation.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 import { BackComponent } from '../../components/back/back.component';
+import { ComponentsModule } from '../../components/components.module';
 
 const COMPONENTS = [
   HomeComponent,
   DetailsComponent,
   JobsPage,
-  BackComponent,
   QuotationComponent,
   VendorComponent
 ];
@@ -27,6 +27,7 @@ const COMPONENTS = [
 @NgModule({
   imports: [
     CommonModule,
+    ComponentsModule,
     SharedPipesModule,
     FormsModule,
     ReactiveFormsModule,

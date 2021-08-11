@@ -2,14 +2,19 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { from, throwError } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
+import { Httpresponse } from '../models/httpresponse.model';
 import { TokenService } from '../services/auth-token.service';
-import { StorageService } from '../services/storage.service';
+import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
 
-    constructor(private storageService: StorageService, private tokenService: TokenService) {
+    constructor(
+        private tokenService: TokenService,
+        private notificationService: NotificationService,
+        private authService: AuthService) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
@@ -27,7 +32,23 @@ export class TokenInterceptor implements HttpInterceptor {
                     return next.handle(req).pipe(
                         map((event: HttpEvent<any>) => {
                             if (event instanceof HttpResponse) {
-                                // do nothing for now
+                                let response: Httpresponse = event.body;
+                                if (!response.status) {
+                                    const errors = response.error;
+                                    let errorMessage = "Something went wrong.";
+                                    if (errors && errors.length > 0) {
+                                        errorMessage = "";
+                                        errors.forEach(error => {
+                                            if (error.errorCode == "401") {
+                                                this.notificationService.showNotification("Please login again to continue");
+                                                this.authService.signOut();
+                                            }
+                                            errorMessage += error.errorMessage;
+                                        });
+                                    }
+                                } else {
+                                    return event
+                                }
                             }
                             return event;
                         }),

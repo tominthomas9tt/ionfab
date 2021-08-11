@@ -13,22 +13,33 @@
         <ion-col size-md="4" size-sm="6" *ngFor="let address of addresses; let i = index">
             <ion-card>
                 <ion-card-content>
-                    {{address?.addressline1}}<br>{{address?.addressline2}}<br>{{address?.landmark}}<br> {{address?.street}}
-                    <br> {{address?.city}}<br> {{address?.state}}<br>{{address?.pin}}
                     <ion-row>
-                        <ion-col>
-                            <ion-button (click)="modifyAddress(address)" title="Edit">
-                                <ion-icon name="create"></ion-icon>
-                            </ion-button>
-                            <ion-button (click)="deleteAddress(address)" *ngIf="address.isPrimary!='2'" color="danger" title="Delete">
-                                <ion-icon name="trash"></ion-icon>
-                            </ion-button>
-                            <ion-button (click)="markAddressAsPrimary(address)" *ngIf="address.isPrimary!='2'" color="success">
-                                Set Default</ion-button>
+                        <ion-col size="12" class="ion-text-right">
+                            <span>
+                                <a tappable (click)="modifyAddress(address)">Edit</a>
+                            </span>
+                            <span *ngIf="address.isPrimary!='2'">
+                                &nbsp;|&nbsp;<a tappable (click)="deleteAddress(address)">Delete</a>
+                            </span>
+                            <span *ngIf="address.isPrimary!='2'">
+                                &nbsp;|&nbsp;<a tappable (click)="markAddressAsPrimary(address)">Set as
+                                    default</a>
+                            </span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <p>
+                                <b>{{i+1}}.</b> {{address?.addressline1}}
+                                <br>{{address?.addressline2}}<br> {{address?.street}}
+                                <br> {{address?.city}}<br> {{address?.state}}<br>{{address?.pin}}
+                            </p>
+                            <p *ngIf="address?.landmark">
+                                <b>Landmark: </b>{{address?.landmark}}
+                            </p>
                         </ion-col>
                     </ion-row>
                 </ion-card-content>
-
             </ion-card>
         </ion-col>
     </ion-grid>

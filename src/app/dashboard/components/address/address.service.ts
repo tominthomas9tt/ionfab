@@ -37,7 +37,7 @@ export class AddressService {
   }
 
   getAllAddresses(forceReload = true) {
-    this.addressHttpService.getAllAddresses(this.user?.userId).subscribe((dataResponse: Httpresponse) => {
+    this.addressHttpService.getAllAddresses({ userId: this.user?.userId, status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse?.status) {
         if (dataResponse?.data && dataResponse.data.length > 0) {
           this.addresses = dataResponse.data;

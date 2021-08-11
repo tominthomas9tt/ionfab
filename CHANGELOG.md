@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Addition
 - ❌
 
+## 0.3.0 - 2021-08-11
+### Addition
+- Some major changes
 
 ## 0.2.0 - 2021-07-26
 ### Addition

@@ -4,7 +4,9 @@ import { ModalController } from '@ionic/angular';
 import { Patterns } from 'src/app/common/configs/patterns.config';
 import { Address } from 'src/app/common/models/address';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
+import { PincodeFilter } from 'src/app/common/models/pincodes.model';
 import { AddressHttpService } from 'src/app/common/services/http/address.service';
+import { PincodeService } from 'src/app/common/services/http/pincodes.service';
 import { isEmpty } from 'src/app/common/utils/utils';
 import { AddressService } from '../address.service';
 
@@ -28,6 +30,7 @@ export class ModifyComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private formBuilder: FormBuilder,
+    private pincodeService: PincodeService,
     private addressService: AddressService,
   ) { }
 
@@ -48,6 +51,35 @@ export class ModifyComponent implements OnInit {
       state: ['', Validators.required],
       pin: ['', Validators.compose([Validators.required, Validators.pattern(Patterns.PIN)])]
     });
+  }
+
+  pincodeChanged() {
+    let pincode = this.dataForm.get('pin').value;
+    this.getPincodeDetails(pincode);
+  }
+
+  getPincodeDetails(pincode) {
+    if (!isEmpty(pincode) && pincode.toString().length == 6) {
+      let pincodeFilter: PincodeFilter = {
+        pincode: pincode,
+        offset: 0,
+        limit: 1,
+        status: 2,
+        astatus: 2
+      };
+      if (!isEmpty(pincodeFilter)) {
+        this.pincodeService.getAll(pincodeFilter).subscribe((dataResponse: Httpresponse) => {
+          if (dataResponse.status && dataResponse?.data.length > 0) {
+            let pincode = dataResponse?.data[0];
+            this.dataForm.patchValue({
+              street: pincode.taluk,
+              city: pincode.district,
+              state: pincode.state,
+            })
+          }
+        })
+      }
+    }
   }
 
   get errorControl() {
@@ -126,3 +158,4 @@ export class ModifyComponent implements OnInit {
     }
   }
 }
+ 

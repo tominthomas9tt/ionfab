@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { AccountMenuComponent } from '../components/account-menu/account-menu.component';
+import { SearchComponent } from '../components/search/search.component';
 
 @Component({
   selector: 'app-header',
@@ -9,21 +10,34 @@ import { AccountMenuComponent } from '../components/account-menu/account-menu.co
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private popoverController: PopoverController) { }
+  constructor(
+    private modalController: ModalController,
+    private popoverController: PopoverController
+  ) { }
 
   ngOnInit() { }
 
-  onSearchChange(event) {
-    console.log(event.detail.value);
+  async presentSearchModal() {
+    const modal = await this.modalController.create({
+      component: SearchComponent,
+      cssClass: '',
+      componentProps: {
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      console.log(data);
+    }
   }
-  
+
   async presentAccountMenu() {
     const popover = await this.popoverController.create({
       component: AccountMenuComponent,
       cssClass: 'my-account-menu-class',
-      mode:'md',
-      backdropDismiss:true,
-      showBackdrop:false,
+      mode: 'md',
+      backdropDismiss: true,
+      showBackdrop: false,
       translucent: true
     });
     await popover.present();

@@ -23,16 +23,15 @@ import { AccountMenuComponent } from './components/account-menu/account-menu.com
 import { HeaderComponent } from './header/header.component';
 import { NewjobComponent } from './components/newjob/newjob.component';
 import { SharedPipesModule } from '../common/shared-pipes/shared-pipes.module';
+import { ComponentsModule } from './components/components.module';
 
 const COMPONENTS = [
-  AccountMenuComponent,
   CategorySliderComponent,
   DashboardPage,
   FilterComponent,
   HomeComponent,
   HeaderComponent,
   NewjobComponent,
-  NotificationsComponent,
   ProfileComponent,
   ServicesComponent,
   VendorCardComponent,
@@ -43,6 +42,7 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     AddressModule,
+    ComponentsModule,
     SharedPipesModule,
     RouterModule,
     FormsModule,

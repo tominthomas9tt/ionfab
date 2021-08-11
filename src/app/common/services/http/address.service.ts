@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Address } from '../../models/address';
+import { Address, AddressFilter } from '../../models/address';
+import { isEmpty, jsonToQueryString } from '../../utils/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,12 @@ export class AddressHttpService {
   constructor(private http: HttpClient) {
   }
 
-  getAllAddresses(userId: number) {
-    return this.http.get(this.baseUrl + "/user/" + userId);
-
+  getAllAddresses(queryParams: AddressFilter) {
+    let urlQueryParams = "";
+    if (!isEmpty(queryParams)) {
+      urlQueryParams = jsonToQueryString(queryParams)
+    }
+    return this.http.get(this.baseUrl + urlQueryParams);
   }
 
   getAddressDetails(addressId: number) {

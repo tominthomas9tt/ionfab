@@ -1,13 +1,13 @@
-<ion-header class="ion-hide-sm-up">
+<!-- <ion-header class="ion-hide-sm-up">
     <ion-toolbar>
         <ion-searchbar mode="md" animated></ion-searchbar>
-        <!-- <ion-buttons slot="end">
+        <ion-buttons slot="end">
             <ion-button (click)="filterModal()" title="Filter">
                 <ion-icon name="filter-outline"></ion-icon>
             </ion-button>
-        </ion-buttons> -->
+        </ion-buttons>
     </ion-toolbar>
-</ion-header>
+</ion-header> -->
 <ion-content color="light" class="scrollBar">
     <app-category-slider (categoryChangedEventEmitter)="onCategoryChanged($event)"></app-category-slider>
     <div>
@@ -25,7 +25,7 @@
                                 {{selectedSubcategory?.name}}</span>
                             <span>
                                 <ion-label *ngIf="vendorsFound && vendorsFound > 0" color="success" class="ion-padding">
-                                    {{vendorsFound}} vendors nearby.
+                                    {{vendorsFound}} vendors nearby.{{count}}
                                 </ion-label>
                                 <ion-label *ngIf="vendorsFound && vendorsFound == 0" color="danger" class="ion-padding">
                                     No vendors found in your area.

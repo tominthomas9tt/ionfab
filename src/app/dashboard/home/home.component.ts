@@ -15,6 +15,7 @@ import { NotificationService } from 'src/app/common/services/notification.servic
 import { StorageService } from 'src/app/common/services/storage.service';
 import { StoreService } from 'src/app/common/services/store.service';
 import { StoredUserService } from 'src/app/common/services/storeduser.service';
+import { SearchService } from 'src/app/common/store/search.service';
 import { misDateFormatted } from 'src/app/common/utils/utils';
 import { NewjobComponent } from '../components/newjob/newjob.component';
 import { WelcomeComponent } from '../components/welcome/welcome.component';
@@ -76,8 +77,10 @@ export class HomeComponent implements OnInit {
   timeOptions = this.todayTimeOptions;
 
   inspectionRequired = false;
+  count;
 
   constructor(
+    private searchService: SearchService,
     private paymentService: LocalPaymentService,
     private storedUserService: StoredUserService,
     private STORE: StoreService,
@@ -97,6 +100,7 @@ export class HomeComponent implements OnInit {
     this.generateRandomItem();
     this.initiateForm();
     // this.presentWelcome();
+    this.searchSubscribe();
   }
 
   getStoredUser() {
@@ -125,6 +129,23 @@ export class HomeComponent implements OnInit {
       })
     })
   };
+
+  searchSubscribe() {
+    this.searchService.searchChanged$.subscribe((data) => {
+      if (data) {
+        this.onSearchService(data);
+      }
+    })
+  }
+
+  onSearchService(service) {
+    let category = this.serviceCategoryServices.getLocalSeriveCategoryById(service.serviceCategoryId);
+    if (this.selectedCategory.id != service.serviceCategoryId) {
+      this.onCategoryChanged(category);
+    }
+    this.onFilterChanged(service);
+    this.selectedSubcategory1 = service;
+  }
 
   onCategoryChanged(categoryData) {
     this.selectedCategory = categoryData;
