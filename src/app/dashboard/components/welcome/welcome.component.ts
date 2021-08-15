@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { User } from 'src/app/common/models/user';
-import { StoredUserService } from 'src/app/common/services/storeduser.service';
+import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
 
 @Component({
   selector: 'app-welcome',

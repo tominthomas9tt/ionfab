@@ -1,0 +1,9 @@
+<ion-row>
+    <ion-col size="12" class="ion-no-padding">
+        <ion-slides [options]="bannerSlideOpts" pager="true">
+            <ion-slide *ngFor="let banner of banners">
+                <img src="assets/img/banners/{{banner.img}}" alt="Banner not Found">
+            </ion-slide>
+        </ion-slides>
+    </ion-col>
+</ion-row>

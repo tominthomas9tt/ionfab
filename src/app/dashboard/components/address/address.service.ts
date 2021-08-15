@@ -5,8 +5,8 @@ import { Address } from 'src/app/common/models/address';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { User } from 'src/app/common/models/user';
 import { AddressHttpService } from 'src/app/common/services/http/address.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
-import { StoredUserService } from 'src/app/common/services/storeduser.service';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
+import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
 
 @Injectable({
   providedIn: 'root'

@@ -2,11 +2,11 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
-import { AuthService } from 'src/app/common/services/auth.service';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
-import { StorageService } from 'src/app/common/services/storage.service';
-import { StoredUserService } from 'src/app/common/services/storeduser.service';
+import { AuthService } from 'src/app/common/services/local/auth.service';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
+import { StorageService } from 'src/app/common/services/local/storage.service';
+import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
 
 @Component({
   selector: 'app-verifyemail',
@@ -23,14 +23,13 @@ export class VerifyemailComponent implements OnInit {
   showEmailForm = false;
   showOTPForm = true;
 
-  @Output() emailVerifiedEvent = new EventEmitter();
+  // @Output() emailVerifiedEvent = new EventEmitter();
 
   constructor(private formBuilder: FormBuilder,
     private serverAuthService: ServerAuthService,
     private authService: AuthService,
     private storedUserService: StoredUserService,
     private storageService: StorageService,
-    private router: Router,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
@@ -103,7 +102,7 @@ export class VerifyemailComponent implements OnInit {
   }
 
   completeOTPVerification() {
-    this.authService.signOut();
+    this.authService.signOut(true);
   }
 
 }

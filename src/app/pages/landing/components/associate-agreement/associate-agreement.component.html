@@ -1,0 +1,46 @@
+<ion-content color="light">
+    <ion-grid fixed>
+        <div class="borderWithBackground" style="padding: 1rem;">
+            <h3 class="title">Faby business associate agreement</h3>
+            <ion-row>
+                <ion-col size="12">
+                    <p>
+                        This App/Wesite Listing Agreement is entered on the online registration signup date between The Faby Serve International Pvt Limited, a company registered under the Indian Companies Act, having its Head Office , Building no 41,2053,1st floor, Vennala,Eranakulam
+                        referred to as FSI of the First Part AND the online registering Company hereinafter referred as ‘Service Provider&#39; which expression shall except where repugnant to the context and meaning thereof mean and include his/ her heirs,
+                        legal representatives, executors and administrators and assigns)
+                    </p>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ol>
+                        <li *ngFor="let whereas of whereases">
+                            {{whereas}}
+                        </li>
+                    </ol>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <p>
+                        Now this App/Website Listing Agreement witnessed as follows:-
+                    </p>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ol>
+                        <li *ngFor="let now of nows">
+                            {{now}}
+                        </li>
+                    </ol>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-grid>
+    <ion-row>
+        <ion-col size="12" class="ion-no-padding">
+            <app-footer></app-footer>
+        </ion-col>
+    </ion-row>
+</ion-content>

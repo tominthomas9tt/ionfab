@@ -7,18 +7,18 @@ import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { PayInitializer } from 'src/app/common/models/payment.model';
 import { Tender } from 'src/app/common/models/tenders.model';
 import { User } from 'src/app/common/models/user';
-import { ServicecategoriesService } from 'src/app/common/services/http/servicecategory.service';
+import { ServicecategoriesService } from 'src/app/common/services/hybid/servicecategory.service';
 import { ServicesService } from 'src/app/common/services/http/services.service';
 import { TenderService } from 'src/app/common/services/http/tenders.service';
-import { LocalPaymentService } from 'src/app/common/services/localpayment.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
-import { StorageService } from 'src/app/common/services/storage.service';
-import { StoreService } from 'src/app/common/services/store.service';
-import { StoredUserService } from 'src/app/common/services/storeduser.service';
 import { SearchService } from 'src/app/common/store/search.service';
 import { misDateFormatted } from 'src/app/common/utils/utils';
 import { NewjobComponent } from '../components/newjob/newjob.component';
 import { WelcomeComponent } from '../components/welcome/welcome.component';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
+import { StorageService } from 'src/app/common/services/local/storage.service';
+import { StoreService } from 'src/app/common/services/local/store.service';
+import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
+import { LocalPaymentService } from 'src/app/common/services/local/localpayment.service';
 
 const INSPECTION_FEE_TYPE = Constants.PAYMENT_TYPES.INSPECTION_FEE;
 

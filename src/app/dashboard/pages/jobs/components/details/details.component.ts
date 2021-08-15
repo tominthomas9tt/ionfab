@@ -12,7 +12,7 @@ import { QuotationService } from 'src/app/common/services/http/quotations.servic
 import { TenderService } from 'src/app/common/services/http/tenders.service';
 import { TendervendorService } from 'src/app/common/services/http/tendervendors.service';
 import { WorkorderService } from 'src/app/common/services/http/workorders.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
 import { misDateFormatted } from 'src/app/common/utils/utils';
 import { QuotationComponent } from '../quotation/quotation.component';
 import { VendorComponent } from '../vendor/vendor.component';

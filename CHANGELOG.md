@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Addition
 - ❌
 
+## 0.4.0 - 2021-08-11
+### Addition
+- Shifted landing page to customer.
+
 ## 0.3.0 - 2021-08-11
 ### Addition
 - Some major changes

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Address } from 'src/app/common/models/address';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
-import { StoreService } from 'src/app/common/services/store.service';
+import { StoreService } from 'src/app/common/services/local/store.service';
 import { AddressService } from '../address.service';
 import { ModifyComponent } from '../modify/modify.component';
 

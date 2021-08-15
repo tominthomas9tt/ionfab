@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { StoreService } from 'src/app/common/services/store.service';
+import { StoreService } from 'src/app/common/services/local/store.service';
 import { AddressService } from './address.service';
 import { AddressesComponent } from './addresses/addresses.component';
 import { ModifyComponent } from './modify/modify.component';

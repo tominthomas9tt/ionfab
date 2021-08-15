@@ -5,8 +5,6 @@ import { BackComponent } from './back/back.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SearchComponent } from './search/search.component';
 import { IonicModule } from '@ionic/angular';
-import { AddressModule } from './address/address.module';
-import { AddressComponent } from './address/address.component';
 import { RouterModule } from '@angular/router';
 
 const COMPONENTS = [

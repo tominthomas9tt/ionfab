@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../common/services/auth.service';
 
 import { take, map } from 'rxjs/operators';
-import { StorageService } from '../common/services/storage.service';
+import { StorageService } from '../common/services/local/storage.service';
 import { isEmpty } from '../common/utils/utils';
 
 const USER_KEY = "user-data";
@@ -18,7 +17,8 @@ export class AuthGuard implements CanActivate {
   canProceed: boolean = false;
 
   constructor(
-    public router: Router, private authService: AuthService, private storageService: StorageService) {
+    public router: Router,
+    private storageService: StorageService) {
   }
   canActivate(
     route: ActivatedRouteSnapshot,

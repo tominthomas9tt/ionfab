@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { AuthService } from 'src/app/common/services/auth.service';
+import { AuthService } from 'src/app/common/services/local/auth.service';
 
 @Component({
   selector: 'app-account-menu',

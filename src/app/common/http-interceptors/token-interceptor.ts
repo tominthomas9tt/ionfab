@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { from, throwError } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { Httpresponse } from '../models/httpresponse.model';
-import { TokenService } from '../services/auth-token.service';
-import { AuthService } from '../services/auth.service';
-import { NotificationService } from '../services/notification.service';
+import { TokenService } from '../services/local/auth-token.service';
+import { AuthService } from '../services/local/auth.service';
+import { NotificationService } from '../services/local/notification.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {

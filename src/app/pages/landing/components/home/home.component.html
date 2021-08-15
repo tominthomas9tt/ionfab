@@ -1,0 +1,33 @@
+<ion-content color="light">
+    <app-banner-slider></app-banner-slider>
+    <ion-row>
+        <ion-col size="12">
+            <div class="borderWithBackground" style="padding: 1rem;">
+                <ion-row>
+                    <ion-col size="12">
+                        <div class="title">Our services, Happy to help...</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="6" size-md="4" size-lg="2" *ngFor="let serviceCategory of serviceCategories" routerLink="services/{{serviceCategory.id}}">
+                        <div class="center-content">
+                            <div style="border: 1px solid rgba(0,0,0,.125);border-radius: 50%!important; width: 8rem;height: 8rem; margin-bottom: 20px;">
+                                <div class="center-content">
+                                    <img class="icon" src="assets/img/main/{{serviceCategory.icon}}" width="150" height="150" />
+                                </div>
+                                <div class="ion-text-center">
+                                    <ion-label>{{ serviceCategory.name }}</ion-label>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="12" class="ion-no-padding">
+            <app-footer></app-footer>
+        </ion-col>
+    </ion-row>
+</ion-content>

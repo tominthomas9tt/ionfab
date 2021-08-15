@@ -55,6 +55,7 @@ export class FilterComponent implements OnInit {
   }
 
   onfilterChange(data) {
+    this.handleSmallScreens();
     this.selectedSubService = data;
     this.filterChangedEmitter.emit(data)
   }

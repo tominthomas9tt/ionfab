@@ -6,10 +6,10 @@ import { ServiceCategory } from 'src/app/common/models/servicecategory';
 import { ServiceFilterParams, Services } from 'src/app/common/models/services';
 import { User } from 'src/app/common/models/user';
 import { BusinessservicesService } from 'src/app/common/services/http/businessservice.service';
-import { ServicecategoriesService } from 'src/app/common/services/http/servicecategory.service';
+import { ServicecategoriesService } from 'src/app/common/services/hybid/servicecategory.service';
 import { ServicesService } from 'src/app/common/services/http/services.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
-import { StoredUserService } from 'src/app/common/services/storeduser.service';
+import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
 
 @Component({
   selector: 'app-services',

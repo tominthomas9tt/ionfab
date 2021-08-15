@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-toolbar color="primary" mode="md">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon class="ion-hide-sm-down" name="close"></ion-icon>
+                <ion-icon class="ion-hide-sm-up" name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <div>
+            <ion-searchbar #search placeholder="Search service" animated (ionInput)="onSearchChange($event)">
+            </ion-searchbar>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    <ion-item *ngIf="isLoading" lines="none">
+                        <div class="center-content">
+                            <ion-spinner name="crescent"></ion-spinner>
+                        </div>
+                    </ion-item>
+                    <div *ngIf="services">
+                        <ion-item *ngFor="let service of services" (click)="sendService(service)">
+                            <ion-label><b>{{service?.name}}</b> in {{service.serviceCategoryName}}</ion-label>
+                        </ion-item>
+                    </div>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

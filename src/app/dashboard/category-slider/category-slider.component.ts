@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
-import { ServicecategoriesService } from 'src/app/common/services/http/servicecategory.service';
+import { ServicecategoriesService } from 'src/app/common/services/hybid/servicecategory.service';
 
 @Component({
   selector: 'app-category-slider',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StorageService } from './common/services/storage.service';
+import { StorageService } from './common/services/local/storage.service';
 
 
 @Component({

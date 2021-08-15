@@ -1,0 +1,33 @@
+<ion-content color="light">
+    <ion-row>
+        <ion-col size="12" class="ion-no-padding">
+            <div class="container">
+                <ion-img src="assets/img/banners/{{bannerDetails.img}}"></ion-img>
+            </div>
+        </ion-col>
+    </ion-row>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <div class="title">Services of {{serviceCategoryDetails?.name}}</div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="6" size-md="4" size-lg="2" *ngFor="let service of services" tappable (click)="proceedWithService(service)">
+                <div class="borderWithBackground zoom" style="padding: 10px;">
+                    <div class="center-content">
+                        <img src="assets/img/services/{{serviceCategoryId}}/{{service.icon}}" width="100" height="100" />
+                    </div>
+                    <div class="ion-text-center">
+                        <ion-label>{{ service.name }}</ion-label>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-row>
+        <ion-col size="12" class="ion-no-padding">
+            <app-footer></app-footer>
+        </ion-col>
+    </ion-row>
+</ion-content>

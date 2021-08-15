@@ -3,7 +3,6 @@ import { IonSearchbar, ModalController } from '@ionic/angular';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { ServicesService } from 'src/app/common/services/http/services.service';
 import { SearchService } from 'src/app/common/store/search.service';
-import { HomeComponent } from '../../home/home.component';
 
 @Component({
   selector: 'app-search',

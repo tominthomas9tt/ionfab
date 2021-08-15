@@ -2,19 +2,18 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { Errorresponse } from '../models/errorresponse.model';
 import { Httpresponse } from '../models/httpresponse.model';
-import { AuthService } from '../services/auth.service';
-import { NotificationService } from '../services/notification.service';
+import { AuthService } from '../services/local/auth.service';
+import { NotificationService } from '../services/local/notification.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private notificationService: NotificationService,private authService:AuthService) { }
+    constructor(
+        private notificationService: NotificationService,
+        private authService:AuthService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
-        console.log("in auth interceptor");
-
         const authReq = req.clone();
 
         return next.handle(authReq).pipe(

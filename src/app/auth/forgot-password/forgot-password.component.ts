@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { ForgotUser, ResetUser } from 'src/app/common/models/resetpassword';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
 import { isEmpty } from 'src/app/common/utils/utils';
 
 @Component({

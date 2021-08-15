@@ -12,9 +12,9 @@
             <ion-slide *ngFor="let serviceCategory of serviceCategories">
                 <div class="slide">
                     <ion-col (click)="changeCategory(serviceCategory)">
-                        <ion-avatar class="center-img">
-                            <ion-img style="pointer-events:none" src="assets/img/main/{{serviceCategory.icon}}"></ion-img>
-                        </ion-avatar>
+                        <!-- <ion-avatar class="center-img"> -->
+                        <img style="pointer-events:none" src="assets/img/main/{{serviceCategory.icon}}" />
+                        <!-- </ion-avatar> -->
                         <small><ion-label>{{ serviceCategory.name }}</ion-label></small>
                     </ion-col>
                 </div>

@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { User } from 'src/app/common/models/user';
 import { TenderService } from 'src/app/common/services/http/tenders.service';
-import { StoreService } from 'src/app/common/services/store.service';
+import { StoreService } from 'src/app/common/services/local/store.service';
 import { misDateFormatted } from 'src/app/common/utils/utils';
 
 @Component({

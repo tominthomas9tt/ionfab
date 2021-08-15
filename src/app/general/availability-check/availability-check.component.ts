@@ -6,7 +6,7 @@ import { Patterns } from 'src/app/common/configs/index.config';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { Pincode, PincodeFilter } from 'src/app/common/models/pincodes.model';
 import { PincodeService } from 'src/app/common/services/http/pincodes.service';
-import { NotificationService } from 'src/app/common/services/notification.service';
+import { NotificationService } from 'src/app/common/services/local/notification.service';
 import { isEmpty } from 'src/app/common/utils/utils';
 
 const PIN_PATTERN = Patterns.PIN;
