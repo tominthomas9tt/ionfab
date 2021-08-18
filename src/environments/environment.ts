@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:9898/',
+  apiBaseUrl: 'http://192.168.0.103:9898/',
   storagePrefix:'FBC_'
 };
 

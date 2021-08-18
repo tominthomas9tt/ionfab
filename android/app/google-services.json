@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "178043158033",
+    "project_id": "faby-customer",
+    "storage_bucket": "faby-customer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178043158033:android:cfa63d8bba46530ddd3bb0",
+        "android_client_info": {
+          "package_name": "com.fabyserve.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178043158033-lvgd2jau3910sm3v8rr4vrebia03pkmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtvsvzqE9mp6miKMVpCQ7Kdz6RQHfAEXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178043158033-lvgd2jau3910sm3v8rr4vrebia03pkmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FcmService } from './common/services/local/fcm.service';
 import { StorageService } from './common/services/local/storage.service';
 
 
@@ -8,9 +9,11 @@ import { StorageService } from './common/services/local/storage.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private storageService:StorageService) { }
+  constructor(private storageService:StorageService,
+    private fcmService: FcmService) { }
 
   async ngOnInit() {
     this.storageService.init();
+    this.fcmService.initPush();
   }
 }
