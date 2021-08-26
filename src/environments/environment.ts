@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://192.168.0.103:9898/',
-  storagePrefix:'FBC_'
+  apiBaseUrl: 'http://localhost:9898/',
+  storagePrefix: 'FBC_',
+  googleMapApiKey: 'AIzaSyAldKVnllHX9DrekzE7aopftX1uLxIPLAI'
 };
 
 /*
