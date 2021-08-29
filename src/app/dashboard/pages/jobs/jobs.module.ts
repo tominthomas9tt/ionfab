@@ -15,6 +15,7 @@ import { QuotationComponent } from './components/quotation/quotation.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 import { BackComponent } from '../../components/back/back.component';
 import { ComponentsModule } from '../../components/components.module';
+import { SharedComponentsModule } from 'src/app/common/components/components.module';
 
 const COMPONENTS = [
   HomeComponent,
@@ -26,6 +27,7 @@ const COMPONENTS = [
 
 @NgModule({
   imports: [
+    SharedComponentsModule,
     CommonModule,
     ComponentsModule,
     SharedPipesModule,

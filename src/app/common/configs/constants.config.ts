@@ -3,8 +3,12 @@ const Constants = {
         KEY: "rzp_test_RKxwHbHve5eXEY"
     },
     PAYMENT_TYPES:{
-        VENDOR_REGISTRATION_FEES:1,
-        INSPECTION_FEE:2
+        OTHERS:1,
+        INSPECTION_FEE:2,
+        WORK_ADVANCE:3,
+        WORK_FINAL:4,
+        VENDOR_REGISTRATION_FEES:5,
+
     },
     USER_ROLE_ID:7,
     SERVICE_SELECTED_STORAGE: 'servicSelected',

@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getAllServices();
-    this.getLoca();
+    // this.getLoca();
   }
 
   getAllServices() {

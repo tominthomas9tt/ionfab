@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { Constants } from 'src/app/common/configs/index.config';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { Inspection } from 'src/app/common/models/inspections.model';
+import { Invoice } from 'src/app/common/models/invoice';
+import { PayInitializer } from 'src/app/common/models/payment.model';
 import { Quotation } from 'src/app/common/models/quotations.model';
 import { Tender } from 'src/app/common/models/tenders.model';
 import { Tendervendor } from 'src/app/common/models/tendervendors.model';
 import { Workorder } from 'src/app/common/models/workorders.model';
 import { InspectionService } from 'src/app/common/services/http/inspection.service';
+import { InvoiceService } from 'src/app/common/services/http/invoice.service';
 import { QuotationService } from 'src/app/common/services/http/quotations.service';
 import { TenderService } from 'src/app/common/services/http/tenders.service';
 import { TendervendorService } from 'src/app/common/services/http/tendervendors.service';
 import { WorkorderService } from 'src/app/common/services/http/workorders.service';
+import { LocalPaymentService } from 'src/app/common/services/local/localpayment.service';
 import { NotificationService } from 'src/app/common/services/local/notification.service';
+import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
 import { misDateFormatted } from 'src/app/common/utils/utils';
 import { QuotationComponent } from '../quotation/quotation.component';
 import { VendorComponent } from '../vendor/vendor.component';
+
+const WORK_FINAL_TYPE = Constants.PAYMENT_TYPES.WORK_FINAL;
 
 @Component({
   selector: 'app-details',
@@ -29,7 +38,11 @@ export class DetailsComponent implements OnInit {
   };
 
   title = "Job Details";
+  displayedInvoiceColumns: string[] = ['slno', 'docDtlsNo', 'docDtlsDt', 'amount', 'status', 'actions'];
 
+  isLoading = false;
+
+  user;
   detailData: Tender;
   inspectionVendor: Tendervendor;
   inspectionReport: Inspection;
@@ -37,14 +50,18 @@ export class DetailsComponent implements OnInit {
   quotations: Quotation[];
   selectedQuotation: Quotation;
   workorder: Workorder;
-
+  invoices: Invoice[];
+  invoiceDataSource;
 
   constructor(
     private activatedRoutes: ActivatedRoute,
+    private invoiceService: InvoiceService,
     private modalController: ModalController,
     private notificationService: NotificationService,
+    private paymentService: LocalPaymentService,
     private tenderService: TenderService,
     private inspectionService: InspectionService,
+    private storedUserService: StoredUserService,
     private tendervendorService: TendervendorService,
     private quotationService: QuotationService,
     private workorderService: WorkorderService
@@ -53,11 +70,14 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
     this.activatedRoutes.paramMap.subscribe(params => {
       this.metaData.id = parseInt(params.get('id'));
+      this.setInvoiceSource([]);
       this.getTenderDetails();
+      this.getstoredUser();
     });
   }
 
   getTenderDetails() {
+    this.isLoading = true;
     this.tenderService.getDetails(this.metaData.id).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.detailData = dataResponse.data[0];
@@ -69,6 +89,15 @@ export class DetailsComponent implements OnInit {
         this.getWorkorder();
       } else {
         this.notificationService.showGeneralError("Job not found.")
+      }
+      this.isLoading = false;
+    })
+  }
+
+  getstoredUser() {
+    this.storedUserService.getUser().then((data) => {
+      if (data) {
+        this.user = data;
       }
     })
   }
@@ -149,6 +178,7 @@ export class DetailsComponent implements OnInit {
     this.workorderService.getAll({ tenderId: this.detailData.id, status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.workorder = dataResponse.data[0];
+        this.getInvoices();
       }
     })
   }
@@ -230,8 +260,49 @@ export class DetailsComponent implements OnInit {
     }
   }
 
+  getInvoices() {
+    // if (this.workorder) {
+    this.setInvoiceSource([]);
+    this.invoiceService.getAllInvoices({ orderNo: this.detailData.id.toString(), astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.invoices = dataResponse.data;
+        this.setInvoiceSource(this.invoices);
+      } else {
+        console.log(dataResponse.error);
+        this.notificationService.showGeneralError(dataResponse?.infoDtls);
+      }
+    })
+    // }
+  }
+
+  async makePaymentFor(invoice: Invoice) {
+    let paymentInfo: PayInitializer = {
+      type: WORK_FINAL_TYPE,
+      tbillId: invoice.id,
+      name: this.user.userName,
+      email: this.user.userUsername,
+      amountPayable: invoice.valDtlsTotInvVal,
+      referenceNo: invoice.docDtlsNo,
+      remarks: "Workorder amount",
+    };
+    this.paymentService.init(paymentInfo).then((data) => {
+      if (data.status && data.status == true) {
+        this.notificationService.showNotification("Payment successfull");
+      }
+      this.getInvoices();
+    }).catch((error) => {
+      console.log(error);
+      this.getInvoices();
+    })
+
+  }
+
   dateFormat(date) {
     return misDateFormatted(date, "DD-MM-YYYY hh:mm:ss A")
+  }
+
+  setInvoiceSource(data) {
+    this.invoiceDataSource = new MatTableDataSource<any>(data);
   }
 
 }

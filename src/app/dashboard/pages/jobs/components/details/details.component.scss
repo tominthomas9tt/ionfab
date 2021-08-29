@@ -1,3 +1,57 @@
 ion-col.head {
     font-weight: 500;
 }
+
+.section-title {
+    background-color: lightgrey;
+}
+
+div.up-arrow {
+    width: 100%;
+    position: relative;
+    margin-top: 15px;
+}
+
+div.up-arrow:after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: white transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    top: -14px;
+    left: 50%;
+}
+
+div.up-arrow:before {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: lightgrey transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    top: -15px;
+    left: 50%;
+}
+
+$color: #EC6D33;
+.circle-ripple {
+    // background-color: #35ffc3;
+    // width: 1em;
+    // height: 1em;
+    // border-radius: 50%;
+    animation: ripple 0.7s linear infinite;
+}
+
+@keyframes ripple {
+    0% {
+        box-shadow: 0 0 0 0 rgba($color, 0.3), 0 0 0 .5em rgba($color, 0.3), 0 0 0 1em rgba($color, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 0 .5em rgba($color, 0.3), 0 0 0 1em rgba($color, 0.3), 0 0 0 1.5em rgba($color, 0);
+    }
+}

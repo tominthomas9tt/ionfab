@@ -2,6 +2,8 @@ export class Payment {
 
     public transactionId?: number;
 
+    public tbillId?:number;
+
     public no?: string;
 
     public type?: number;
@@ -41,6 +43,7 @@ export class Payment {
 
 export class PayInitializer {
     public type: number;
+    public tbillId?:number;
     public name: string;
     public email: string;
     public mobile?: string;
@@ -70,6 +73,7 @@ export class PaymentResponse {
 
 export class CreateOrder {
     public type?: number;
+    public tbillId?:number;
     public referenceNo?: string;
     public amount?: number;
     public payStatus?: string;

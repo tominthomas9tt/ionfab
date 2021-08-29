@@ -1,3 +1,4 @@
+import { Invoice } from "./invoice";
 
 export class Tender{
 
@@ -84,6 +85,8 @@ export class Tender{
 	public statusName?:string;
 			
 	public astatus?: number;
+
+	public invoice?:Invoice;
 			
 
 }

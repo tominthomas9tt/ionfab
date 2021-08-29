@@ -69,10 +69,11 @@ export class LocalPaymentService {
   async init(paymentData: PayInitializer): Promise<PayResponse> {
     let promise = new Promise<PayResponse>((resolve, reject) => {
       const orderData: CreateOrder = {
-        "type": paymentData?.type,
-        "referenceNo": paymentData?.referenceNo,
-        "amount": paymentData.amountPayable,
-        "payRemarks": paymentData.remarks
+        tbillId: paymentData?.tbillId,
+        type: paymentData?.type,
+        referenceNo: paymentData?.referenceNo,
+        amount: paymentData.amountPayable,
+        payRemarks: paymentData.remarks
       }
 
       this.paymentService.createOrder(orderData).subscribe((response: Httpresponse) => {
@@ -83,7 +84,7 @@ export class LocalPaymentService {
             amount: orderResponseData.amount * 100,
             order_id: orderResponseData.payOrderNo,
             description: orderResponseData.payRemarks,
-            // image: 'https://i.imgur.com/3g7nmJC.png',
+            // image: 'https://fabyserve.co/wp-content/uploads/2021/08/cropped-logo2.png',
             currency: 'INR',
             name: 'Faby Serve',
             prefill: {
@@ -97,10 +98,11 @@ export class LocalPaymentService {
           }
           this.loadCheckout(orderResponseData.transactionId, options, resolve, reject);
         } else {
-          this.notificationService.showNotification("Payment Failed.Please try later.")
+          let error = response.error ? response.error[0].errorMessage : "Payment Failed.Please try later.";
+          this.notificationService.showNotification(error)
           reject({
             status: false,
-            remarks: "FAiled to create order"
+            remarks: error
           })
         }
       });

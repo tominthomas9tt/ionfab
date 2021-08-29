@@ -19,6 +19,8 @@ import { StorageService } from 'src/app/common/services/local/storage.service';
 import { StoreService } from 'src/app/common/services/local/store.service';
 import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
 import { LocalPaymentService } from 'src/app/common/services/local/localpayment.service';
+import { InvoiceService } from 'src/app/common/services/http/invoice.service';
+import { Invoice } from 'src/app/common/models/invoice';
 
 const INSPECTION_FEE_TYPE = Constants.PAYMENT_TYPES.INSPECTION_FEE;
 
@@ -80,6 +82,7 @@ export class HomeComponent implements OnInit {
   count;
 
   constructor(
+    private invoiceService: InvoiceService,
     private searchService: SearchService,
     private paymentService: LocalPaymentService,
     private storedUserService: StoredUserService,
@@ -278,7 +281,10 @@ export class HomeComponent implements OnInit {
             this.tenderData = dataResponse.data[0];
             if (this.inspectionRequired) {
               this.initiateForm();
-              this.initiateInspectionPayment();
+              if(this.tenderData.invoice){
+                this.makePaymentFor(this.tenderData.invoice);
+              }
+              // this.initiateInspectionPayment();
             } else {
               this.isSubmitDisabled = false;
               this.presentNewJob();
@@ -300,6 +306,29 @@ export class HomeComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  async makePaymentFor(invoice: Invoice) {
+    let paymentInfo: PayInitializer = {
+      type: INSPECTION_FEE_TYPE,
+      tbillId: invoice.id,
+      name: this.user.userName,
+      email: this.user.userUsername,
+      amountPayable: invoice.valDtlsTotInvVal,
+      referenceNo: invoice.docDtlsNo,
+      remarks: "Inspection fees",
+    };
+    this.paymentService.init(paymentInfo).then((data) => {
+      if (data.status && data.status == true) {
+        this.isPaymentSuccess(data.transactionId);
+
+        // this.notificationService.showNotification("Payment successfull");
+      }
+    }).catch((error) => {
+      console.log(error);
+      // this.getInvoices();
+    })
+
   }
 
   async initiateInspectionPayment() {
@@ -365,6 +394,5 @@ export class HomeComponent implements OnInit {
 
     const { role } = await popover.onDidDismiss();
   }
-
 
 }

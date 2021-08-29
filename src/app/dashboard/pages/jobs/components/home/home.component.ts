@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  isLoading = false;
   pageSizeOptions = [5, 10, 20];
   pageSize = 10;
   pageIndex = 0;
@@ -68,6 +69,7 @@ export class HomeComponent implements OnInit {
   }
 
   getAllJobs() {
+    this.isLoading = true;
     this.tenderService.getAll({ userId: this.user.userId, offset: this.pageIndex * this.pageSize, limit: this.pageSize, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.jobs = dataResponse.data;
@@ -76,8 +78,9 @@ export class HomeComponent implements OnInit {
           this.resultsLength = dataResponse.infoDtls[0].totalResults;
         }
       } else {
-        this.setDataSource({});
+        this.setDataSource([]);
       }
+      this.isLoading = false;
     })
   }
 
