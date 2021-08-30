@@ -1,0 +1,6 @@
+<div>
+    <span *ngIf="isLoading">
+    <ion-spinner name="dots"></ion-spinner>
+  </span>
+    <span *ngIf="!isLoading">{{buttonLabel}}</span>
+</div>

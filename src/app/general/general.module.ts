@@ -10,6 +10,7 @@ import { GeneralPage } from './general.page';
 import { IndexComponent } from './index/index.component';
 import { MaterialModule } from '../material.module';
 import { AvailabilityCheckComponent } from './availability-check/availability-check.component';
+import { SharedComponentsModule } from '../common/components/components.module';
 
 const COMPONENTS = [
   AvailabilityCheckComponent,
@@ -20,6 +21,7 @@ const COMPONENTS = [
 @NgModule({
   imports: [
     CommonModule,
+    SharedComponentsModule,
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,

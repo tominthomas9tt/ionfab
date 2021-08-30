@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BannerService } from 'src/app/common/services/hybid/banner.service';
 
 @Component({
@@ -10,11 +10,16 @@ export class BannerSliderComponent implements OnInit {
 
   banners;
 
-  bannerSlideOpts= {
+  bannerSlideOpts = {
     initialSlide: 0,
+    preloadImages: true,
+    lazy: false,
     slidesPerView: 1,
-    autoplay: true,
-    loop:true,
+    autoplay: {
+      // delay: 1000,
+      disableOnInteraction: false
+    },
+    loop: true,
   }
 
   constructor(

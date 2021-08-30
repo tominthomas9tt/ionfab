@@ -121,7 +121,9 @@
                                 </ion-row>
                                 <ion-row>
                                     <ion-col>
-                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!signupForm.valid || !agreementAccepted">Proceed
+                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!signupForm.valid || !agreementAccepted">
+                                            <app-button-loading [isLoading]="isSigningup" [label]="'Proceed'">
+                                            </app-button-loading>
                                         </ion-button>
                                     </ion-col>
                                 </ion-row>

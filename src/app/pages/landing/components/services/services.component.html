@@ -12,7 +12,14 @@
                 <div class="title">Services of {{serviceCategoryDetails?.name}}</div>
             </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="isLoading">
+            <ion-col size="12">
+                <div class="center-content">
+                    <ion-spinner name="dots"></ion-spinner>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!isLoading">
             <ion-col size="6" size-md="4" size-lg="2" *ngFor="let service of services" tappable (click)="proceedWithService(service)">
                 <div class="borderWithBackground zoom" style="padding: 10px;">
                     <div class="center-content">

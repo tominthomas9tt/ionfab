@@ -8,6 +8,10 @@ export class BusinessDetails {
 	public businessWebsite?: string;
 	public businessIncorporationDate?: string;
 	public businessOfficePhone?: string;
+	public primaryEmail?: string;
+	public userAlternateEmail?: string;
+	public primaryMobile?: string;
+	public userAlternatePhone?: string;
 	public businessTurnover?: string;
 	public businessEmployeeStrength?: string;
 	public businessOfficeType?: string;
@@ -16,6 +20,21 @@ export class BusinessDetails {
 	public businessRenewalFrequency?: string;
 	public businessRenewalStatus?: string;
 	public businessLastRenewalDate?: string;
+	public professionalLicenseNo?: string;
+	public professionalLicenseDate?: string;
+	public ownVehicle?: number;
+	public hasDrivingLicense?: number;
+	public drivingLicenseValidity?: string;
+	public ref1Name?: string;
+	public ref1Email?: string;
+	public ref1Phone?: string;
+	public ref2Name?: string;
+	public ref2Email?: string;
+	public ref2Phone?: string;
+	public itReturns?: number;
+	public serviceTransportationBy?: string;
+	public pcc?: number;
+	public verificationRating?: string;
 	public businessVerifiedBy?: string;
 	public businessVerifiedDate?: string;
 	public businessRejectionStatus?: string;
@@ -26,4 +45,6 @@ export class BusinessDetails {
 	public blacklistedReason?: string;
 	public panNo?: string;
 	public gstNo?: string;
+	public userAadhaarNo?: string;
+	
 }

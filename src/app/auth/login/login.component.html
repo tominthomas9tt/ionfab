@@ -25,7 +25,9 @@
                                 <br>
                                 <ion-row>
                                     <ion-col>
-                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!loginForm.valid">Sign In
+                                        <ion-button type="submit" color="danger" expand="block" [disabled]="!loginForm.valid">
+                                            <app-button-loading [isLoading]="isSigningin" [label]="'Sign In'">
+                                            </app-button-loading>
                                         </ion-button>
                                     </ion-col>
                                 </ion-row>
@@ -36,7 +38,7 @@
                                 </ion-col>
                                 <ion-col>
                                     <ion-row class="ion-justify-content-end">
-                                        <a [routerLink]="['/auth/sign-up']" float-right>Create account</a>
+                                        New user? <a [routerLink]="['/auth/sign-up']" float-right> Sign Up</a>
                                     </ion-row>
                                 </ion-col>
                             </ion-row>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Invoice } from '../../models/invoice';
 import { Workorder, WorkorderFilter } from '../../models/workorders.model';
 import { isEmpty, jsonToQueryString } from '../../utils/utils';
 
@@ -56,6 +57,10 @@ export class WorkorderService {
     return this.http.put(this.baseUrl + "/accept-work-complete/" + id, detailData);
   }
 
+  generateInvoice(id: number, detailData: Invoice) {
+    return this.http.put(this.baseUrl + "/generate-invoice/" + id, detailData);
+  }
+  
   delete(id: number) {
     return this.http.delete(this.baseUrl + "/" + id);
   }

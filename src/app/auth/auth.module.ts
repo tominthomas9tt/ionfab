@@ -16,6 +16,7 @@ import { AuthInterceptor } from '../common/http-interceptors/auth-interceptor';
 import { SignupComponent } from './signup/signup.component';
 import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
+import { SharedComponentsModule } from '../common/components/components.module';
 
 const COMPONENTS = [
   AuthPage,
@@ -31,6 +32,7 @@ const COMPONENTS = [
 @NgModule({
   imports: [
     CommonModule,
+    SharedComponentsModule,
     AuthPageRoutingModule,
     FormsModule,
     ReactiveFormsModule,

@@ -6,11 +6,13 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { SearchComponent } from './search/search.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
+import { RatingComponent } from './rating/rating.component';
 
 const COMPONENTS = [
   AccountMenuComponent,
   BackComponent,
   NotificationsComponent,
+  RatingComponent,
   SearchComponent
 ];
 

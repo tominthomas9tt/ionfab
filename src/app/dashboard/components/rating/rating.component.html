@@ -1,0 +1,8 @@
+<div>
+    <span *ngFor="let i of [1,2,3,4,5]">
+    <ion-icon name="{{(rate && rate>0 && i<=rate)?filledIcon:blankIcon}}" color="primary" size="large" tappable
+      (click)="changeRate(i)"></ion-icon>
+  </span>
+</div>
+<!-- <ion-icon name="star-half" color="primary" size="large"></ion-icon> -->
+<!-- <ion-icon name="star-outline" color="primary" size="large"></ion-icon> -->

@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
 
   user: LoginUserCredential;
 
+  isSigningin = false;
+
   constructor(private formBuilder: FormBuilder,
     private storage: StorageService,
     private serverAuth: ServerAuthService,
@@ -66,6 +68,7 @@ export class LoginComponent implements OnInit {
   async onSubmit() {
     this.user = this.loginForm.value;
     if (!isEmpty(this.user.userUsername) && !isEmpty(this.user.userPassword)) {
+      this.isSigningin = true;
       this.user.userRoleId = USER_ROLE_ID;
       this.serverAuth.getUsers(this.user).subscribe((data: Httpresponse) => {
         if (data.status) {
@@ -85,6 +88,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.errorNotifier.showHttpErrors(data.error);
         }
+        this.isSigningin = false;
       });
     } else {
       this.notificationService.showNotification("Please enter valid credentials.");

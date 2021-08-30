@@ -23,7 +23,9 @@
                                     </ion-col>
                                     <ion-col size="6">
                                         <!-- <ion-item lines="none"> -->
-                                        <ion-button type="submit" color="danger" [disabled]="!dataForm.valid">Find
+                                        <ion-button type="submit" color="danger" [disabled]="!dataForm.valid">
+                                            <app-button-loading [isLoading]="isFinding" [label]="'Find'">
+                                            </app-button-loading>
                                         </ion-button>
                                         <!-- </ion-item> -->
                                     </ion-col>
@@ -31,34 +33,35 @@
                                 <br>
                                 <ion-row>
                                     <span>
-                    <ion-label *ngIf="pincode && vendorsFound && vendorsFound > 0" color="success" class="ion-padding ion-text-center">
-                      {{vendorsFound}} vendors found in {{pincode?.taluk}}.
-                    </ion-label>
-                    <ion-label *ngIf="pincode && vendorsFound && vendorsFound == 0" color="danger" class="ion-padding ion-text-center">
-                      No vendors found in {{pincode?.taluk}}.
-                    </ion-label>
-                  </span>
+                                        <ion-label *ngIf="pincode && vendorsFound && vendorsFound > 0" color="success"
+                                            class="ion-padding ion-text-center">
+                                            {{vendorsFound}} vendors found in {{pincode?.taluk}}.
+                                        </ion-label>
+                                        <ion-label *ngIf="pincode && vendorsFound && vendorsFound == 0" color="danger"
+                                            class="ion-padding ion-text-center">
+                                            No vendors found in {{pincode?.taluk}}.
+                                        </ion-label>
+                                    </span>
                                 </ion-row>
                             </form>
                             <ion-row>
                                 <ion-col>
-                                    <ion-button (click)="signIn()" expand="block" fill="clear">
+                                    <ion-button (click)="signIn()" expand="block">
                                         Sign In
                                     </ion-button>
                                 </ion-col>
-                                <ion-col>
-                                    <ion-button (click)="signUp()" expand="block">
+                                <!-- <ion-col>
+                                    <ion-button (click)="signUp()" expand="block" fill="clear">
                                         Sign Up
                                     </ion-button>
-                                </ion-col>
+                                </ion-col> -->
                             </ion-row>
                             <ion-row>
                                 <ion-col>
-                                </ion-col>
-                                <ion-col class="ion-text-center">
                                     <a routerLink="/">Home</a>
                                 </ion-col>
-                                <ion-col>
+                                <ion-col class="ion-text-right">
+                                    New user? <a tappable (click)="signUp()">Sign Up</a>
                                 </ion-col>
                             </ion-row>
                         </ion-card-content>

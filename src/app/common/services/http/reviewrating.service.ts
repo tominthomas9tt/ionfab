@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Reviewrating, ReviewratingFilter } from '../../models/reviewratings.model';
 import { Tender, TenderFilter } from '../../models/tenders.model';
 import { isEmpty, jsonToQueryString } from '../../utils/utils';
 
@@ -8,14 +9,14 @@ import { isEmpty, jsonToQueryString } from '../../utils/utils';
 @Injectable({
   providedIn: 'root'
 })
-export class TenderService {
+export class ReviewRatingService {
 
-  baseUrl = environment.apiBaseUrl + 'tenders';
+  baseUrl = environment.apiBaseUrl + 'reviewratings';
 
   constructor(private http: HttpClient) {
   }
 
-  getAll(queryParams: TenderFilter) {
+  getAll(queryParams: ReviewratingFilter) {
     let urlQueryParams = "";
     if (!isEmpty(queryParams)) {
       urlQueryParams = jsonToQueryString(queryParams)
@@ -28,23 +29,11 @@ export class TenderService {
     return this.http.get(this.baseUrl + "/" + id);
   }
 
-  create(detailData: Tender) {
+  create(detailData: Reviewrating) {
     return this.http.post(this.baseUrl + "", detailData);
   }
 
-  inspectionPaymentSuccess(id: number, detailData: Tender) {
-    return this.http.put(this.baseUrl + "/inspection/payment-success/" + id, detailData);
-  }
-
-  finalPaymentCompleted(id: number, detailData: Tender) {
-    return this.http.put(this.baseUrl + "/final-payment-success/" + id, detailData);
-  }
-
-  triggerManualConnection(tenderId: number) {
-    return this.http.put(this.baseUrl + "/trigger-connection/" + tenderId, {});
-  }
-
-  update(id: number, detailData: Tender) {
+  update(id: number, detailData: Reviewrating) {
     return this.http.put(this.baseUrl + "/" + id, detailData);
   }
 

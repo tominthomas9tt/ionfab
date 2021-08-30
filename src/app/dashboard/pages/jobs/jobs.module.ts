@@ -16,11 +16,13 @@ import { VendorComponent } from './components/vendor/vendor.component';
 import { BackComponent } from '../../components/back/back.component';
 import { ComponentsModule } from '../../components/components.module';
 import { SharedComponentsModule } from 'src/app/common/components/components.module';
+import { ReviewComponent } from './components/review/review.component';
 
 const COMPONENTS = [
   HomeComponent,
   DetailsComponent,
   JobsPage,
+  ReviewComponent,
   QuotationComponent,
   VendorComponent
 ];

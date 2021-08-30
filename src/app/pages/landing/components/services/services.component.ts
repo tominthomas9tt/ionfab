@@ -17,6 +17,8 @@ export class ServicesComponent implements OnInit {
   bannerDetails;
   services;
 
+  isLoading = false;
+
   constructor(
     private router: Router,
     private activatedRoutes: ActivatedRoute,
@@ -47,12 +49,14 @@ export class ServicesComponent implements OnInit {
   }
 
   getAllServices() {
+    this.isLoading = true;
     this.servicesService.getAllServices({ parentServiceId: 0, serviceCategoryId: this.serviceCategoryId }).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.services = dataResponse.data;
       } else {
         console.log(dataResponse.error)
       }
+      this.isLoading = false;
     })
   }
 

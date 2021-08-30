@@ -32,19 +32,15 @@
                                     <ion-col>: {{detailData?.date|date}}</ion-col>
                                 </ion-row>
                                 <ion-row>
-                                    <ion-col class="head">Status</ion-col>
-                                    <ion-col>: {{detailData?.statusName}}</ion-col>
-                                </ion-row>
-                                <ion-row>
                                     <ion-col class="head">Job Date</ion-col>
                                     <ion-col>: {{detailData?.jobDate|date}}</ion-col>
                                 </ion-row>
-                            </ion-col>
-                            <ion-col size="12" size-md="6">
                                 <ion-row>
                                     <ion-col class="head">Job Time</ion-col>
                                     <ion-col>: {{detailData?.jobTime}}</ion-col>
                                 </ion-row>
+                            </ion-col>
+                            <ion-col size="12" size-md="6">
                                 <ion-row>
                                     <ion-col class="head">Service</ion-col>
                                     <ion-col>: {{detailData?.serviceName}}</ion-col>
@@ -60,63 +56,107 @@
                             </ion-col>
                         </ion-row>
                         <ion-row>
+                            <ion-col class="head">Status :
+                                <ion-label color="primary">
+                                    {{(status?.customerMessage)?status?.customerMessage:status?.message}}
+                                    <div *ngIf="status?.id == 16 && workorder && workorder?.isSuspected && workorder?.isSuspected==2">
+                                        Workorder changes has been quoted. Accept changes to proceed.
+                                    </div>
+                                </ion-label>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
                             <ion-col size="12">
                                 <small><i>Last updated:</i> {{dateFormat(detailData?.updatedAt)}}</small>
                             </ion-col>
                         </ion-row>
                         <!-- {{detailData|json}} -->
-                    </div>
-                    <hr>
-                    <div class="borderWithBackground ion-padding shadow" *ngIf="invoices && invoices.length>0">
-                        <ion-row class="section-title">
-                            <ion-col size="12">
-                                <ion-card-subtitle>Invoice Details</ion-card-subtitle>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col size="12">
-                                <div style="overflow-x: auto;">
-                                    <table mat-table [dataSource]="invoiceDataSource" class="mat-elevation-z8" matSort>
-                                        <ng-container matColumnDef="slno">
-                                            <th mat-header-cell *matHeaderCellDef> Sl No </th>
-                                            <td mat-cell *matCellDef="let row;let i = index;"> {{i+1}} </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="docDtlsNo">
-                                            <th mat-header-cell *matHeaderCellDef>Invoice No</th>
-                                            <td mat-cell *matCellDef="let row"> {{row?.docDtlsNo}} </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="docDtlsDt">
-                                            <th mat-header-cell *matHeaderCellDef>Invoice date</th>
-                                            <td mat-cell *matCellDef="let row"> {{row?.docDtlsDt|date}} </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="amount">
-                                            <th mat-header-cell *matHeaderCellDef>Amount</th>
-                                            <td mat-cell *matCellDef="let row">
-                                                {{row?.valDtlsTotInvVal|indianCurrency}} </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="status">
-                                            <th mat-header-cell *matHeaderCellDef>Status</th>
-                                            <td mat-cell *matCellDef="let row"> {{row?.status}} </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="actions">
-                                            <th mat-header-cell *matHeaderCellDef>Actions</th>
-                                            <td mat-cell *matCellDef="let row">
-                                                <ion-button (click)="makePaymentFor(invoice)" fill="clear" shape="round" *ngIf="row.status!=3">
-                                                    Pay
-                                                </ion-button>
-                                            </td>
-                                        </ng-container>
-                                        <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
-                                        <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;">
-                                        </tr>
-                                        <tr class="mat-row" *matNoDataRow>
-                                            <td class="mat-cell" colspan="6">No records found.</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                        <!-- {{invoices|json}} -->
+                        <div *ngIf="detailData?.status>21">
+                            <ion-row class="section-title">
+                                <ion-col size="12">
+                                    <ion-card-subtitle>Review Details</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="!ratingReview">
+                                <ion-col size="12">
+                                    <p>
+                                        <ion-label color="primary">To close the job please complete the following review form so that we can serve you better in future.</ion-label>
+                                        <ion-button (click)="presentRatinReviewWindow()" shape="round">
+                                            Rate and review
+                                        </ion-button>
+                                    </p>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Rating</ion-col>
+                                        <ion-col>: {{ratingReview?.rateOverall}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                                <ion-col size="12" size-md="6">
+                                    <ion-row>
+                                        <ion-col class="head">Review</ion-col>
+                                        <ion-col>: {{ratingReview?.review}}</ion-col>
+                                    </ion-row>
+                                </ion-col>
+                                <!-- {{ratingReview|json}} -->
+                            </ion-row>
+                        </div>
+                        <div *ngIf="invoices && invoices.length>0">
+                            <ion-row class="section-title">
+                                <ion-col size="12">
+                                    <ion-card-subtitle>Invoice Details</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="12">
+                                    <div style="overflow-x: auto;">
+                                        <table mat-table [dataSource]="invoiceDataSource" class="mat-elevation-z8" matSort>
+                                            <ng-container matColumnDef="slno">
+                                                <th mat-header-cell *matHeaderCellDef> Sl No </th>
+                                                <td mat-cell *matCellDef="let row;let i = index;"> {{i+1}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="docDtlsNo">
+                                                <th mat-header-cell *matHeaderCellDef>Invoice No</th>
+                                                <td mat-cell *matCellDef="let row"> {{row?.docDtlsNo}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="docDtlsDt">
+                                                <th mat-header-cell *matHeaderCellDef>Invoice date</th>
+                                                <td mat-cell *matCellDef="let row"> {{row?.docDtlsDt|date}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="amount">
+                                                <th mat-header-cell *matHeaderCellDef>Amount</th>
+                                                <td mat-cell *matCellDef="let row">
+                                                    {{row?.valDtlsTotInvVal|indianCurrency}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="status">
+                                                <th mat-header-cell *matHeaderCellDef>Status</th>
+                                                <td mat-cell *matCellDef="let row">
+                                                    <span *ngIf="row?.status && row?.status==3" style="color: green;">Completed</span>
+                                                    <span *ngIf="row?.status && row?.status==2" style="color: red;">Pending</span>
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="actions">
+                                                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                                                <td mat-cell *matCellDef="let row">
+                                                    <ion-button (click)="makePaymentFor(row)" shape="round" *ngIf="row.status!=3">
+                                                        Pay
+                                                    </ion-button>
+                                                </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns;">
+                                            </tr>
+                                            <tr class="mat-row" *matNoDataRow>
+                                                <td class="mat-cell" colspan="6">No records found.</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                            <!-- {{invoices|json}} -->
+                        </div>
                     </div>
                     <div class="borderWithBackground ion-padding shadow up-arrow" *ngIf="workorder">
                         <ion-row class="section-title">
@@ -172,12 +212,23 @@
                             </ion-col>
                         </ion-row>
                         <!-- {{workorder|json}} -->
-                        <ion-button *ngIf="workorder && workorder.isSuspected==2" (click)="acceptWorkOrderChanges()" expand="block" fill="clear" shape="round">
-                            Acccept Changes
-                        </ion-button>
-                        <ion-button *ngIf="workorder && workorder.isCompleted==2 && workorder.isCompletedAccepted==1" (click)="acceptWorkCompletion()" expand="block" fill="clear" shape="round">
-                            Acccept work completion
-                        </ion-button>
+                        <div *ngIf="workorder && workorder.isSuspected==2">
+                            <ion-label color="primary">Work order amount has been changed.
+                                <ion-button (click)="acceptWorkOrderChanges()" shape="round">
+                                    Acccept Changes
+                                </ion-button> to proceed.
+                            </ion-label>
+
+                        </div>
+                        <div *ngIf="workorder && workorder.isCompleted==2 && workorder.isCompletedAccepted==1">
+                            <ion-label color="primary">Work has been marked completed by the vendor.
+                                <ion-button (click)="acceptWorkCompletion()" shape="round">
+                                    Acccept work completion
+                                </ion-button> to initiate final settlements.
+                            </ion-label>
+
+                        </div>
+
                     </div>
                     <div class="borderWithBackground ion-padding shadow up-arrow" *ngIf="(quotations && quotations.length>0) || selectedQuotation">
                         <ion-row class="section-title">
@@ -240,7 +291,8 @@
                             <!-- {{selectedQuotation|json}} -->
                         </div>
                     </div>
-                    <div class="borderWithBackground ion-padding shadow up-arrow" *ngIf="connectedVendors && connectedVendors.length>0 && !selectedQuotation && detailData.status>=12">
+                    <div class="borderWithBackground ion-padding shadow up-arrow">
+                        <!-- *ngIf="connectedVendors && connectedVendors.length>0 && !selectedQuotation && detailData.status>=12" -->
                         <ion-row class="section-title">
                             <ion-col size="12">
                                 <ion-card-subtitle>Connected Vendors</ion-card-subtitle>
@@ -260,9 +312,16 @@
                         </ion-row>
                         <ion-row>
                             <ion-col size="12">
-                                <ion-button *ngIf="detailData.status==12" (click)="startAcceptingQuotations()" expand="block" fill="clear" shape="round">
-                                    Accept Quotations
-                                </ion-button>
+                                <div *ngIf="detailData?.status==12 && readyVendors && readyVendors?.length>0">
+                                    <ion-label color="primary">
+                                        <b>{{(readyVendors && readyVendors?.length)?readyVendors?.length:0}}</b> ready vendor(s).
+                                    </ion-label>
+                                    You'll get connected automatically upon atleast 5 ready vendors
+                                    <p>OR</p>
+                                    <ion-button (click)="triggerManualQuotations()" shape="round">
+                                        Get connected
+                                    </ion-button>
+                                </div>
                             </ion-col>
                         </ion-row>
                         <!-- {{connectedVendors|json}} -->

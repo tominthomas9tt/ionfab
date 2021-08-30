@@ -13,6 +13,7 @@ import { IonicModule } from '@ionic/angular';
 import { PartnerComponent } from './partner/partner.component';
 import { CustomerMenuComponent } from './customer-menu/customer-menu.component';
 import { LandingSearchServiceComponent } from './landing-search-service/landing-search-service.component';
+import { SharedComponentsModule } from 'src/app/common/components/components.module';
 
 const COMPONENTS = [
   AssociateAgreementComponent,
@@ -31,6 +32,7 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
+    SharedComponentsModule,
     RouterModule,
     IonicModule,
     CommonModule

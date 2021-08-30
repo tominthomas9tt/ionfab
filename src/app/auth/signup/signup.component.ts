@@ -30,6 +30,7 @@ export class SignupComponent implements OnInit {
   pincode: Pincode;
 
   isSubmitted = false;
+  isSigningup = false;
 
   agreementAccepted = false;
 
@@ -144,6 +145,7 @@ export class SignupComponent implements OnInit {
     this.user = this.signupForm.value;
     this.user.isPrimary = "2";
     if (!isEmpty(this.user.userName) && !isEmpty(this.user.userUsername) && !isEmpty(this.user.userPassword)) {
+      this.isSigningup = true;
       this.user.userRoleId = "7";
       this.serverauth.createUser(this.user).subscribe((responseData: Httpresponse) => {
         if (responseData.status) {
@@ -155,6 +157,7 @@ export class SignupComponent implements OnInit {
         } else {
           this.errorNotifier.showHttpErrors(responseData.error);
         }
+        this.isSigningup = false;
       });
     } else {
       this.notificationService.showNotification("Please enter valid credentials.");

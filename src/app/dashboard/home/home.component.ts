@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   tenderData: Tender;
 
   vendorsFound = 0;
-
+ 
   dataForm: FormGroup;
 
   isSubmitted: boolean = false;
@@ -82,7 +82,6 @@ export class HomeComponent implements OnInit {
   count;
 
   constructor(
-    private invoiceService: InvoiceService,
     private searchService: SearchService,
     private paymentService: LocalPaymentService,
     private storedUserService: StoredUserService,
@@ -277,6 +276,7 @@ export class HomeComponent implements OnInit {
           status: (dataSample?.inspectionRequired) ? 9 : 12
         }
         this.tenderService.create(detailData).subscribe((dataResponse: Httpresponse) => {
+          console.log(dataResponse)
           if (dataResponse.status) {
             this.tenderData = dataResponse.data[0];
             if (this.inspectionRequired) {

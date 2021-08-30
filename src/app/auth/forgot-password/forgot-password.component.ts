@@ -21,6 +21,8 @@ export class ForgotPasswordComponent implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
 
+  isLoading = false;
+
   user: ForgotUser = {
     userUsername: ""
   };
@@ -44,6 +46,7 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmit() {
     this.user = this.forogotPasswordForm.value;
     if (!isEmpty(this.user.userUsername)) {
+      this.isLoading = true;
       this.serverauth.forgotPassword(this.user).subscribe((responseData: Httpresponse) => {
         if (responseData.status) {
           this.notificationService.showNotification("Password reset code sent successfully to your email.");
@@ -52,6 +55,7 @@ export class ForgotPasswordComponent implements OnInit {
         } else {
           console.log(responseData.error);
         }
+        this.isLoading = false;
       });
     } else {
       this.notificationService.showNotification("Please enter valid credentials.");

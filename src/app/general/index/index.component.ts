@@ -61,7 +61,6 @@ export class IndexComponent implements OnInit {
   navigationDecider() {
     this.storedUserService.getUser().then((data) => {
       this.user = data;
-      console.log(this.user)
       if (this.user) {
         this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
       } else {
