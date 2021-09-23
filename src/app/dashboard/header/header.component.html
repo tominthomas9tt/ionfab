@@ -12,6 +12,11 @@
             </ion-row>
         </div> -->
         <ion-buttons slot="end">
+            <ion-button (click)="navigateHome()" title="Home">
+                <ion-icon name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
             <ion-button fill="fill" (click)="presentSearchModal()" shape="round">
                 <ion-icon color="primary" name="search"></ion-icon>
                 <ion-label color="primary" class="ion-hide-sm-down">Search</ion-label>
@@ -20,9 +25,9 @@
         <ion-buttons slot="end">
             <app-address></app-address>
         </ion-buttons>
-        <ion-buttons slot="end">
+        <!-- <ion-buttons slot="end">
             <app-notifications></app-notifications>
-        </ion-buttons>
+        </ion-buttons> -->
         <ion-buttons slot="end">
             <ion-button (click)="presentAccountMenu()" title="Account">
                 <ion-icon name="person"></ion-icon>

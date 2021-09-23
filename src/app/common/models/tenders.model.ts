@@ -5,6 +5,8 @@ export class Tender{
 	public id?: number;
 			
 	public tenderNo?: string;
+
+	public title?: string;
 			
 	public userId?: number;
 			
@@ -96,6 +98,8 @@ export class TenderFilter {
 	public id?: number;
 			
 	public tenderNo?: string;
+
+	public title?: string;
 			
 	public userId?: number;
 			

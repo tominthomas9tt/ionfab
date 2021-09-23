@@ -4,9 +4,10 @@ import { DetailComponent } from './detail/detail.component';
 import { ModifyComponent } from './modify/modify.component';
 import { AddressComponent } from './address.component';
 import { AddressesComponent } from './addresses/addresses.component';
-import { AddressService } from './address.service';
+import { AddressService } from '../../../common/services/local/address.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 const COMPONENTS=[
   AddressesComponent,
@@ -22,7 +23,8 @@ const COMPONENTS=[
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule
+    IonicModule,
+    IonicSelectableModule
   ],
   providers:[
     AddressService

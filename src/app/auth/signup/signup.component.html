@@ -5,31 +5,35 @@
                 <ion-col align-self-center size-md="6" size-lg="5" size-xs="12" class="ion-no-padding">
                     <ion-card class="ion-no-padding">
                         <ion-card-header class="ion-text-center">
-                            <ion-card-title>Sign up</ion-card-title>
-                            <p>Let’s set up your account</p>
+                            <ion-card-title>Create Account</ion-card-title>
+                            <p>Lets get you started!</p>
                         </ion-card-header>
                         <ion-card-content>
                             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
                                 <ion-row>
                                     <ion-col size="12" size-md="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Name *</ion-label>
-                                            <ion-input type="text" placeholder="your name" formControlName="userName">
+                                            <ion-label position="stacked" color="primary">Name *</ion-label>
+                                            <ion-input type="text" formControlName="userName">
                                             </ion-input>
                                         </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.userName.errors?.required" color="danger" class="ion-padding">
+                                            Name is required.</ion-label>
                                     </ion-col>
                                     <ion-col size="12" size-md="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Mobile *</ion-label>
+                                            <ion-label position="stacked" color="primary">Mobile *</ion-label>
                                             <ion-input type="number" formControlName="userPrimaryPhone">
                                             </ion-input>
                                         </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.number.errors?.required" color="danger" class="ion-padding">
+                                            Mobile is required.</ion-label>
                                     </ion-col>
                                 </ion-row>
                                 <ion-row>
                                     <ion-col size="12" size-md="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Addressline 1 *</ion-label>
+                                            <ion-label position="stacked" color="primary">Addressline 1 *</ion-label>
                                             <ion-input type="text" formControlName="addressline1">
                                             </ion-input>
                                         </ion-item>
@@ -38,7 +42,7 @@
                                     </ion-col>
                                     <ion-col size="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Addressline 2
+                                            <ion-label position="stacked" color="primary">Addressline 2
                                             </ion-label>
                                             <ion-input type="text" formControlName="addressline2">
                                             </ion-input>
@@ -46,7 +50,7 @@
                                     </ion-col>
                                     <ion-col size="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Pincode *</ion-label>
+                                            <ion-label position="stacked" color="primary">Pincode *</ion-label>
                                             <ion-input type="number" formControlName="pin" (ionChange)="pincodeChanged()"></ion-input>
                                         </ion-item>
                                         <ion-label *ngIf="isSubmitted && errorControl.pin.errors?.required" color="danger" class="ion-padding">
@@ -56,31 +60,37 @@
                                     </ion-col>
                                     <ion-col size="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Municipality *</ion-label>
-                                            <ion-input type="text" formControlName="street"></ion-input>
-                                        </ion-item>
-                                        <ion-label *ngIf="isSubmitted && errorControl.street.errors?.required" color="danger" class="ion-padding">
-                                            Municipality is required.</ion-label>
-                                    </ion-col>
-                                    <ion-col size="6">
-                                        <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">District *</ion-label>
-                                            <ion-input type="text" formControlName="city"></ion-input>
-                                        </ion-item>
-                                        <ion-label *ngIf="isSubmitted && errorControl.city.errors?.required" color="danger" class="ion-padding">
-                                            District is required.</ion-label>
-                                    </ion-col>
-                                    <ion-col size="6">
-                                        <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">State *</ion-label>
-                                            <ion-input type="text" formControlName="state"></ion-input>
+                                            <ion-label position="stacked" color="primary">State *</ion-label>
+                                            <!-- <ion-input type="text" formControlName="state"></ion-input> -->
+                                            <ionic-selectable formControlName="state" [items]="states" itemValueField="id" itemTextField="name" [canSearch]="true">
+                                            </ionic-selectable>
                                         </ion-item>
                                         <ion-label *ngIf="isSubmitted && errorControl.state.errors?.required" color="danger" class="ion-padding">
                                             State is required.</ion-label>
                                     </ion-col>
                                     <ion-col size="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Landmark
+                                            <ion-label position="stacked" color="primary">District *</ion-label>
+                                            <!-- <ion-input type="text" formControlName="city"></ion-input> -->
+                                            <ionic-selectable formControlName="city" [items]="districts" itemValueField="id" itemTextField="name" [canSearch]="true">
+                                            </ionic-selectable>
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.city.errors?.required" color="danger" class="ion-padding">
+                                            District is required.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="stacked" color="primary">Municipality *</ion-label>
+                                            <ionic-selectable formControlName="street" [items]="municipalities" itemValueField="id" itemTextField="name" [canSearch]="true">
+                                            </ionic-selectable>
+                                            <!-- <ion-input type="text" formControlName="street"></ion-input> -->
+                                        </ion-item>
+                                        <ion-label *ngIf="isSubmitted && errorControl.street.errors?.required" color="danger" class="ion-padding">
+                                            Municipality is required.</ion-label>
+                                    </ion-col>
+                                    <ion-col size="6">
+                                        <ion-item class="ion-no-padding">
+                                            <ion-label position="stacked" color="primary">Landmark
                                             </ion-label>
                                             <ion-input type="text" formControlName="landmark"></ion-input>
                                         </ion-item>
@@ -89,14 +99,14 @@
                                 <ion-row>
                                     <ion-col size="12" size-md="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Email *</ion-label>
+                                            <ion-label position="stacked" color="primary">Email *</ion-label>
                                             <ion-input type="text" formControlName="userUsername">
                                             </ion-input>
                                         </ion-item>
                                     </ion-col>
                                     <ion-col size="12" size-md="6">
                                         <ion-item class="ion-no-padding">
-                                            <ion-label position="floating" color="primary">Password *</ion-label>
+                                            <ion-label position="stacked" color="primary">Password *</ion-label>
                                             <ion-input [type]="passwordType" formControlName="userPassword">
                                             </ion-input>
                                             <ion-icon class="suffix-icon" [name]="passwordIcon" slot="end" tappable (click)='hideShowPassword()'></ion-icon>

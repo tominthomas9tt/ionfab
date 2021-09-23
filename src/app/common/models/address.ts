@@ -4,6 +4,9 @@ export class Address {
 	public addressline1?: string;
 	public addressline2?: string;
 	public street?: string;
+
+	public municipalityId?: number;
+	
 	public city?: string;
 	public state?: string;
 	public pin?: string;
@@ -23,6 +26,8 @@ export class AddressFilter {
 	public addressline2?: string;
 
 	public street?: string;
+
+	public municipalityId?: number;
 
 	public city?: string;
 

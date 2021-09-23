@@ -38,6 +38,38 @@
             <ion-row>
                 <ion-col size="6">
                     <ion-item>
+                        <ion-label position="stacked" color="primary">State *</ion-label>
+                        <!-- <ion-input type="text" formControlName="state" placeholder="State"></ion-input> -->
+                        <ionic-selectable formControlName="state" [items]="states" itemValueField="id" itemTextField="name" [canSearch]="true">
+                        </ionic-selectable>
+                    </ion-item>
+                    <ion-label *ngIf="isSubmitted && errorControl.state.errors?.required" color="danger" class="ion-padding">
+                        State is required.</ion-label>
+                </ion-col>
+                <ion-col size="6">
+                    <ion-item>
+                        <ion-label position="stacked" color="primary">District *</ion-label>
+                        <!-- <ion-input type="text" formControlName="city" placeholder="District"></ion-input> -->
+                        <ionic-selectable formControlName="city" [items]="districts" itemValueField="id" itemTextField="name" [canSearch]="true">
+                        </ionic-selectable>
+                    </ion-item>
+                    <ion-label *ngIf="isSubmitted && errorControl.city.errors?.required" color="danger" class="ion-padding">
+                        City is required.</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="6">
+                    <ion-item>
+                        <ion-label position="stacked" color="primary">Municipality *</ion-label>
+                        <!-- <ion-input type="text" formControlName="street" placeholder="Municipality"></ion-input> -->
+                        <ionic-selectable formControlName="street" [items]="municipalities" itemValueField="id" itemTextField="name" [canSearch]="true">
+                        </ionic-selectable>
+                    </ion-item>
+                    <ion-label *ngIf="isSubmitted && errorControl.street.errors?.required" color="danger" class="ion-padding">
+                        Municipality is required.</ion-label>
+                </ion-col>
+                <ion-col size="6">
+                    <ion-item>
                         <ion-label position="stacked" color="primary">Pincode *</ion-label>
                         <ion-input type="text" formControlName="pin" (ionChange)="pincodeChanged()" placeholder="Pincode"></ion-input>
                     </ion-item>
@@ -53,32 +85,6 @@
                         <ion-label position="stacked" color="primary">Landmark</ion-label>
                         <ion-input type="text" formControlName="landmark" placeholder="Landmark"></ion-input>
                     </ion-item>
-                </ion-col>
-                <ion-col size="6">
-                    <ion-item>
-                        <ion-label position="stacked" color="primary">Municipality *</ion-label>
-                        <ion-input type="text" formControlName="street" placeholder="Municipality"></ion-input>
-                    </ion-item>
-                    <ion-label *ngIf="isSubmitted && errorControl.street.errors?.required" color="danger" class="ion-padding">
-                        Street is required.</ion-label>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col size="6">
-                    <ion-item>
-                        <ion-label position="stacked" color="primary">District *</ion-label>
-                        <ion-input type="text" formControlName="city" placeholder="District"></ion-input>
-                    </ion-item>
-                    <ion-label *ngIf="isSubmitted && errorControl.city.errors?.required" color="danger" class="ion-padding">
-                        City is required.</ion-label>
-                </ion-col>
-                <ion-col size="6">
-                    <ion-item>
-                        <ion-label position="stacked" color="primary">State *</ion-label>
-                        <ion-input type="text" formControlName="state" placeholder="State"></ion-input>
-                    </ion-item>
-                    <ion-label *ngIf="isSubmitted && errorControl.state.errors?.required" color="danger" class="ion-padding">
-                        State is required.</ion-label>
                 </ion-col>
             </ion-row>
             <ion-row>

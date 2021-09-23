@@ -73,18 +73,18 @@ export class LoginComponent implements OnInit {
       this.serverAuth.getUsers(this.user).subscribe((data: Httpresponse) => {
         if (data.status) {
           // let userData = data?.data[0];
-          // if (userData[0] && userData[0]?.userIsUsernameVerified) {
           let user = data.data[0].user;
-          let tokens = { authToken: data.data[0].token, refreshToken: data.data[0].refreshToken };
           this.storage.setData(USER_KEY, user);
-          this.storage.setData(TOKEN_KEY, tokens).then((status) => {
-            if (status) {
-              this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
-            }
-          })
-          // } else {
-          //   this.router.navigateByUrl("/auth/verify-user", { replaceUrl: true });
-          // }
+          if (user && user?.userIsUsernameVerified == "true") {
+            let tokens = { authToken: data.data[0].token, refreshToken: data.data[0].refreshToken };
+            this.storage.setData(TOKEN_KEY, tokens).then((status) => {
+              if (status) {
+                this.router.navigateByUrl("/dashboard/home", { replaceUrl: true });
+              }
+            })
+          } else {
+            this.router.navigateByUrl("/auth/verify-user", { replaceUrl: true });
+          }
         } else {
           this.errorNotifier.showHttpErrors(data.error);
         }

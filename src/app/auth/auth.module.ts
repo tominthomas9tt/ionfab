@@ -17,6 +17,7 @@ import { SignupComponent } from './signup/signup.component';
 import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
 import { SharedComponentsModule } from '../common/components/components.module';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 const COMPONENTS = [
   AuthPage,
@@ -35,6 +36,7 @@ const COMPONENTS = [
     SharedComponentsModule,
     AuthPageRoutingModule,
     FormsModule,
+    IonicSelectableModule,
     ReactiveFormsModule,
     IonicModule
   ],

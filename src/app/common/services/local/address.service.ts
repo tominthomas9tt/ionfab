@@ -25,6 +25,9 @@ export class AddressService {
   isAddressPresent = new Subject<boolean>();
   readonly defaultAddressSource = this._defaultAddress.asObservable();
 
+  private _openAddressModal = new BehaviorSubject<boolean>(false);
+  readonly openAddressModalSource = this._openAddressModal.asObservable();
+
   constructor(
     private storedUserService: StoredUserService,
     private addressHttpService: AddressHttpService,
@@ -79,5 +82,13 @@ export class AddressService {
 
   notify(message = "Something went wrong") {
     this.notificationService.showNotification(message);
+  }
+
+  openAddressModal() {
+    this._openAddressModal.next(true);
+  }
+
+  closeAddressModal() {
+    this._openAddressModal.next(false);
   }
 }

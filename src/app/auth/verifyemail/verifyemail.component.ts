@@ -38,12 +38,14 @@ export class VerifyemailComponent implements OnInit {
     // });
     this.storedUserService.getUser().then((user) => {
       this.user = user;
-      this.email = user.userUsername;
+      this.email = user?.userUsername;
       // this.mailForm.patchValue({
       //   userPrimaryEmail: this.user.userUsername
       // })
-      if (this.user.userIsUsernameVerified == "false") {
-        this.sentVerification();
+
+      /* Auto sent verification mail if username is not already verified */
+      if (this.user?.userIsUsernameVerified == "false") {
+        // this.sentVerification();
       }
     });
     this.otpForm = this.formBuilder.group({

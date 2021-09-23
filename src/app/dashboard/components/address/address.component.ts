@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { StoreService } from 'src/app/common/services/local/store.service';
-import { AddressService } from './address.service';
+import { AddressService } from '../../../common/services/local/address.service';
 import { AddressesComponent } from './addresses/addresses.component';
 import { ModifyComponent } from './modify/modify.component';
 
@@ -26,6 +26,15 @@ export class AddressComponent implements OnInit {
 
   ngOnInit() {
     this.initiateValues();
+    this.subscribeToOpenModal();
+  }
+
+  subscribeToOpenModal() {
+    this.addressService.openAddressModalSource.subscribe((data) => {
+      if (data == true) {
+        this.openAddresses();
+      }
+    })
   }
 
   initiateValues() {
@@ -53,7 +62,6 @@ export class AddressComponent implements OnInit {
 
   shareDefaultAddress() {
     this.STORE.setDefaultAddress(this.defaultAddress).then((data) => {
-
     });
   }
 
@@ -67,6 +75,7 @@ export class AddressComponent implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data) {
+      this.addressService.closeAddressModal();
     }
   }
 
@@ -77,7 +86,7 @@ export class AddressComponent implements OnInit {
       cssClass: '',
       componentProps: {
         addressEditing: editAddress,
-        isDismissable: false
+        // isDismissable: false
       }
     });
     await modal.present();

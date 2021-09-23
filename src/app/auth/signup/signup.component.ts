@@ -6,8 +6,11 @@ import { Patterns } from 'src/app/common/configs/index.config';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { Pincode, PincodeFilter } from 'src/app/common/models/pincodes.model';
 import { SignupUser } from 'src/app/common/models/signupuser';
+import { DistrictService } from 'src/app/common/services/http/district.service';
+import { MunicipalityService } from 'src/app/common/services/http/municipality.service';
 import { PincodeService } from 'src/app/common/services/http/pincodes.service';
 import { ServerAuthService } from 'src/app/common/services/http/serverauth.service';
+import { StateService } from 'src/app/common/services/http/state.service';
 import { ErrorNotifier } from 'src/app/common/services/local/errornotifier';
 import { NotificationService } from 'src/app/common/services/local/notification.service';
 import { StoredUserService } from 'src/app/common/services/local/storeduser.service';
@@ -28,6 +31,9 @@ export class SignupComponent implements OnInit {
 
   pincodeIn;
   pincode: Pincode;
+  municipalities;
+  districts;
+  states;
 
   isSubmitted = false;
   isSigningup = false;
@@ -45,12 +51,16 @@ export class SignupComponent implements OnInit {
     userPassword: "",
   };
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private districtService: DistrictService,
+    private formBuilder: FormBuilder,
     private pincodeService: PincodeService,
     private serverauth: ServerAuthService,
     private route: ActivatedRoute,
     private router: Router,
     public modalController: ModalController,
+    private municipalityService: MunicipalityService,
+    private stateService: StateService,
     private storedUser: StoredUserService,
     private errorNotifier: ErrorNotifier,
     private notificationService: NotificationService) { }
@@ -76,7 +86,10 @@ export class SignupComponent implements OnInit {
       this.signupForm.patchValue({
         pin: this.pincodeIn
       })
-    }
+    } 
+    this.getMunicipalities();
+    this.getDistricts();
+    this.getStates();
     this.getPincodeDetails(this.pincodeIn);
   }
 
@@ -85,9 +98,33 @@ export class SignupComponent implements OnInit {
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
+  getStates() {
+    this.stateService.getAll({ status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.states = dataResponse.data;
+      }
+    })
+  }
+
+  getDistricts() {
+    this.districtService.getAll({ status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.districts = dataResponse.data;
+      }
+    })
+  }
+
+  getMunicipalities() {
+    this.municipalityService.getAll({ status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.municipalities = dataResponse.data;
+      }
+    })
+  }
+
   pincodeChanged() {
     let pincode = this.signupForm.get('pin').value;
-    this.getPincodeDetails(pincode);
+    // this.getPincodeDetails(pincode);
   }
 
   getPincodeDetails(pincode) {
@@ -142,7 +179,13 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    this.user = this.signupForm.value;
+    let userFormData = this.signupForm.value;
+    this.user = userFormData;
+    this.user.state = userFormData?.state.name;
+    this.user.municipalityId = userFormData?.street.id;
+    this.user.street = userFormData?.street.name;
+    this.user.city = userFormData?.city.name;
+    console.log(this.user);
     this.user.isPrimary = "2";
     if (!isEmpty(this.user.userName) && !isEmpty(this.user.userUsername) && !isEmpty(this.user.userPassword)) {
       this.isSigningup = true;

@@ -6,9 +6,12 @@ import { Address } from 'src/app/common/models/address';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { PincodeFilter } from 'src/app/common/models/pincodes.model';
 import { AddressHttpService } from 'src/app/common/services/http/address.service';
+import { DistrictService } from 'src/app/common/services/http/district.service';
+import { MunicipalityService } from 'src/app/common/services/http/municipality.service';
 import { PincodeService } from 'src/app/common/services/http/pincodes.service';
+import { StateService } from 'src/app/common/services/http/state.service';
 import { isEmpty } from 'src/app/common/utils/utils';
-import { AddressService } from '../address.service';
+import { AddressService } from '../../../../common/services/local/address.service';
 
 @Component({
   selector: 'app-modify',
@@ -23,15 +26,22 @@ export class ModifyComponent implements OnInit {
   isEditingAddress: boolean = false;
   action = "Add";
 
+  municipalities;
+  districts;
+  states;
+
   dataForm: FormGroup;
   isSubmitted: boolean;
   isSubmitDisabled: boolean;
 
   constructor(
-    private modalController: ModalController,
+    private addressService: AddressService,
+    private districtService: DistrictService,
     private formBuilder: FormBuilder,
     private pincodeService: PincodeService,
-    private addressService: AddressService,
+    private modalController: ModalController,
+    private municipalityService: MunicipalityService,
+    private stateService: StateService,
   ) { }
 
   ngOnInit() {
@@ -39,6 +49,10 @@ export class ModifyComponent implements OnInit {
     if (this.addressEditing) {
       this.updateEditAddress(this.addressEditing);
     }
+
+    this.getMunicipalities();
+    this.getDistricts();
+    this.getStates();
   }
 
   initiateForm() {
@@ -53,9 +67,52 @@ export class ModifyComponent implements OnInit {
     });
   }
 
+  getStates() {
+    this.stateService.getAll({ status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.states = dataResponse.data;
+        if (this.addressEditing) {
+          let selectedState = this.states[this.states?.findIndex(item => item.name == this.addressEditing.state)];
+          this.dataForm.patchValue({
+            state: selectedState
+          })
+        }
+      }
+    })
+  }
+
+  getDistricts() {
+    this.districtService.getAll({ status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.districts = dataResponse.data;
+        if (this.addressEditing) {
+          let selectedDistrict = this.districts[this.districts?.findIndex(item => item.name == this.addressEditing.city)];
+          this.dataForm.patchValue({
+            city: selectedDistrict
+          })
+        }
+      }
+    })
+  }
+
+  getMunicipalities() {
+    this.municipalityService.getAll({ status: 2, astatus: 2 }).subscribe((dataResponse: Httpresponse) => {
+      if (dataResponse.status) {
+        this.municipalities = dataResponse.data;
+        if (this.addressEditing) {
+          let selectedMunicipality = this.municipalities[this.municipalities?.findIndex(item => item.name == this.addressEditing.street)];
+          this.dataForm.patchValue({
+            street: selectedMunicipality
+          })
+        }
+      }
+    })
+  }
+
   pincodeChanged() {
     let pincode = this.dataForm.get('pin').value;
-    this.getPincodeDetails(pincode);
+    /* Auto detect pincode data from database */
+    // this.getPincodeDetails(pincode);
   }
 
   getPincodeDetails(pincode) {
@@ -104,7 +161,12 @@ export class ModifyComponent implements OnInit {
     this.isSubmitted = true;
     if (this.dataForm.valid) {
       this.isSubmitDisabled = true;
-      let addressData: Address = this.dataForm.value;
+      let formData = this.dataForm.value
+      let addressData: Address = formData;
+      addressData.state = formData?.state?.name;
+      addressData.municipalityId = formData?.street?.id;
+      addressData.street = formData?.street?.name;
+      addressData.city = formData?.city?.name;
       if (!this.addressEditing) {
         this.addressService.createAddress(addressData).subscribe((response: Httpresponse) => {
           if (response.status) {
@@ -158,4 +220,3 @@ export class ModifyComponent implements OnInit {
     }
   }
 }
- 

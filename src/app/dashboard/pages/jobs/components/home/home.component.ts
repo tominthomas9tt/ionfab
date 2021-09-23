@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Title } from '@angular/platform-browser';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { User } from 'src/app/common/models/user';
 import { TenderService } from 'src/app/common/services/http/tenders.service';
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
   pageIndex = 0;
   resultsLength = 0;
 
-  displayedColumns: string[] = ['slno', 'tenderNo', 'date', 'service', 'status'];
+  displayedColumns: string[] = ['slno', 'title', 'tenderNo', 'date', 'service', 'status'];
   dataSource;
 
   user: User;
@@ -34,8 +35,11 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private STORE: StoreService,
-    private tenderService: TenderService
-  ) { }
+    private tenderService: TenderService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle("Jobs");
+  }
 
   ngOnInit() {
     this.getStoredUser();

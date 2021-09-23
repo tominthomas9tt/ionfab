@@ -2,6 +2,9 @@ const Constants = {
     RAZORPAY: {
         KEY: "rzp_test_RKxwHbHve5eXEY"
     },
+    RAZORPAY_PROD: {
+        KEY: "rzp_live_WS0nnvjRYFJ1Is"
+    },
     PAYMENT_TYPES:{
         OTHERS:1,
         INSPECTION_FEE:2,

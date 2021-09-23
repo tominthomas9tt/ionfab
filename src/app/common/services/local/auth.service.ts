@@ -115,15 +115,15 @@ export class AuthService {
     });
   }
 
-  async signOut(forceToLogin=false) {
+  async signOut(forceToLogin = false) {
     await this.storage.setData(USER_KEY, null);
     await this.storage.setData(TOKEN_KEY, null);
-    await this.storage.setData(DEFAULT_ADDRESS_STORE,null);
+    await this.storage.setData(DEFAULT_ADDRESS_STORE, null);
     this.authState.next(null);
-    if(forceToLogin){
-      this.router.navigateByUrl("/auth/login");
-    }else{
-      this.router.navigateByUrl("/");
+    if (forceToLogin) {
+      this.router.navigateByUrl("/auth/login", { replaceUrl: true });
+    } else {
+      this.router.navigateByUrl("/", { replaceUrl: true });
     }
   }
 }

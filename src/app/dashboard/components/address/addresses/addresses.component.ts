@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Address } from 'src/app/common/models/address';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { StoreService } from 'src/app/common/services/local/store.service';
-import { AddressService } from '../address.service';
+import { AddressService } from '../../../../common/services/local/address.service';
 import { ModifyComponent } from '../modify/modify.component';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Constants } from 'src/app/common/configs/index.config';
 import { Httpresponse } from 'src/app/common/models/httpresponse.model';
 import { Inspection } from 'src/app/common/models/inspections.model';
@@ -60,6 +60,7 @@ export class DetailsComponent implements OnInit {
   ratingReview;
 
   constructor(
+    private alertController: AlertController,
     private activatedRoutes: ActivatedRoute,
     private invoiceService: InvoiceService,
     private modalController: ModalController,
@@ -232,7 +233,32 @@ export class DetailsComponent implements OnInit {
     })
   }
 
-  triggerManualQuotations() {
+  async triggerManualQuotations() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      mode: "md",
+      header: 'Get Connected',
+      message: 'Are you sure you want to proceed to accept quotations from available vendors?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this._triggerManualQuotations();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  _triggerManualQuotations() {
     this.tenderService.triggerManualConnection(this.detailData.id).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.notificationService.showNotification("Started to accept quotations")
@@ -245,8 +271,32 @@ export class DetailsComponent implements OnInit {
   }
 
 
+  async acceptQuotation(detailData: Quotation) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      mode: "md",
+      header: 'Generate workorder',
+      message: `Are you sure you want to generate workorder to ${detailData?.vendorName} against quotation no: ${detailData?.quotationNo} ?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this._acceptQuotation(detailData);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 
-  acceptQuotation(detailData: Quotation) {
+  _acceptQuotation(detailData: Quotation) {
     this.quotationService.acceptQuotation(detailData.id, { isAccepted: 2 }).subscribe((dataResponse: Httpresponse) => {
       if (dataResponse.status) {
         this.notificationService.showNotification("Quotation accepted.");
@@ -283,7 +333,32 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  acceptWorkOrderChanges() {
+  async acceptWorkOrderChanges() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      mode: "md",
+      header: 'Accept changes',
+      message: `Do you accept with the amount changes quoted by the vendor?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Accept',
+          handler: () => {
+            this._acceptWorkOrderChanges();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  _acceptWorkOrderChanges() {
     if (this.workorder) {
       let detailData = this.workorder;
       this.workorderService.acceptWorkOrderChange(detailData.id, { isSuspected: 3 }).subscribe((dataResponse: Httpresponse) => {
@@ -299,7 +374,33 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  acceptWorkCompletion() {
+  async acceptWorkCompletion() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      mode: "md",
+      header: 'Accept Work Completion',
+      message: `Work has been marked completed by the vedor. Accepting work completion will proceed to invoice generation. Do you want to continue?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Continue',
+          handler: () => {
+            this._acceptWorkCompletion();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
+  _acceptWorkCompletion() {
     if (this.workorder) {
       let detailData = this.workorder;
       this.workorderService.acceptWorkCompletion(detailData.id, { isCompletedAccepted: 2 }).subscribe((dataResponse: Httpresponse) => {

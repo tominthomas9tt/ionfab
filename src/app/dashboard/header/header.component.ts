@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { AccountMenuComponent } from '../components/account-menu/account-menu.component';
 import { SearchComponent } from '../components/search/search.component';
@@ -12,7 +13,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private router: Router
   ) { }
 
   ngOnInit() { }
@@ -43,5 +45,9 @@ export class HeaderComponent implements OnInit {
     await popover.present();
 
     const { data } = await popover.onDidDismiss();
+  }
+
+  navigateHome() {
+    this.router.navigate(['/', 'dashboard']);
   }
 }

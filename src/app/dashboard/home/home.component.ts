@@ -21,6 +21,8 @@ import { StoredUserService } from 'src/app/common/services/local/storeduser.serv
 import { LocalPaymentService } from 'src/app/common/services/local/localpayment.service';
 import { InvoiceService } from 'src/app/common/services/http/invoice.service';
 import { Invoice } from 'src/app/common/models/invoice';
+import { Title } from '@angular/platform-browser';
+import { AddressService } from 'src/app/common/services/local/address.service';
 
 const INSPECTION_FEE_TYPE = Constants.PAYMENT_TYPES.INSPECTION_FEE;
 
@@ -43,13 +45,14 @@ export class HomeComponent implements OnInit {
   selectedSubcategory1;
   selectedAddress: Address;
 
+
   subServices;
   showSubservices = false;
 
   tenderData: Tender;
 
   vendorsFound = 0;
- 
+
   dataForm: FormGroup;
 
   isSubmitted: boolean = false;
@@ -92,8 +95,12 @@ export class HomeComponent implements OnInit {
     private servicesService: ServicesService,
     private formBuilder: FormBuilder,
     private tenderService: TenderService,
-    private notificationSrevice: NotificationService
-  ) { }
+    private titleService: Title,
+    private notificationSrevice: NotificationService,
+    private addressService: AddressService
+  ) {
+    this.titleService.setTitle("Home");
+  }
 
   ngOnInit() {
     this.getStoredUser();
@@ -103,6 +110,17 @@ export class HomeComponent implements OnInit {
     this.initiateForm();
     // this.presentWelcome();
     this.searchSubscribe();
+    this.getDefaultAddress();
+  }
+
+  getDefaultAddress() {
+    this.addressService.defaultAddressSource.subscribe((data) => {
+      this.selectedAddress = data;
+    });
+  }
+
+  openAddressModal() {
+    this.addressService.openAddressModal();
   }
 
   getStoredUser() {
@@ -203,6 +221,7 @@ export class HomeComponent implements OnInit {
     this.isSubmitted = false;
     this.isSubmitDisabled = false;
     this.dataForm = this.formBuilder.group({
+      title: ['', Validators.required],
       serviceSub: [''],
       inspectionRequired: [false],
       jobDate: [this.today],
@@ -262,6 +281,7 @@ export class HomeComponent implements OnInit {
         this.selectedAddress = data;
         let dataSample = this.dataForm.value;
         let detailData: Tender = {
+          title: dataSample.title,
           userId: this.user?.userId,
           serviceCategoryId: this.selectedCategory?.id,
           serviceId: this.selectedSubcategory?.id,
@@ -279,9 +299,9 @@ export class HomeComponent implements OnInit {
           console.log(dataResponse)
           if (dataResponse.status) {
             this.tenderData = dataResponse.data[0];
+            this.initiateForm();
             if (this.inspectionRequired) {
-              this.initiateForm();
-              if(this.tenderData.invoice){
+              if (this.tenderData.invoice) {
                 this.makePaymentFor(this.tenderData.invoice);
               }
               // this.initiateInspectionPayment();
